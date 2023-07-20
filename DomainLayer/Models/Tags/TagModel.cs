@@ -16,8 +16,8 @@ namespace DomainLayer.Models.Tags
         public string Name { get; set; }
         public string Slug { get; set; }
         public string Language { get; set; }
-        public int GamesCount { get; set; }
-        public string ImageBackground { get; set; }
+        public int Games_Count { get; set; }
+        public string Image_Background { get; set; }
 
         public List<GamesModel> Games { get; set; }
         public List<GamesToTagsModel> ToTagsModels { get; set; }

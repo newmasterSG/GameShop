@@ -7,8 +7,6 @@ namespace DomainLayer.Models.GamesToTags
     [Table("GamesToTags")]
     public class GamesToTagsModel
     {
-        public int Id { get; set; }
-
         public int GamesId { get; set; }
 
         public int TagsId { get; set; }

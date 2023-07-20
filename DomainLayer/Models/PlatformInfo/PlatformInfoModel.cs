@@ -9,9 +9,9 @@ namespace DomainLayer.Models.PlatformInfo
         public string Name { get; set; }
         public string Slug { get; set; }
         public object Image { get; set; }
-        public object YearEnd { get; set; }
-        public int YearStart { get; set; }
-        public int GamesCount { get; set; }
-        public string ImageBackground { get; set; }
+        public object Year_End { get; set; }
+        public object Year_start { get; set; }
+        public int Games_Count { get; set; }
+        public string Image_Background { get; set; }
     }
 }

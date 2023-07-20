@@ -8,7 +8,7 @@ namespace DomainLayer.Models.Store
     public class StoreModel
     {
         public int Id { get; set; }
-        public StoreInfoModel StoreInfo { get; set; }
+        public StoreInfoModel Store { get; set; }
 
         public List<GamesModel> Games { get; set; }
     }

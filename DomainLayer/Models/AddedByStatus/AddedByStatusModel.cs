@@ -1,4 +1,5 @@
 ﻿using DomainLayer.Models.Games;
+using DomainLayer.Models.GamesToAddedByStatus;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -18,5 +19,7 @@ namespace DomainLayer.Models.AddedByStatus
         public int Dropped { get; set; }
         public int Playing { get; set; }
         public List<GamesModel> Games { get; set; }
+
+        public List<GamesToAddedByStatusModel> GamesToAddedByStatus { get; set; }
     }
 }
