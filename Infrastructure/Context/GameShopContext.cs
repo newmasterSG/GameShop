@@ -23,6 +23,7 @@ namespace Infrastructure.Context
 {
     public class GameShopContext : DbContext
     {
+        public DbSet<AddedByStatusModel> AddedByStatus { get; set; }
         public DbSet<GamesModel> Games { get; set; }
 
         public DbSet<GamesToTagsModel> GamesToTags { get; set; }
