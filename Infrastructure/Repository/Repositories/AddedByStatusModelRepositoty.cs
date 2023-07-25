@@ -64,13 +64,13 @@ namespace Infrastructure.Repository.Repositories
 
         public void Update(AddedByStatusModel addedByStatus)
         {
-            _gameShopContext.Update(addedByStatus);
+            _gameShopContext.AddedByStatus.Update(addedByStatus);
             _gameShopContext.SaveChanges();
         }
 
         public async Task UpdateAsync(AddedByStatusModel addedByStatus)
         {
-            _gameShopContext.Update(addedByStatus);
+            _gameShopContext.AddedByStatus.Update(addedByStatus);
             await _gameShopContext.SaveChangesAsync();
         }
     }
