@@ -4,6 +4,7 @@ using Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(GameShopContext))]
-    partial class GameShopContextModelSnapshot : ModelSnapshot
+    [Migration("20230726124145_GameChange")]
+    partial class GameChange
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -99,29 +102,29 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Infrastructure.Models.AddedByStatus.AddedByStatusModel", b =>
                 {
-                    b.Property<int?>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("Key", true);
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("Beaten")
+                    b.Property<int>("Beaten")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Dropped")
+                    b.Property<int>("Dropped")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Owned")
+                    b.Property<int>("Owned")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Playing")
+                    b.Property<int>("Playing")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Toplay")
+                    b.Property<int>("Toplay")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Yet")
+                    b.Property<int>("Yet")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -131,16 +134,18 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Infrastructure.Models.ESRBRating.ESRBRatingModel", b =>
                 {
-                    b.Property<int?>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Slug")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -150,65 +155,72 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Infrastructure.Models.Games.GamesModel", b =>
                 {
-                    b.Property<int?>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("Key", true);
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("Added_By_StatusId")
                         .HasColumnType("int");
 
                     b.Property<string>("Background_Image")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Dominant_Color")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ESRB_RatingId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Metacritic")
+                    b.Property<int>("Metacritic")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("Playtime")
+                    b.Property<int>("Playtime")
                         .HasColumnType("int");
 
-                    b.Property<double?>("Rating")
+                    b.Property<double>("Rating")
                         .HasColumnType("float");
 
-                    b.Property<int?>("Rating_Top")
+                    b.Property<int>("Rating_Top")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Ratings_Count")
+                    b.Property<int>("Ratings_Count")
                         .HasColumnType("int");
 
                     b.Property<string>("Released")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("Reviews_Count")
+                    b.Property<int>("Reviews_Count")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Reviews_Text_Count")
+                    b.Property<int>("Reviews_Text_Count")
                         .HasColumnType("int");
 
                     b.Property<string>("Saturated_Color")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Slug")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("Suggestions_Count")
+                    b.Property<int>("Suggestions_Count")
                         .HasColumnType("int");
 
-                    b.Property<bool?>("Tba")
+                    b.Property<bool>("Tba")
                         .HasColumnType("bit");
 
                     b.Property<string>("Updated")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -222,10 +234,10 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Infrastructure.Models.GamesToAddedByStatus.GamesToAddedByStatusModel", b =>
                 {
-                    b.Property<int?>("GameId")
+                    b.Property<int>("GameId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("AddedByStatusId")
+                    b.Property<int>("AddedByStatusId")
                         .HasColumnType("int");
 
                     b.HasKey("GameId", "AddedByStatusId");
@@ -240,10 +252,10 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Infrastructure.Models.GamesToESRBRating.GamesToESRBRatingModel", b =>
                 {
-                    b.Property<int?>("GameId")
+                    b.Property<int>("GameId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ESRBId")
+                    b.Property<int>("ESRBId")
                         .HasColumnType("int");
 
                     b.HasKey("GameId", "ESRBId");
@@ -258,10 +270,10 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Infrastructure.Models.GamesToGenres.GamesToGenresModel", b =>
                 {
-                    b.Property<int?>("GameId")
+                    b.Property<int>("GameId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("GenreId")
+                    b.Property<int>("GenreId")
                         .HasColumnType("int");
 
                     b.HasKey("GameId", "GenreId");
@@ -273,10 +285,10 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Infrastructure.Models.GamesToPlatform.GamesToPlatfrormModel", b =>
                 {
-                    b.Property<int?>("GameId")
+                    b.Property<int>("GameId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("PlatformId")
+                    b.Property<int>("PlatformId")
                         .HasColumnType("int");
 
                     b.HasKey("GameId", "PlatformId");
@@ -288,10 +300,10 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Infrastructure.Models.GamesToRating.GamesToRatingModel", b =>
                 {
-                    b.Property<int?>("GameId")
+                    b.Property<int>("GameId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("RatingId")
+                    b.Property<int>("RatingId")
                         .HasColumnType("int");
 
                     b.HasKey("GameId", "RatingId");
@@ -303,10 +315,10 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Infrastructure.Models.GamesToScreenshots.GamesToScreenshotsModel", b =>
                 {
-                    b.Property<int?>("GameId")
+                    b.Property<int>("GameId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ScreenshotId")
+                    b.Property<int>("ScreenshotId")
                         .HasColumnType("int");
 
                     b.HasKey("GameId", "ScreenshotId");
@@ -319,10 +331,10 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Infrastructure.Models.GamesToStore.GamesToStoresModel", b =>
                 {
-                    b.Property<int?>("GameId")
+                    b.Property<int>("GameId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("StoreId")
+                    b.Property<int>("StoreId")
                         .HasColumnType("int");
 
                     b.HasKey("GameId", "StoreId");
@@ -334,10 +346,10 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Infrastructure.Models.GamesToTags.GamesToTagsModel", b =>
                 {
-                    b.Property<int?>("GamesId")
+                    b.Property<int>("GamesId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("TagsId")
+                    b.Property<int>("TagsId")
                         .HasColumnType("int");
 
                     b.HasKey("GamesId", "TagsId");
@@ -349,22 +361,25 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Infrastructure.Models.Genres.GenreModel", b =>
                 {
-                    b.Property<int?>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("GamesCount")
+                    b.Property<int>("GamesCount")
                         .HasColumnType("int");
 
                     b.Property<string>("Image_Background")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Slug")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -385,6 +400,7 @@ namespace Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Released_At")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -396,11 +412,11 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Infrastructure.Models.PlatformInfo.PlatformInfoModel", b =>
                 {
-                    b.Property<int?>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("Games_Count")
                         .HasColumnType("int");
@@ -409,12 +425,15 @@ namespace Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Image_Background")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Slug")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("Year_End")
@@ -430,20 +449,21 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Infrastructure.Models.Rating.RatingModel", b =>
                 {
-                    b.Property<int?>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("Key", true);
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("Count")
+                    b.Property<int>("Count")
                         .HasColumnType("int");
 
-                    b.Property<double?>("Percent")
+                    b.Property<double>("Percent")
                         .HasColumnType("float");
 
                     b.Property<string>("Title")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -464,6 +484,7 @@ namespace Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Image")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -475,14 +496,14 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Infrastructure.Models.Store.StoreModel", b =>
                 {
-                    b.Property<int?>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("Key", true);
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("StoreId")
+                    b.Property<int>("StoreId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -494,25 +515,29 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Infrastructure.Models.StoreInfo.StoreInfoModel", b =>
                 {
-                    b.Property<int?>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Domain")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("Games_Count")
+                    b.Property<int>("Games_Count")
                         .HasColumnType("int");
 
                     b.Property<string>("Image_Background")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Slug")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -522,26 +547,30 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Infrastructure.Models.Tags.TagModel", b =>
                 {
-                    b.Property<int?>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("Key", true);
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("Games_Count")
+                    b.Property<int>("Games_Count")
                         .HasColumnType("int");
 
                     b.Property<string>("Image_Background")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Language")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Slug")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -821,7 +850,9 @@ namespace Infrastructure.Migrations
                 {
                     b.HasOne("Infrastructure.Models.StoreInfo.StoreInfoModel", "Store")
                         .WithMany()
-                        .HasForeignKey("StoreId");
+                        .HasForeignKey("StoreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Store");
                 });

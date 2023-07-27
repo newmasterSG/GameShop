@@ -5,7 +5,7 @@
 namespace Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class CreateGameDb : Migration
+    public partial class Create : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -175,9 +175,7 @@ namespace Infrastructure.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     PlatformId = table.Column<int>(type: "int", nullable: false),
-                    Released_At = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Requirements_En = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Requirements_Ru = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Released_At = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {

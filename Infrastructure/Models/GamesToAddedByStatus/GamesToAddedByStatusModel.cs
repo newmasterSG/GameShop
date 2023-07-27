@@ -7,8 +7,8 @@ namespace Infrastructure.Models.GamesToAddedByStatus
     [Table("GamesToAddedByStatus")]
     public class GamesToAddedByStatusModel
     {
-        public int GameId { get; set; }
-        public int AddedByStatusId { get; set; }
+        public int? GameId { get; set; }
+        public int? AddedByStatusId { get; set; }
 
         public GamesModel Games { get; set; }
 

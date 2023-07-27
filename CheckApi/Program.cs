@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System.Reflection;
 
 namespace CheckApi
 {
@@ -25,22 +24,22 @@ namespace CheckApi
             string fileName = "Games.json";
             string subfolder = "JsonFiles";
             string path = Path.Combine(folderPath, subfolder, fileName);
-        //    if (File.Exists(path))
-        //    {
-        //        //using (StreamWriter sw = new StreamWriter(path, true))
-        //        //{
-        //        //    await sw.WriteLineAsync(jsonbody);
-        //        //}
+            if (File.Exists(path))
+            {
+                //using (StreamWriter sw = new StreamWriter(path, true))
+                //{
+                //    await sw.WriteLineAsync(jsonbody);
+                //}
 
-        //        string jsonContent = await File.ReadAllTextAsync(path);
+                string jsonContent = await File.ReadAllTextAsync(path);
 
-        //        var gameList = JsonConvert.DeserializeObject<RootObject>(jsonContent);
+                var gameList = JsonConvert.DeserializeObject<RootObject>(jsonContent);
 
-        //        foreach (var game in gameList.Results)
-        //        {
-        //            Console.WriteLine(gameList.Count);
-        //        }
-        //    }
+                foreach (var game in gameList.Results)
+                {
+                    Console.WriteLine(game.Name);
+                }
+            }
         }
     }
 }

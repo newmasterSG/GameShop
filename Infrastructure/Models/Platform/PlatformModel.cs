@@ -10,9 +10,12 @@ namespace Infrastructure.Models.Platform
     {
         public int Id { get; set; }
         public PlatformInfoModel Platform { get; set; }
-        public string Released_At { get; set; }
-        public string? Requirements_En { get; set; }
-        public string? Requirements_Ru { get; set; }
+
+        public string? Released_At { get; set; }
+        [NotMapped]
+        public object Requirements_En { get; set; }
+        [NotMapped]
+        public object Requirements_Ru { get; set; }
 
         public List<GamesModel> Games { get; set; }
 

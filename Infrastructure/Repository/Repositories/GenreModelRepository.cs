@@ -15,12 +15,14 @@ namespace Infrastructure.Repository.Repositories
 
         public void Add(GenreModel model)
         {
+            model.Id = 0;
             _gameShopContext.Genres.Add(model);
             _gameShopContext.SaveChanges();
         }
 
         public async Task AddAsync(GenreModel model)
         {
+            model.Id = 0;
             await _gameShopContext.Genres.AddAsync(model);
             await _gameShopContext.SaveChangesAsync();
         }

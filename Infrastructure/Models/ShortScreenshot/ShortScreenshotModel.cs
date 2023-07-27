@@ -8,7 +8,7 @@ namespace Infrastructure.Models.ShortScreenshot
     public class ShortScreenshotModel
     {
         public int Id { get; set; }
-        public string Image { get; set; }
+        public string? Image { get; set; }
         public GamesModel Game { get; set; }
 
         public GamesToScreenshotsModel GamesToScreenshots { get; set; }

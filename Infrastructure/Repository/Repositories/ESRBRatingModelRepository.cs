@@ -15,12 +15,14 @@ namespace Infrastructure.Repository.Repositories
 
         public void Add(ESRBRatingModel model)
         {
+            model.Id = 0;
             _gameShopContext.ESRBRatings.Add(model);
             _gameShopContext.SaveChanges();
         }
 
         public async Task AddAsync(ESRBRatingModel model)
         {
+            model.Id = 0;
             await _gameShopContext.ESRBRatings.AddAsync(model);
             await _gameShopContext.SaveChangesAsync();
         }

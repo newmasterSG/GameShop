@@ -15,12 +15,14 @@ namespace Infrastructure.Repository.Repositories
 
         public void Add(StoreModel model)
         {
+            model.Id = 0;
             _gameShopContext.StoreModels.Add(model);
             _gameShopContext.SaveChanges();
         }
 
         public async Task AddAsync(StoreModel model)
         {
+            model.Id = 0;
             await _gameShopContext.StoreModels.AddAsync(model);
             await _gameShopContext.SaveChangesAsync();
         }

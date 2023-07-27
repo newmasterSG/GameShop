@@ -77,14 +77,10 @@ namespace Infrastructure.Context
                 .HasAnnotation("Key", true);
 
             modelBuilder.Entity<ESRBRatingModel>()
-                .Property(f => f.Id)
-                .ValueGeneratedOnAdd()
-                .HasAnnotation("Key", true);
+                .HasKey(f => f.Id);
 
             modelBuilder.Entity<GenreModel>()
-                .Property(f => f.Id)
-                .ValueGeneratedOnAdd()
-                .HasAnnotation("Key", true);
+                .HasKey(f => f.Id);
 
             modelBuilder.Entity<PlatformModel>()
                 .Property(f => f.Id)
@@ -270,7 +266,8 @@ namespace Infrastructure.Context
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=localhost\\SQLEXPRESS;Database=GamesDb;Trusted_Connection=True;TrustServerCertificate=true");
+            optionsBuilder.UseSqlServer("Server=localhost\\SQLEXPRESS;Database=GamingS;Trusted_Connection=True;TrustServerCertificate=true");
+            optionsBuilder.EnableSensitiveDataLogging();
         }
     }
 }

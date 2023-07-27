@@ -1,4 +1,5 @@
 ﻿
+using Infrastructure.Models.Games;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace CheckApi
 {
-    //public class RootObject
-    //{
-    //    public int Count { get; set; }
-    //    public List<GamesModel> Results { get; set; }
-    //}
+    public class RootObject
+    {
+        public int Count { get; set; }
+        public List<GamesModel> Results { get; set; }
+    }
 }

@@ -8,8 +8,8 @@ namespace Infrastructure.Models.Store
     [Table("Store")]
     public class StoreModel
     {
-        public int Id { get; set; }
-        public StoreInfoModel Store { get; set; }
+        public int? Id { get; set; }
+        public StoreInfoModel? Store { get; set; }
 
         public List<GamesModel> Games { get; set; }
 

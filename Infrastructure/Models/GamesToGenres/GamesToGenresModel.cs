@@ -7,9 +7,9 @@ namespace Infrastructure.Models.GamesToGenres
     [Table("GamesToGenres")]
     public class GamesToGenresModel
     {
-        public int GameId { get; set; }
+        public int? GameId { get; set; }
 
-        public int GenreId { get; set; }
+        public int? GenreId { get; set; }
 
         public GamesModel Game { get; set; }
 

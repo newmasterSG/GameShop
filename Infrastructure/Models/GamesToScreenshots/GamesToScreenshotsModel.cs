@@ -7,9 +7,9 @@ namespace Infrastructure.Models.GamesToScreenshots
     [Table("GamesToScreenshots")]
     public class GamesToScreenshotsModel
     {
-        public int GameId { get; set; }
+        public int? GameId { get; set; }
 
-        public int ScreenshotId { get; set; }
+        public int? ScreenshotId { get; set; }
 
         public GamesModel Game { get; set; }
 

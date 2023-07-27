@@ -12,9 +12,9 @@ namespace Infrastructure.Models.GamesToRating
     [Table("GamesToRating")]
     public class GamesToRatingModel
     {
-        public int GameId { get; set; }
+        public int? GameId { get; set; }
 
-        public int RatingId { get; set; }
+        public int? RatingId { get; set; }
 
         public GamesModel Game { get; set; }
 

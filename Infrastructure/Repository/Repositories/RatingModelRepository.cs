@@ -21,6 +21,7 @@ namespace Infrastructure.Repository.Repositories
 
         public async Task AddAsync(RatingModel model)
         {
+            model.Id = 0;
             await _gameShopContext.RatingModels.AddAsync(model);
             await _gameShopContext.SaveChangesAsync();
         }

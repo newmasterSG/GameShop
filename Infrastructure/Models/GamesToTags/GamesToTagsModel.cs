@@ -7,9 +7,9 @@ namespace Infrastructure.Models.GamesToTags
     [Table("GamesToTags")]
     public class GamesToTagsModel
     {
-        public int GamesId { get; set; }
+        public int? GamesId { get; set; }
 
-        public int TagsId { get; set; }
+        public int? TagsId { get; set; }
 
         public GamesModel Game { get; set; }
         public TagModel Tag { get; set; }

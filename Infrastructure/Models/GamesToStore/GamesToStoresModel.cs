@@ -12,9 +12,9 @@ namespace Infrastructure.Models.GamesToStore
     [Table("GamesToStores")]
     public class GamesToStoresModel
     {
-        public int GameId { get; set; }
+        public int? GameId { get; set; }
 
-        public int StoreId { get; set; }
+        public int? StoreId { get; set; }
 
         public GamesModel Game { get; set; }
 
