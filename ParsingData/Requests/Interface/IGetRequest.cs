@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ParsingData
+namespace ParsingData.Requests.Interface
 {
-    public static class StartUp
+    public interface IGetRequest
     {
+        Task<string> GetJson(int pageNumber);
     }
 }
