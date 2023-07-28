@@ -10,7 +10,6 @@ using Infrastructure.Models.Tags;
 using Infrastructure.Repository.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
-using ParsingData.Requests;
 using ServicesLayer.Services.Service;
 using System;
 
