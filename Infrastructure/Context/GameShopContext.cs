@@ -1,7 +1,9 @@
 ﻿using Infrastructure.Models.AddedByStatus;
+using Infrastructure.Models.Developer;
 using Infrastructure.Models.ESRBRating;
 using Infrastructure.Models.Games;
 using Infrastructure.Models.GamesToAddedByStatus;
+using Infrastructure.Models.GamesToDeveloper;
 using Infrastructure.Models.GamesToESRBRating;
 using Infrastructure.Models.GamesToGenres;
 using Infrastructure.Models.GamesToPlatform;
@@ -62,11 +64,20 @@ namespace Infrastructure.Context
 
         public DbSet<GamesToRatingModel> GamesToRatings { get; set; }
 
+        public DbSet<DevelopersModel> Developers { get; set; }
+
+        public DbSet<GamesToDeveloperModel> GamesToDevelopers { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             #region Standart Models
 
             modelBuilder.Entity<GamesModel>()
+                .Property(f => f.Id)
+                .ValueGeneratedOnAdd()
+                .HasAnnotation("Key", true);
+
+            modelBuilder.Entity<DevelopersModel>()
                 .Property(f => f.Id)
                 .ValueGeneratedOnAdd()
                 .HasAnnotation("Key", true);
@@ -259,6 +270,25 @@ namespace Infrastructure.Context
 
             #endregion
 
+            #region GamesToDeveloperModel Settings
+
+            modelBuilder.Entity<GamesToDeveloperModel>()
+                .HasKey(gtg => new { gtg.GameId, gtg.DeveloperId });
+
+            modelBuilder.Entity<GamesToDeveloperModel>()
+                .HasOne(gta => gta.Game)
+                .WithOne(g => g.GamesToDeveloper)
+                .HasForeignKey<GamesToDeveloperModel>(gta => gta.GameId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<GamesToDeveloperModel>()
+                .HasOne(gtg => gtg.Developer)
+                .WithMany(g => g.GamesToDevelopers)
+                .HasForeignKey(gtg => gtg.DeveloperId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            #endregion
+
             #endregion
 
             base.OnModelCreating(modelBuilder);
@@ -266,7 +296,7 @@ namespace Infrastructure.Context
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=localhost\\SQLEXPRESS;Database=GamingS;Trusted_Connection=True;TrustServerCertificate=true");
+            optionsBuilder.UseSqlServer("Server=localhost\\SQLEXPRESS;Database=GameShop;Trusted_Connection=True;TrustServerCertificate=true");
             optionsBuilder.EnableSensitiveDataLogging();
         }
     }

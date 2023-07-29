@@ -21,6 +21,7 @@ namespace ParsingData
         static async Task Main(string[] args)
         {
             var client = new HttpClient();
+
             GetRequest getRequest = new GetRequest(client, "https://api.rawg.io/api/games?key=e5be80adcd7348d9bfe0c55a970b5215&page=");
 
             var gameList = await new GameDeserialize().Deserialize(await getRequest.GetJson(12));
