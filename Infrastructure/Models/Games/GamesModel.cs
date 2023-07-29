@@ -1,6 +1,8 @@
 ﻿using Infrastructure.Models.AddedByStatus;
+using Infrastructure.Models.Developer;
 using Infrastructure.Models.ESRBRating;
 using Infrastructure.Models.GamesToAddedByStatus;
+using Infrastructure.Models.GamesToDeveloper;
 using Infrastructure.Models.GamesToESRBRating;
 using Infrastructure.Models.GamesToGenres;
 using Infrastructure.Models.GamesToPlatform;
@@ -50,6 +52,8 @@ namespace Infrastructure.Models.Games
         public bool? Tba { get; set; }
         public string? Updated { get; set; }
 
+        public DevelopersModel Developer { get; set; }
+
         [NotMapped]
         public object UserGame { get; set; }
 
@@ -68,5 +72,7 @@ namespace Infrastructure.Models.Games
         public List<GamesToScreenshotsModel> GameToShortScreenshots { get; set; }
 
         public List<GamesToStoresModel> GamesToStores { get; set; }
+
+        public GamesToDeveloperModel GamesToDeveloper { get; set; }
     }
 }
