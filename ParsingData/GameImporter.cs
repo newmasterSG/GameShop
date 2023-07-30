@@ -1,4 +1,5 @@
-﻿using Infrastructure.Models.ESRBRating;
+﻿using Infrastructure.Models.Developer;
+using Infrastructure.Models.ESRBRating;
 using Infrastructure.Models.Games;
 using Infrastructure.Models.Genres;
 using Infrastructure.Models.Platform;
@@ -121,6 +122,16 @@ namespace ParsingData
                 });
             }
 
+            DevelopersModel developers = new DevelopersModel() 
+            { 
+                Image_Background = game.Developers.Image_Background,
+                Games_count = game.Developers.Games_count,
+                Slug = game.Developers.Slug,
+                Name = game.Developers.Name,
+                Games = game.Developers.Games,
+                GamesToDevelopers = game.Developers.GamesToDevelopers
+            };
+
             if (game.Metacritic is null)
             {
                 game.Metacritic = 0;
@@ -131,7 +142,6 @@ namespace ParsingData
                 Added_By_Status = game.Added_By_Status,
                 Name = game.Name,
                 Background_Image = game.Background_Image,
-                Dominant_Color = game.Dominant_Color,
                 ESRB_Rating = game.ESRB_Rating,
                 Short_Screenshots = Scr,
                 Genres = Genresw,
@@ -151,7 +161,7 @@ namespace ParsingData
                 Suggestions_Count = game.Suggestions_Count,
                 Tba = game.Tba,
                 Updated = game.Updated,
-                Saturated_Color = game.Saturated_Color,
+                Developers = developers,
             };
 
             return gam;

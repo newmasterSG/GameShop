@@ -3,9 +3,9 @@
 namespace Infrastructure.Models.StoreInfo
 {
     [Table("StoreInfo")]
-    public class StoreInfoModel
+    public class StoreInfoModel : EntityBase
     {
-        public int? Id { get; set; }
+        public new int? Id { get; set; }
         public string? Name { get; set; }
         public string? Slug { get; set; }
         public string? Domain { get; set; }

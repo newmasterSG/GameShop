@@ -1,4 +1,6 @@
 ﻿using Infrastructure.Context;
+using Infrastructure.Models.AddedByStatus;
+using Infrastructure.Models.Developer;
 using Infrastructure.Models.ESRBRating;
 using Infrastructure.Models.Games;
 using Infrastructure.Models.Genres;
@@ -11,6 +13,7 @@ using Infrastructure.Repository.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using ParsingData.Requests;
+using ServicesLayer.Services.Interfaces;
 using ServicesLayer.Services.Service;
 using System;
 
@@ -22,30 +25,214 @@ namespace ParsingData
         {
             var client = new HttpClient();
 
-            GetRequest getRequest = new GetRequest(client, "https://api.rawg.io/api/games?key=e5be80adcd7348d9bfe0c55a970b5215&page=");
-
-            var gameList = await new GameDeserialize().Deserialize(await getRequest.GetJson(12));
+            GetRequest getRequest = new GetRequest(client, "https://api.rawg.io/api/developers?key=e5be80adcd7348d9bfe0c55a970b5215&page=");
+            var gameList = await new Deserializer<DevelopersModel>().Deserialize(await getRequest.GetJson(9));
+            //var gameList = await new Deserializer<GamesModel>().Deserialize(await getRequest.GetJson(1));
 
             using (GameShopContext gameShopContext = new GameShopContext())
             {
-                GamesModelService gamesModelService = new GamesModelService(new GamesModelRepository(gameShopContext));
+                //Services<GamesModel> gamesModelService = new Services<GamesModel>(new Repository<GamesModel>(gameShopContext));
+                Services<DevelopersModel> developerServices = new Services<DevelopersModel>(new Repository<DevelopersModel>(gameShopContext));
                 foreach (var game in gameList.Results)
                 {
-                    var gam = await GameImporter.CreateGame(game);
+                    //var gam = await GameImporter.CreateGame(game);
 
-                    await Console.Out.WriteLineAsync($"Game with name : {gam.Name} was added");
-
-                    var existingGame = gameShopContext.Games.FirstOrDefault(i => i.Name == game.Name);
-
-                    if (existingGame == null)
+                    DevelopersModel developersModel = new DevelopersModel()
                     {
-                        await gamesModelService.AddAsync(gam);
-                    }
-                    else
-                    {
-                    }
+                        Slug = game.Slug,
+                        Name = game.Name,
+                        Games_count = game.Games_count,
+                        Image_Background = game.Image_Background,
+                    };
+
+                    await Console.Out.WriteLineAsync($"Developer with name : {game.Name} was added");
+                    await developerServices.AddAsync(developersModel);
+                    //var existingGame = gameShopContext.Games.FirstOrDefault(i => i.Name == game.Name);
+
+                    //if (existingGame == null)
+                    //{
+                    //    await gamesModelService.AddAsync(gam);
+                    //}
+                    //else
+                    //{
+                    //}
                 }
             }
+
+            //string jsonbody = string.Empty;
+            //var request = new HttpRequestMessage
+            //{
+            //    Method = HttpMethod.Get,
+            //    RequestUri = new Uri("https://api.rawg.io/api/developers?key=e5be80adcd7348d9bfe0c55a970b5215&page=1"),
+            //};
+            //using (var response = await client.SendAsync(request))
+            //{
+            //    response.EnsureSuccessStatusCode();
+            //    var body = await response.Content.ReadAsStringAsync();
+            //    jsonbody = body;
+            //}
+            //string folderPath = @"D:\Project\Api-Steam\ParsingData";
+            //string fileName = "GameJson.json";
+            //string subfolder = "Json";
+            //string path = Path.Combine(folderPath, subfolder, fileName);
+
+            //if (File.Exists(path))
+            //{
+            //    using (StreamWriter sw = new StreamWriter(path))
+            //    {
+            //        await sw.WriteLineAsync(jsonbody);
+            //    }
+            //}
+
+
+            //var gameList = JsonConvert.DeserializeObject<RootObject<GamesModel>>(jsonbody);
+            //using (GameShopContext gameShopContext = new GameShopContext())
+            //{
+            //    Services<GamesModel> gamesModelService = new Services<GamesModel>(new Repository<GamesModel>(gameShopContext));
+            //    foreach (var game in gameList.Results)
+            //    {
+            //        if (game.ESRB_Rating == null)
+            //        {
+            //            game.ESRB_Rating = new ESRBRatingModel();
+            //        }
+            //        else
+            //        {
+            //            game.ESRB_Rating = new ESRBRatingModel()
+            //            {
+            //                Games = game.ESRB_Rating.Games,
+            //                Name = game.ESRB_Rating.Name,
+            //                Slug = game.ESRB_Rating.Slug,
+            //                GamesToESRBRating = game.ESRB_Rating.GamesToESRBRating,
+            //            };
+            //        }
+
+            //        var Pl = new List<Infrastructure.Models.Platform.PlatformModel>();
+            //        var Genresw = new List<GenreModel>();
+            //        var rat = new List<RatingModel>();
+            //        var Sto = new List<StoreModel>();
+            //        var tag = new List<TagModel>();
+            //        var Scr = new List<ShortScreenshotModel>();
+
+            //        foreach (var item in game.Genres)
+            //        {
+            //            Genresw.Add(new GenreModel()
+            //            {
+            //                Slug = item.Slug,
+            //                Name = item.Name,
+            //                Image_Background = item.Image_Background,
+            //                Games = item.Games,
+            //                GamesCount = item.GamesCount,
+            //            });
+            //        }
+
+            //        foreach (var pl in game.Platforms)
+            //        {
+            //            Pl.Add(new PlatformModel()
+            //            {
+            //                Games = pl.Games,
+            //                Platform = new Infrastructure.Models.PlatformInfo.PlatformInfoModel()
+            //                {
+            //                    Games_Count = pl.Platform.Games_Count,
+            //                    Name = pl.Platform.Name,
+            //                    Slug = pl.Platform.Slug,
+            //                    Image = pl.Platform.Image,
+            //                    Year_End = pl.Platform.Year_End,
+            //                    Year_start = pl.Platform.Year_start,
+            //                    Image_Background = pl.Platform.Image_Background,
+            //                },
+            //                Released_At = pl.Released_At,
+            //                Requirements_En = pl.Requirements_En,
+            //                Requirements_Ru = pl.Requirements_Ru,
+            //            });
+            //        }
+
+            //        foreach (var r in game.Ratings)
+            //        {
+            //            rat.Add(new RatingModel()
+            //            {
+            //                Count = r.Count,
+            //                Games = r.Games,
+            //                Title = r.Title,
+            //                Percent = r.Percent,
+            //            });
+            //        }
+
+            //        foreach (var s in game.Stores)
+            //        {
+            //            Sto.Add(new StoreModel()
+            //            {
+            //                Store = new Infrastructure.Models.StoreInfo.StoreInfoModel()
+            //                {
+            //                    Slug = s.Store.Slug,
+            //                    Name = s.Store.Name,
+            //                    Domain = s.Store.Domain,
+            //                    Games_Count = s.Store.Games_Count,
+            //                    Image_Background = s.Store.Image_Background,
+            //                },
+            //                Games = s.Games,
+            //            });
+            //        }
+
+            //        foreach (var t in game.Tags)
+            //        {
+            //            tag.Add(new TagModel()
+            //            {
+            //                Name = t.Name,
+            //                Slug = t.Slug,
+            //                Language = t.Language,
+            //                Games_Count = t.Games_Count,
+            //                Image_Background = t.Image_Background,
+            //            });
+            //        }
+
+            //        foreach (var g in game.Short_Screenshots)
+            //        {
+            //            Scr.Add(new ShortScreenshotModel()
+            //            {
+            //                Game = g.Game,
+            //                Image = g.Image,
+            //            });
+            //        }
+
+            //        var gam = new GamesModel()
+            //        {
+            //            Added_By_Status = game.Added_By_Status,
+            //            Name = game.Name,
+            //            Background_Image = game.Background_Image,
+            //            Dominant_Color = game.Dominant_Color,
+            //            ESRB_Rating = game.ESRB_Rating,
+            //            Short_Screenshots = Scr,
+            //            Genres = Genresw,
+            //            Platforms = Pl,
+            //            Ratings = rat,
+            //            Stores = Sto,
+            //            Tags = tag,
+            //            Metacritic = game.Metacritic,
+            //            Playtime = game.Playtime,
+            //            Rating = game.Rating,
+            //            Rating_Top = game.Rating_Top,
+            //            Ratings_Count = game.Ratings_Count,
+            //            Released = game.Released,
+            //            Reviews_Count = game.Reviews_Count,
+            //            Reviews_Text_Count = game.Reviews_Text_Count,
+            //            Slug = game.Slug,
+            //            Suggestions_Count = game.Suggestions_Count,
+            //            Tba = game.Tba,
+            //            Updated = game.Updated,
+            //            Saturated_Color = game.Saturated_Color,
+            //        };
+
+            //        var existingGame = gameShopContext.Games.FirstOrDefault(i => i.Name == game.Name);
+
+            //        if (existingGame == null)
+            //        {
+            //            await gamesModelService.AddAsync(gam);
+            //        }
+            //        else
+            //        {
+            //        }
+            //    }
+            //}
         }
     }
 }

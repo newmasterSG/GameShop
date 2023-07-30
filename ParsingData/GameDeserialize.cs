@@ -1,21 +1,23 @@
-﻿using Newtonsoft.Json;
+﻿using Infrastructure.Models;
+using Infrastructure.Models.Games;
+using Newtonsoft.Json;
 
 
 namespace ParsingData
 {
-    public class GameDeserialize : IDeserializer<RootObject, string>
+    public class Deserializer<T> : IDeserializer<RootObject<T>, string> where T : EntityBase
     {
-        public async Task<RootObject> Deserialize(string obj)
+        public async Task<RootObject<T>> Deserialize(string obj)
         {
            if(string.IsNullOrEmpty(obj))
            {
               throw new ArgumentNullException(nameof(obj));
            }
-           var rObj = await Task.FromResult(JsonConvert.DeserializeObject<RootObject>(obj));
+           var rObj = await Task.FromResult(JsonConvert.DeserializeObject<RootObject<T>>(obj));
             
            if(rObj == null)
            {
-              rObj = new RootObject();
+              rObj = new RootObject<T>();
            }
 
            return rObj;

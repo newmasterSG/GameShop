@@ -6,9 +6,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Infrastructure.Models.Store
 {
     [Table("Store")]
-    public class StoreModel
+    public class StoreModel : EntityBase
     {
-        public int? Id { get; set; }
+        public new int? Id { get; set; }
         public StoreInfoModel? Store { get; set; }
 
         public List<GamesModel> Games { get; set; }

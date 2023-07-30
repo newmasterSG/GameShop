@@ -5,9 +5,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Infrastructure.Models.AddedByStatus
 {
     [Table("AddedByStatus")]
-    public class AddedByStatusModel
+    public class AddedByStatusModel: EntityBase
     {
-        public int? Id { get; set; }
+        public new int? Id { get; set; }
         public int? Yet { get; set; }
         public int? Owned { get; set; }
         public int? Beaten { get; set; }

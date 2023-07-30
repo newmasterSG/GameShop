@@ -5,9 +5,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Infrastructure.Models.ShortScreenshot
 {
     [Table("ShortScreenshot")]
-    public class ShortScreenshotModel
+    public class ShortScreenshotModel : EntityBase
     {
-        public int Id { get; set; }
+        public new int? Id { get; set; }
         public string? Image { get; set; }
         public GamesModel Game { get; set; }
 

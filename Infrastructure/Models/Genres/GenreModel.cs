@@ -5,9 +5,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Infrastructure.Models.Genres
 {
     [Table("Genre")]
-    public class GenreModel
+    public class GenreModel: EntityBase
     {
-        public int? Id { get; set; }
+        public new int? Id { get; set; }
         public string? Name { get; set; }
         public string? Slug { get; set; }
         public int? GamesCount { get; set; }
