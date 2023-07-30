@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 namespace Infrastructure.Models.Tags
 {
     [Table("Tag")]
-    public class TagModel
+    public class TagModel : EntityBase
     {
-        public int? Id { get; set; }
+        public new int? Id { get; set; }
         public string? Name { get; set; }
         public string? Slug { get; set; }
         public string? Language { get; set; }

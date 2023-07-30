@@ -6,9 +6,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Infrastructure.Models.Platform
 {
     [Table("Platform")]
-    public class PlatformModel
+    public class PlatformModel : EntityBase
     {
-        public int Id { get; set; }
+        public new int? Id { get; set; }
         public PlatformInfoModel Platform { get; set; }
 
         public string? Released_At { get; set; }

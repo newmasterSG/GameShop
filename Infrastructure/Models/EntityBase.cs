@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ServicesLayer.Services.Interfaces
+namespace Infrastructure.Models
 {
-    public interface IPlatformModelService
+    public abstract class EntityBase
     {
+        public int? Id { get; protected set; }
     }
 }

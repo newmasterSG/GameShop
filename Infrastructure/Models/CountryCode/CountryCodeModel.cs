@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 namespace Infrastructure.Models.CountryCode
 {
     [Table("CountryCode")]
-    public class CountryCodeModel
+    public class CountryCodeModel: EntityBase
     {
-        public int Id { get; set; }
+        public new int Id { get; set; }
 
         public int CountryCode { get; set; }
 
