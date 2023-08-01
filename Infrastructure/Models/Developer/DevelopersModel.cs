@@ -1,5 +1,4 @@
 ﻿using Infrastructure.Models.Games;
-using Infrastructure.Models.GamesToDeveloper;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Infrastructure.Models.Developer
@@ -15,7 +14,5 @@ namespace Infrastructure.Models.Developer
         public string? Image_Background { get; set; }
 
         public List<GamesModel> Games { get; set; }
-
-        public List<GamesToDeveloperModel> GamesToDevelopers { get; set; }
     }
 }
