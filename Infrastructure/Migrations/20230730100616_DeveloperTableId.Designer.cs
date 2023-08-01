@@ -4,6 +4,7 @@ using Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(GameShopContext))]
-    partial class GameShopContextModelSnapshot : ModelSnapshot
+    [Migration("20230730100616_DeveloperTableId")]
+    partial class DeveloperTableId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -133,8 +136,7 @@ namespace Infrastructure.Migrations
                 {
                     b.Property<int?>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("Key", true);
+                        .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"));
 
@@ -189,7 +191,7 @@ namespace Infrastructure.Migrations
                     b.Property<string>("Background_Image")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("DeveloperId")
+                    b.Property<int>("DevelopersId")
                         .HasColumnType("int");
 
                     b.Property<int>("ESRB_RatingId")
@@ -238,7 +240,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("Added_By_StatusId");
 
-                    b.HasIndex("DeveloperId");
+                    b.HasIndex("DevelopersId");
 
                     b.HasIndex("ESRB_RatingId");
 
@@ -261,6 +263,24 @@ namespace Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("GamesToAddedByStatus");
+                });
+
+            modelBuilder.Entity("Infrastructure.Models.GamesToDeveloper.GamesToDeveloperModel", b =>
+                {
+                    b.Property<int>("GameId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DeveloperId")
+                        .HasColumnType("int");
+
+                    b.HasKey("GameId", "DeveloperId");
+
+                    b.HasIndex("DeveloperId");
+
+                    b.HasIndex("GameId")
+                        .IsUnique();
+
+                    b.ToTable("GamesToDeveloper");
                 });
 
             modelBuilder.Entity("Infrastructure.Models.GamesToESRBRating.GamesToESRBRatingModel", b =>
@@ -657,10 +677,10 @@ namespace Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Infrastructure.Models.Developer.DevelopersModel", "Developer")
+                    b.HasOne("Infrastructure.Models.Developer.DevelopersModel", "Developers")
                         .WithMany("Games")
-                        .HasForeignKey("DeveloperId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasForeignKey("DevelopersId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Infrastructure.Models.ESRBRating.ESRBRatingModel", "ESRB_Rating")
@@ -671,7 +691,7 @@ namespace Infrastructure.Migrations
 
                     b.Navigation("Added_By_Status");
 
-                    b.Navigation("Developer");
+                    b.Navigation("Developers");
 
                     b.Navigation("ESRB_Rating");
                 });
@@ -693,6 +713,25 @@ namespace Infrastructure.Migrations
                     b.Navigation("AddedByStatus");
 
                     b.Navigation("Games");
+                });
+
+            modelBuilder.Entity("Infrastructure.Models.GamesToDeveloper.GamesToDeveloperModel", b =>
+                {
+                    b.HasOne("Infrastructure.Models.Developer.DevelopersModel", "Developer")
+                        .WithMany("GamesToDevelopers")
+                        .HasForeignKey("DeveloperId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Infrastructure.Models.Games.GamesModel", "Game")
+                        .WithOne("GamesToDeveloper")
+                        .HasForeignKey("Infrastructure.Models.GamesToDeveloper.GamesToDeveloperModel", "GameId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Developer");
+
+                    b.Navigation("Game");
                 });
 
             modelBuilder.Entity("Infrastructure.Models.GamesToESRBRating.GamesToESRBRatingModel", b =>
@@ -869,6 +908,8 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Infrastructure.Models.Developer.DevelopersModel", b =>
                 {
                     b.Navigation("Games");
+
+                    b.Navigation("GamesToDevelopers");
                 });
 
             modelBuilder.Entity("Infrastructure.Models.ESRBRating.ESRBRatingModel", b =>
@@ -883,6 +924,9 @@ namespace Infrastructure.Migrations
                     b.Navigation("GameToShortScreenshots");
 
                     b.Navigation("GamesToAddedByStatuses")
+                        .IsRequired();
+
+                    b.Navigation("GamesToDeveloper")
                         .IsRequired();
 
                     b.Navigation("GamesToESRBRating")
