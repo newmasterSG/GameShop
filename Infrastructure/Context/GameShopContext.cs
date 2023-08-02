@@ -25,7 +25,6 @@ namespace Infrastructure.Context
     public class GameShopContext : DbContext
     {
         public DbSet<AddedByStatusModel> AddedByStatus { get; set; }
-
         public DbSet<GenreModel> Genres { get; set; }
         public DbSet<GamesModel> Games { get; set; }
 
@@ -54,8 +53,6 @@ namespace Infrastructure.Context
         public DbSet<GamesToGenresModel> GamesToGenres { get; set; }
 
         public DbSet<GamesToAddedByStatusModel> GamesToAddedByStatuses { get; set; }
-
-        public DbSet<GamesToESRBRatingModel> GamesToESRBRatings { get; set; }
 
         public DbSet<GamesToStoresModel> GamesToStores { get; set; }
 
@@ -280,7 +277,7 @@ namespace Infrastructure.Context
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=localhost\\SQLEXPRESS;Database=TestingShop;Trusted_Connection=True;TrustServerCertificate=true");
+            optionsBuilder.UseSqlServer("Server=localhost\\SQLEXPRESS;Database=GamesShop;Trusted_Connection=True;TrustServerCertificate=true");
             optionsBuilder.EnableSensitiveDataLogging();
         }
     }

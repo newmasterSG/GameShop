@@ -15,6 +15,7 @@ using Infrastructure.Models.Rating;
 using Infrastructure.Models.ShortScreenshot;
 using Infrastructure.Models.Store;
 using Infrastructure.Models.Tags;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Infrastructure.Models.Games
@@ -54,6 +55,8 @@ namespace Infrastructure.Models.Games
         public List<GamesToGenresModel> GamesToGenres { get; set; }
 
         public List<GamesToPlatfrormModel> GamesToPlatfrorms { get; set; }
+
+        public DbSet<GamesToESRBRatingModel> GamesToESRBRatings { get; set; }
 
         public GamesToAddedByStatusModel GamesToAddedByStatuses { get; set; }
 
