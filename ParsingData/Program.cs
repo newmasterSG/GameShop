@@ -31,8 +31,7 @@ namespace ParsingData
             string apiKey = "e5be80adcd7348d9bfe0c55a970b5215";
             //GetRequest devRequest = new GetRequest(client, "https://api.rawg.io/api/developers?key=e5be80adcd7348d9bfe0c55a970b5215&page=");
             string gamesUrl = "https://api.rawg.io/api/games?key={0}&developers={1}&page=";
-            //var storeList = await new Deserializer<TagModel>().Deserialize(await games.GetJson(4));
-            //List<Task<RootObject<DevelopersModel>>> task = new List<Task<RootObject<DevelopersModel>>>();
+            //List<Task<RootObject<DevelopersModel>>> task2 = new List<Task<RootObject<DevelopersModel>>>();
             using (GameShopContext gameShopContext = new GameShopContext())
             {
                 Services<GamesModel> gamesModelService = new Services<GamesModel>(new Repository<GamesModel>(gameShopContext));
@@ -42,39 +41,38 @@ namespace ParsingData
 
                 //for (int i = 1; i <= 3; i++)
                 //{
-                //    task.Add(new Deserializer<DevelopersModel>().Deserialize(await devRequest.GetJson(i)));
+                //    task2.Add(new Deserializer<DevelopersModel>().Deserialize(await devRequest.GetJson(i)));
                 //}
 
-                //var results = await Task.WhenAll(task);
+                //var results2 = await Task.WhenAll(task2);
 
-                //foreach (var result in results)
+                //foreach (var result in results2)
                 //{
                 //    foreach (var item in result.Results)
                 //    {
-                //        DevelopersModel model = new DevelopersModel()
-                //        {
-                //            Name = item.Name,
-                //            Slug = item.Slug,
-                //        };
+                //        DevelopersModel model = await DeveloperImporter.CreateDeveloper(item);
 
                 //        await developerServices.AddAsync(model);
                 //    }
                 //}
 
-
                 var existDev = await developerServices.GetAllAsync();
-                var exist = existDev.TakeLast(2);
+                var exist = existDev.Where(x => x.Id % 3 == 0).TakeLast(3).ToList();
+                var devList = new List<DevelopersModel>();
                 foreach (var dev in exist)
                 {
+                    devList.Add(dev);
                     var url = string.Format(gamesUrl, apiKey, dev.Slug, "{0}");
                     GetRequest games = new GetRequest(client, url);
                     for (int i = 1; i <= 1; i++)
                     {
                         task.Add(new Deserializer<GamesModel>().Deserialize(await games.GetJson(i)));
                     }
+                }
 
-                    var results = await Task.WhenAll(task);
-
+                var results = await Task.WhenAll(task);
+                foreach(var dev in devList)
+                {
                     foreach (var result in results)
                     {
                         foreach (var item in result.Results)
