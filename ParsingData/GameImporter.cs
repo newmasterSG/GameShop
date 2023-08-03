@@ -49,51 +49,7 @@ namespace ParsingData
 
             game.Tags = await GetAndUpdateExistingTagsAsync(game.Tags);
 
-            List<GenreModel> genres = game.Genres?.Select(item => new GenreModel()
-            {
-                Slug = item.Slug,
-                Name = item.Name,
-                Image_Background = item.Image_Background,
-                Games = item.Games,
-                GamesCount = item.GamesCount,
-            }).ToList() ?? new List<GenreModel>();
-
-            List<PlatformModel> platforms = game.Platforms?.Select(pl => new PlatformModel()
-                {
-                    Games = pl.Games,
-                    Platform = new Infrastructure.Models.PlatformInfo.PlatformInfoModel()
-                    {
-                        Games_Count = pl.Platform.Games_Count,
-                        Name = pl.Platform.Name,
-                        Slug = pl.Platform.Slug,
-                        Image = pl.Platform.Image,
-                        Year_End = pl.Platform.Year_End,
-                        Year_start = pl.Platform.Year_start,
-                        Image_Background = pl.Platform.Image_Background,
-                    },
-                    Released_At = pl.Released_At,
-                    Requirements_En = pl.Requirements_En,
-                    Requirements_Ru = pl.Requirements_Ru,
-                }).ToList() ?? new List<PlatformModel>();
-
-            List<RatingModel> ratings = game.Ratings?.Select(r => new RatingModel()
-            {
-                Count = r.Count,
-                Games = r.Games,
-                Title = r.Title,
-                Percent = r.Percent,
-            }).ToList() ?? new List<RatingModel>();
-
-            List<TagModel> tags = game.Tags?.Select(t => new TagModel()
-            {
-                Name = t.Name,
-                Slug = t.Slug,
-                Language = t.Language,
-                Games_Count = t.Games_Count,
-                Image_Background = t.Image_Background,
-            }).ToList() ?? new List<TagModel>();
-
-            List<ShortScreenshotModel> shortScreenshots = game.Short_Screenshots.Select(g => new ShortScreenshotModel()
+            List<ShortScreenshotModel> shortScreenshots = game.Short_Screenshots?.Select(g => new ShortScreenshotModel()
             {
                 Game = g.Game,
                 Image = g.Image,
@@ -111,10 +67,10 @@ namespace ParsingData
                 Background_Image = game.Background_Image,
                 ESRB_Rating = game.ESRB_Rating ?? eSRBRating,
                 Short_Screenshots = shortScreenshots,
-                Genres = game.Genres ?? genres,
-                Platforms = game.Platforms ?? platforms,
-                Ratings = game.Ratings ?? ratings,
-                Tags = game.Tags ?? tags,
+                Genres = game.Genres ?? new List<GenreModel>(),
+                Platforms = game.Platforms ?? new List<PlatformModel>(),
+                Ratings = game.Ratings ?? new List<RatingModel>(),
+                Tags = game.Tags ?? new List<TagModel>(),
                 Metacritic = game.Metacritic,
                 Playtime = game.Playtime,
                 Rating = game.Rating,
@@ -129,6 +85,7 @@ namespace ParsingData
                 Updated = game.Updated,
                 DeveloperId = (int)developer.Id,
                 Stores = game.Stores ?? new List<StoreModel>(),
+                GameToShortScreenshots = new List<Infrastructure.Models.GamesToScreenshots.GamesToScreenshotsModel>(),
             };
 
             return newGame;
