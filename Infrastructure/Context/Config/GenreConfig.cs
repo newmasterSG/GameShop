@@ -1,4 +1,4 @@
-﻿using Infrastructure.Models.Genres;
+﻿using Domain.Models.Genres;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

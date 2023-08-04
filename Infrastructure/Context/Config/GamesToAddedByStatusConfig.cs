@@ -1,4 +1,4 @@
-﻿using Infrastructure.Models.GamesToAddedByStatus;
+﻿using Domain.Models.GamesToAddedByStatus;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System.Reflection.Emit;

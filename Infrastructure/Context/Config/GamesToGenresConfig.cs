@@ -1,4 +1,4 @@
-﻿using Infrastructure.Models.GamesToGenres;
+﻿using Domain.Models.GamesToGenres;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System.Reflection.Emit;

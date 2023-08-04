@@ -1,4 +1,4 @@
-﻿using Infrastructure.Models.Store;
+﻿using Domain.Models.Store;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

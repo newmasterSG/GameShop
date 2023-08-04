@@ -1,4 +1,4 @@
-﻿using Infrastructure.Models.GamesToStore;
+﻿using Domain.Models.GamesToStore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System.Reflection.Emit;

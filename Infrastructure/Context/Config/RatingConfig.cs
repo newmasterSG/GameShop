@@ -1,4 +1,4 @@
-﻿using Infrastructure.Models.Rating;
+﻿using Domain.Models.Rating;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

@@ -1,4 +1,4 @@
-﻿using Infrastructure.Models.GamesToScreenshots;
+﻿using Domain.Models.GamesToScreenshots;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

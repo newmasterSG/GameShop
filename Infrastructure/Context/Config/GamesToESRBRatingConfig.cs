@@ -1,4 +1,4 @@
-﻿using Infrastructure.Models.GamesToESRBRating;
+﻿using Domain.Models.GamesToESRBRating;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System.Reflection.Emit;

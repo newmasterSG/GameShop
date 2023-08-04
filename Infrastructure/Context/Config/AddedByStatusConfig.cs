@@ -1,4 +1,4 @@
-﻿using Infrastructure.Models.AddedByStatus;
+﻿using Domain.Models.AddedByStatus;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

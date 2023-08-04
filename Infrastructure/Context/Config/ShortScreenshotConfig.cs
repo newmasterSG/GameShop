@@ -1,4 +1,4 @@
-﻿using Infrastructure.Models.ShortScreenshot;
+﻿using Domain.Models.ShortScreenshot;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

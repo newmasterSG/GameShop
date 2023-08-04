@@ -1,4 +1,4 @@
-﻿using Infrastructure.Models.GamesToTags;
+﻿using Domain.Models.GamesToTags;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System.Reflection.Emit;

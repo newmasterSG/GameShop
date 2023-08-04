@@ -1,4 +1,4 @@
-﻿using Infrastructure.Models.Tags;
+﻿using Domain.Models.Tags;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

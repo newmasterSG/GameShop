@@ -1,4 +1,4 @@
-﻿using Infrastructure.Models.Developer;
+﻿using Domain.Models.Developer;
 using System;
 using System.Collections.Generic;
 using System.Linq;

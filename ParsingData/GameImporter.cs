@@ -1,13 +1,13 @@
 ﻿using Infrastructure.Context;
-using Infrastructure.Models.Developer;
-using Infrastructure.Models.ESRBRating;
-using Infrastructure.Models.Games;
-using Infrastructure.Models.Genres;
-using Infrastructure.Models.Platform;
-using Infrastructure.Models.Rating;
-using Infrastructure.Models.ShortScreenshot;
-using Infrastructure.Models.Store;
-using Infrastructure.Models.Tags;
+using Domain.Models.Developer;
+using Domain.Models.ESRBRating;
+using Domain.Models.Games;
+using Domain.Models.Genres;
+using Domain.Models.Platform;
+using Domain.Models.Rating;
+using Domain.Models.ShortScreenshot;
+using Domain.Models.Store;
+using Domain.Models.Tags;
 using Microsoft.EntityFrameworkCore;
 using System;
 
@@ -85,7 +85,7 @@ namespace ParsingData
                 Updated = game.Updated,
                 DeveloperId = (int)developer.Id,
                 Stores = game.Stores ?? new List<StoreModel>(),
-                GameToShortScreenshots = new List<Infrastructure.Models.GamesToScreenshots.GamesToScreenshotsModel>(),
+                GameToShortScreenshots = new List<Domain.Models.GamesToScreenshots.GamesToScreenshotsModel>(),
             };
 
             return newGame;
@@ -114,7 +114,7 @@ namespace ParsingData
                 }
                 else
                 {
-                    platform.Platform = new Infrastructure.Models.PlatformInfo.PlatformInfoModel()
+                    platform.Platform = new Domain.Models.PlatformInfo.PlatformInfoModel()
                     {
                         Name = platform.Platform.Name,
                         Slug = platform.Platform.Slug,
@@ -202,7 +202,7 @@ namespace ParsingData
                 {
                     noteExistingStores.Add(new StoreModel()
                     {
-                        Store = new Infrastructure.Models.StoreInfo.StoreInfoModel()
+                        Store = new Domain.Models.StoreInfo.StoreInfoModel()
                         {
                             Name = store.Store.Name,
                             Slug = store.Store.Slug,

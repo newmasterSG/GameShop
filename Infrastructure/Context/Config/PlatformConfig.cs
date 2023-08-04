@@ -1,4 +1,4 @@
-﻿using Infrastructure.Models.Platform;
+﻿using Domain.Models.Platform;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

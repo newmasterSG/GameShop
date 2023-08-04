@@ -1,4 +1,4 @@
-﻿using Infrastructure.Models.Developer;
+﻿using Domain.Models.Developer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System.Reflection.Emit;

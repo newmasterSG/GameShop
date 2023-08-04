@@ -1,4 +1,4 @@
-﻿using Infrastructure.Models.GamesToPlatform;
+﻿using Domain.Models.GamesToPlatform;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System.Reflection.Emit;

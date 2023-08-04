@@ -1,4 +1,4 @@
-﻿using Infrastructure.Models.GamesToRating;
+﻿using Domain.Models.GamesToRating;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System.Reflection.Emit;
