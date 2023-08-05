@@ -1,5 +1,5 @@
 ﻿using Infrastructure.Context;
-using Domain.Models;
+using Domain.Entities;
 using Infrastructure.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -88,6 +88,22 @@ namespace Infrastructure.Repository.Repositories
         public async Task<T> GetByIdAsync(int id)
         {
             return await _dbContext.Set<T>().FindAsync(id);
+        }
+
+        public IEnumerable<T> Take(int skipElements, int takeElements)
+        {
+            return _dbContext.Set<T>()
+                .Skip(skipElements)
+                .Take(takeElements)
+                .ToList();
+        }
+
+        public async Task<IEnumerable<T>> TakeAsync(int skipElements, int takeElements)
+        {
+            return await _dbContext.Set<T>()
+                .Skip(skipElements)
+                .Take(takeElements)
+                .ToListAsync();
         }
     }
 }

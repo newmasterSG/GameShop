@@ -1,13 +1,13 @@
 ﻿using Infrastructure.Context;
-using Domain.Models.Developer;
-using Domain.Models.ESRBRating;
-using Domain.Models.Games;
-using Domain.Models.Genres;
-using Domain.Models.Platform;
-using Domain.Models.Rating;
-using Domain.Models.ShortScreenshot;
-using Domain.Models.Store;
-using Domain.Models.Tags;
+using Domain.Entities.Developer;
+using Domain.Entities.ESRBRating;
+using Domain.Entities.Games;
+using Domain.Entities.Genres;
+using Domain.Entities.Platform;
+using Domain.Entities.Rating;
+using Domain.Entities.ShortScreenshot;
+using Domain.Entities.Store;
+using Domain.Entities.Tags;
 using Microsoft.EntityFrameworkCore;
 using System;
 
@@ -28,6 +28,40 @@ namespace ParsingData
             {
                 throw new ArgumentNullException(nameof(game));
             }
+
+            var game1 = await _shopContext.Games.FirstOrDefaultAsync(g => g.Name == game.Name);
+            if (game1 != null)
+            {
+                var existDevAtGame = await _shopContext.GamesToDevelopers.FirstOrDefaultAsync(x => x.DeveloperId == developer.Id && x.GameId == game1.Id);
+
+                if (game1.GamesToDevelopers is null)
+                {
+                    game1.GamesToDevelopers = new List<Domain.Entities.GamesToDeveloper.GamesToDeveloperModel>();
+                }
+
+                if (existDevAtGame == null)
+                {
+                    game1.GamesToDevelopers.Add(new Domain.Entities.GamesToDeveloper.GamesToDeveloperModel()
+                    {
+                        Developer = developer,
+                        DeveloperId = (int)developer.Id,
+                    });
+
+                    return game1;
+                }
+                if (game1.GamesToDevelopers.Count == 0 || game1.GamesToDevelopers.Count > 0)
+                {
+
+                    game1.GamesToDevelopers.Add(new Domain.Entities.GamesToDeveloper.GamesToDeveloperModel()
+                    {
+                        DeveloperId = (int)developer.Id,
+                        GameId = (int)game1.Id,
+                    });
+                }
+
+                return game1;
+            }            
+            
             
             game.ESRB_Rating = await GetAndUpdateExistingEsrbRatingAsync(game.ESRB_Rating);
 
@@ -62,7 +96,7 @@ namespace ParsingData
 
             var newGame = new GamesModel()
             {
-                Added_By_Status = game.Added_By_Status,
+                Added_By_Status = game.Added_By_Status ?? new Domain.Entities.AddedByStatus.AddedByStatusModel(),
                 Name = game.Name,
                 Background_Image = game.Background_Image,
                 ESRB_Rating = game.ESRB_Rating ?? eSRBRating,
@@ -83,9 +117,20 @@ namespace ParsingData
                 Suggestions_Count = game.Suggestions_Count,
                 Tba = game.Tba,
                 Updated = game.Updated,
-                DeveloperId = (int)developer.Id,
                 Stores = game.Stores ?? new List<StoreModel>(),
-                GameToShortScreenshots = new List<Domain.Models.GamesToScreenshots.GamesToScreenshotsModel>(),
+                GamesToDevelopers = new List<Domain.Entities.GamesToDeveloper.GamesToDeveloperModel>()
+                {
+                    new Domain.Entities.GamesToDeveloper.GamesToDeveloperModel()
+                    {
+                        DeveloperId = (int)developer.Id,
+                    }
+                },
+                GamesToGenres = new List<Domain.Entities.GamesToGenres.GamesToGenresModel>(),
+                GamesToRatings = new List<Domain.Entities.GamesToRating.GamesToRatingModel>(),
+                GamesToPlatfrorms = new List<Domain.Entities.GamesToPlatform.GamesToPlatfrormModel>(),
+                GamesToStores = new List<Domain.Entities.GamesToStore.GamesToStoresModel>(),
+                GamesToTags = new List<Domain.Entities.GamesToTags.GamesToTagsModel>(),
+                GameToShortScreenshots = new List<Domain.Entities.GamesToScreenshots.GamesToScreenshotsModel>(),
             };
 
             return newGame;
@@ -114,7 +159,8 @@ namespace ParsingData
                 }
                 else
                 {
-                    platform.Platform = new Domain.Models.PlatformInfo.PlatformInfoModel()
+                    platform.GamesToPlatfrorms = platform.GamesToPlatfrorms;
+                    platform.Platform = new Domain.Entities.PlatformInfo.PlatformInfoModel()
                     {
                         Name = platform.Platform.Name,
                         Slug = platform.Platform.Slug,
@@ -160,6 +206,7 @@ namespace ParsingData
                         Name = genre.Name,
                         Slug = genre.Slug,
                         GamesCount = genre.GamesCount,
+                        GamesToGenres = genre.GamesToGenres,
                     };
                     notExistGenres.Add(newGenre);
                 }
@@ -202,7 +249,7 @@ namespace ParsingData
                 {
                     noteExistingStores.Add(new StoreModel()
                     {
-                        Store = new Domain.Models.StoreInfo.StoreInfoModel()
+                        Store = new Domain.Entities.StoreInfo.StoreInfoModel()
                         {
                             Name = store.Store.Name,
                             Slug = store.Store.Slug,
@@ -247,6 +294,7 @@ namespace ParsingData
                         Title = store.Title,
                         Percent = store.Percent,
                         Count = store.Count,
+                        GamesToRatings = store.GamesToRatings,
                     };
                     notExistRatings.Add(rating);
                 }
@@ -287,6 +335,7 @@ namespace ParsingData
                         Image_Background = tag.Image_Background,
                         Language = tag.Language,
                         Games_Count = tag.Games_Count,
+                        ToTagsModels = tag.ToTagsModels,
                     };
                     notExistTags.Add(tag1);
                 }

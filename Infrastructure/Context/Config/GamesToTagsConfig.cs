@@ -1,4 +1,4 @@
-﻿using Domain.Models.GamesToTags;
+﻿using Domain.Entities.GamesToTags;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System.Reflection.Emit;
@@ -9,6 +9,8 @@ namespace Infrastructure.Context.Config
     {
         public void Configure(EntityTypeBuilder<GamesToTagsModel> builder)
         {
+            builder.ToTable("GamesToTags");
+
             builder.HasKey(gtt => new { gtt.GamesId, gtt.TagsId });
 
             builder

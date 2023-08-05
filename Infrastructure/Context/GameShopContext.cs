@@ -1,23 +1,24 @@
-﻿using Domain.Models.AddedByStatus;
-using Domain.Models.Developer;
-using Domain.Models.ESRBRating;
-using Domain.Models.Games;
-using Domain.Models.GamesToAddedByStatus;
-using Domain.Models.GamesToESRBRating;
-using Domain.Models.GamesToGenres;
-using Domain.Models.GamesToPlatform;
-using Domain.Models.GamesToRating;
-using Domain.Models.GamesToScreenshots;
-using Domain.Models.GamesToStore;
-using Domain.Models.GamesToTags;
-using Domain.Models.Genres;
-using Domain.Models.Platform;
-using Domain.Models.PlatformInfo;
-using Domain.Models.Rating;
-using Domain.Models.ShortScreenshot;
-using Domain.Models.Store;
-using Domain.Models.StoreInfo;
-using Domain.Models.Tags;
+﻿using Domain.Entities.AddedByStatus;
+using Domain.Entities.Developer;
+using Domain.Entities.ESRBRating;
+using Domain.Entities.Games;
+using Domain.Entities.GamesToAddedByStatus;
+using Domain.Entities.GamesToDeveloper;
+using Domain.Entities.GamesToESRBRating;
+using Domain.Entities.GamesToGenres;
+using Domain.Entities.GamesToPlatform;
+using Domain.Entities.GamesToRating;
+using Domain.Entities.GamesToScreenshots;
+using Domain.Entities.GamesToStore;
+using Domain.Entities.GamesToTags;
+using Domain.Entities.Genres;
+using Domain.Entities.Platform;
+using Domain.Entities.PlatformInfo;
+using Domain.Entities.Rating;
+using Domain.Entities.ShortScreenshot;
+using Domain.Entities.Store;
+using Domain.Entities.StoreInfo;
+using Domain.Entities.Tags;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
@@ -55,6 +56,8 @@ namespace Infrastructure.Context
 
         public DbSet<DevelopersModel> Developers { get; set; }
 
+        public DbSet<GamesToDeveloperModel> GamesToDevelopers { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -63,7 +66,7 @@ namespace Infrastructure.Context
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=localhost\\SQLEXPRESS;Database=GamesShop;Trusted_Connection=True;TrustServerCertificate=true");
+            optionsBuilder.UseSqlServer("Server=localhost\\SQLEXPRESS;Database=GShop;Trusted_Connection=True;TrustServerCertificate=true");
             optionsBuilder.EnableSensitiveDataLogging();
         }
     }

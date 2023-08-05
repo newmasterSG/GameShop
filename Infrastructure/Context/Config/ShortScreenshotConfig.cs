@@ -1,4 +1,4 @@
-﻿using Domain.Models.ShortScreenshot;
+﻿using Domain.Entities.ShortScreenshot;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -8,6 +8,8 @@ namespace Infrastructure.Context.Config
     {
         public void Configure(EntityTypeBuilder<ShortScreenshotModel> builder)
         {
+            builder.ToTable("ShortScreenshot");
+
              builder
                 .Property(f => f.Id)
                 .ValueGeneratedOnAdd()

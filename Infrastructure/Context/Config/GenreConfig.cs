@@ -1,4 +1,4 @@
-﻿using Domain.Models.Genres;
+﻿using Domain.Entities.Genres;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -8,6 +8,8 @@ namespace Infrastructure.Context.Config
     {
         public void Configure(EntityTypeBuilder<GenreModel> builder)
         {
+            builder.ToTable("Genre");
+
             builder.HasKey(f => f.Id);
         }
     }

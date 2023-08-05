@@ -1,24 +1,10 @@
 ﻿using Infrastructure.Context;
-using Domain.Models.AddedByStatus;
-using Domain.Models.Developer;
-using Domain.Models.ESRBRating;
-using Domain.Models.Games;
-using Domain.Models.Genres;
-using Domain.Models.Platform;
-using Domain.Models.Rating;
-using Domain.Models.ShortScreenshot;
-using Domain.Models.Store;
-using Domain.Models.StoreInfo;
-using Domain.Models.Tags;
+using Domain.Entities.Developer;
+using Domain.Entities.Games;
 using Infrastructure.Repository.Repositories;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
-using Newtonsoft.Json;
 using ParsingData.Requests;
-using ServicesLayer.Services.Interfaces;
-using ServicesLayer.Services.Service;
-using System;
-using System.Text;
+using GameStore.Application.Services.Service;
+using Microsoft.EntityFrameworkCore;
 
 namespace ParsingData
 {
@@ -57,7 +43,7 @@ namespace ParsingData
                 //}
 
                 var existDev = await developerServices.GetAllAsync();
-                var exist = existDev.Where(x => x.Id % 3 == 0).TakeLast(3).ToList();
+                var exist = existDev.Skip(19).SkipLast(1).ToList();
                 var devList = new List<DevelopersModel>();
                 foreach (var dev in exist)
                 {
@@ -71,13 +57,16 @@ namespace ParsingData
                 }
 
                 var results = await Task.WhenAll(task);
-                foreach(var dev in devList)
+                var pairs = devList.Zip(results, (dev, result) => (dev, result));
+
+                foreach (var (dev, result) in pairs)
                 {
-                    foreach (var result in results)
+                    foreach (var item in result.Results)
                     {
-                        foreach (var item in result.Results)
+                        gam = await gameImporter.CreateGame(item, dev);
+                        var gam1 = await gameShopContext.Games.FirstOrDefaultAsync(x => x.Name == gam.Name);
+                        if (gam1 == null)
                         {
-                            gam = await gameImporter.CreateGame(item, dev);
                             await gamesModelService.AddAsync(gam);
                         }
                     }

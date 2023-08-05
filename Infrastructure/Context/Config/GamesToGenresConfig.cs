@@ -1,4 +1,4 @@
-﻿using Domain.Models.GamesToGenres;
+﻿using Domain.Entities.GamesToGenres;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System.Reflection.Emit;
@@ -9,6 +9,8 @@ namespace Infrastructure.Context.Config
     {
         public void Configure(EntityTypeBuilder<GamesToGenresModel> builder)
         {
+            builder.ToTable("GamesToGenres");
+
             builder.HasKey(gtg => new { gtg.GameId, gtg.GenreId });
 
             builder

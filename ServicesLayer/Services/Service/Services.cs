@@ -1,4 +1,4 @@
-﻿using Domain.Models;
+﻿using Domain.Entities;
 using Infrastructure.Repository.Interfaces;
 using ServicesLayer.Services.Interfaces;
 using System.Linq.Expressions;
