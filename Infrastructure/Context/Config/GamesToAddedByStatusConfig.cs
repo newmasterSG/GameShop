@@ -1,4 +1,4 @@
-﻿using Infrastructure.Models.GamesToAddedByStatus;
+﻿using Domain.Entities.GamesToAddedByStatus;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System.Reflection.Emit;
@@ -9,6 +9,7 @@ namespace Infrastructure.Context.Config
     {
         public void Configure(EntityTypeBuilder<GamesToAddedByStatusModel> builder)
         {
+            builder.ToTable("GamesToAddedByStatus");
             builder.HasKey(gtg => new { gtg.GameId, gtg.AddedByStatusId });
 
             builder

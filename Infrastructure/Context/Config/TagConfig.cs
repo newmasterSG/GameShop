@@ -1,4 +1,4 @@
-﻿using Infrastructure.Models.Tags;
+﻿using Domain.Entities.Tags;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -8,6 +8,8 @@ namespace Infrastructure.Context.Config
     {
         public void Configure(EntityTypeBuilder<TagModel> builder)
         {
+            builder.ToTable("Tag");
+
             builder
                 .Property(f => f.Id)
                 .ValueGeneratedOnAdd()

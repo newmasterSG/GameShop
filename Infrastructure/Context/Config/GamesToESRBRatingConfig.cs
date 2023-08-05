@@ -1,4 +1,4 @@
-﻿using Infrastructure.Models.GamesToESRBRating;
+﻿using Domain.Entities.GamesToESRBRating;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System.Reflection.Emit;
@@ -9,6 +9,8 @@ namespace Infrastructure.Context.Config
     {
         public void Configure(EntityTypeBuilder<GamesToESRBRatingModel> builder)
         {
+            builder.ToTable("GamesToESRBRating");
+
             builder.HasKey(gtg => new { gtg.GameId, gtg.ESRBId });
 
             builder

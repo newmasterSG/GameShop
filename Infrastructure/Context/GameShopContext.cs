@@ -1,29 +1,32 @@
-﻿using Infrastructure.Models.AddedByStatus;
-using Infrastructure.Models.Developer;
-using Infrastructure.Models.ESRBRating;
-using Infrastructure.Models.Games;
-using Infrastructure.Models.GamesToAddedByStatus;
-using Infrastructure.Models.GamesToESRBRating;
-using Infrastructure.Models.GamesToGenres;
-using Infrastructure.Models.GamesToPlatform;
-using Infrastructure.Models.GamesToRating;
-using Infrastructure.Models.GamesToScreenshots;
-using Infrastructure.Models.GamesToStore;
-using Infrastructure.Models.GamesToTags;
-using Infrastructure.Models.Genres;
-using Infrastructure.Models.Platform;
-using Infrastructure.Models.PlatformInfo;
-using Infrastructure.Models.Rating;
-using Infrastructure.Models.ShortScreenshot;
-using Infrastructure.Models.Store;
-using Infrastructure.Models.StoreInfo;
-using Infrastructure.Models.Tags;
+﻿using Domain.Entities.AddedByStatus;
+using Domain.Entities.Developer;
+using Domain.Entities.ESRBRating;
+using Domain.Entities.Games;
+using Domain.Entities.GamesToAddedByStatus;
+using Domain.Entities.GamesToDeveloper;
+using Domain.Entities.GamesToESRBRating;
+using Domain.Entities.GamesToGenres;
+using Domain.Entities.GamesToPlatform;
+using Domain.Entities.GamesToRating;
+using Domain.Entities.GamesToScreenshots;
+using Domain.Entities.GamesToStore;
+using Domain.Entities.GamesToTags;
+using Domain.Entities.Genres;
+using Domain.Entities.Platform;
+using Domain.Entities.PlatformInfo;
+using Domain.Entities.Rating;
+using Domain.Entities.ShortScreenshot;
+using Domain.Entities.Store;
+using Domain.Entities.StoreInfo;
+using Domain.Entities.Tags;
+using Domain.Entities.User;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
 namespace Infrastructure.Context
 {
-    public class GameShopContext : DbContext
+    public class GameShopContext : IdentityDbContext<UserModel>
     {
         public DbSet<AddedByStatusModel> AddedByStatus { get; set; }
         public DbSet<GenreModel> Genres { get; set; }
@@ -55,6 +58,8 @@ namespace Infrastructure.Context
 
         public DbSet<DevelopersModel> Developers { get; set; }
 
+        public DbSet<GamesToDeveloperModel> GamesToDevelopers { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -63,7 +68,7 @@ namespace Infrastructure.Context
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=localhost\\SQLEXPRESS;Database=GamesShop;Trusted_Connection=True;TrustServerCertificate=true");
+            optionsBuilder.UseSqlServer("Server=localhost\\SQLEXPRESS;Database=GShop;Trusted_Connection=True;TrustServerCertificate=true");
             optionsBuilder.EnableSensitiveDataLogging();
         }
     }

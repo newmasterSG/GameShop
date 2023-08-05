@@ -1,4 +1,4 @@
-﻿using Infrastructure.Models.GamesToScreenshots;
+﻿using Domain.Entities.GamesToScreenshots;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -8,6 +8,8 @@ namespace Infrastructure.Context.Config
     {
         public void Configure(EntityTypeBuilder<GamesToScreenshotsModel> builder)
         {
+            builder.ToTable("GamesToScreenshots");
+
             builder
            .HasKey(gtg => new { gtg.GameId, gtg.ScreenshotId });
 

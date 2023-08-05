@@ -1,4 +1,4 @@
-﻿using Infrastructure.Models.GamesToRating;
+﻿using Domain.Entities.GamesToRating;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System.Reflection.Emit;
@@ -9,6 +9,8 @@ namespace Infrastructure.Context.Config
     {
         public void Configure(EntityTypeBuilder<GamesToRatingModel> builder)
         {
+            builder.ToTable("GamesToRating");
+
             builder.HasKey(gtg => new { gtg.GameId, gtg.RatingId });
 
             builder

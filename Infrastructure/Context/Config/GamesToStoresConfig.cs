@@ -1,4 +1,4 @@
-﻿using Infrastructure.Models.GamesToStore;
+﻿using Domain.Entities.GamesToStore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System.Reflection.Emit;
@@ -9,6 +9,8 @@ namespace Infrastructure.Context.Config
     {
         public void Configure(EntityTypeBuilder<GamesToStoresModel> builder)
         {
+            builder.ToTable("GamesToStores");
+
             builder.HasKey(gtg => new { gtg.GameId, gtg.StoreId });
 
             builder

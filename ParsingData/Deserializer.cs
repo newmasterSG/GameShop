@@ -1,5 +1,5 @@
-﻿using Infrastructure.Models;
-using Infrastructure.Models.Games;
+﻿using Domain.Entities;
+using Domain.Entities.Games;
 using Newtonsoft.Json;
 
 

@@ -1,4 +1,4 @@
-﻿using Infrastructure.Models.GamesToPlatform;
+﻿using Domain.Entities.GamesToPlatform;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System.Reflection.Emit;
@@ -9,6 +9,8 @@ namespace Infrastructure.Context.Config
     {
         public void Configure(EntityTypeBuilder<GamesToPlatfrormModel> builder)
         {
+            builder.ToTable("GamesToPlatfrorm");
+
             builder.HasKey(gtg => new { gtg.GameId, gtg.PlatformId });
 
             builder

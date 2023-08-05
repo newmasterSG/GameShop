@@ -1,4 +1,4 @@
-﻿using Infrastructure.Models.Platform;
+﻿using Domain.Entities.Platform;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -8,6 +8,8 @@ namespace Infrastructure.Context.Config
     {
         public void Configure(EntityTypeBuilder<PlatformModel> builder)
         {
+            builder.ToTable("Platform");
+
             builder
                 .Property(f => f.Id)
                 .ValueGeneratedOnAdd()

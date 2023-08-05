@@ -85,7 +85,7 @@ namespace Infrastructure.Migrations
                     b.ToTable("GamesModelTagModel");
                 });
 
-            modelBuilder.Entity("Infrastructure.Models.AddedByStatus.AddedByStatusModel", b =>
+            modelBuilder.Entity("Infrastructure.Entities.AddedByStatus.AddedByStatusModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -117,7 +117,7 @@ namespace Infrastructure.Migrations
                     b.ToTable("AddedByStatus");
                 });
 
-            modelBuilder.Entity("Infrastructure.Models.ESRBRating.ESRBRatingModel", b =>
+            modelBuilder.Entity("Infrastructure.Entities.ESRBRating.ESRBRatingModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -138,7 +138,7 @@ namespace Infrastructure.Migrations
                     b.ToTable("ESRBRating");
                 });
 
-            modelBuilder.Entity("Infrastructure.Models.Games.GamesModel", b =>
+            modelBuilder.Entity("Infrastructure.Entities.Games.GamesModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -222,7 +222,7 @@ namespace Infrastructure.Migrations
                     b.ToTable("Game");
                 });
 
-            modelBuilder.Entity("Infrastructure.Models.GamesToAddedByStatus.GamesToAddedByStatusModel", b =>
+            modelBuilder.Entity("Infrastructure.Entities.GamesToAddedByStatus.GamesToAddedByStatusModel", b =>
                 {
                     b.Property<int>("GameId")
                         .HasColumnType("int");
@@ -240,7 +240,7 @@ namespace Infrastructure.Migrations
                     b.ToTable("GamesToAddedByStatus");
                 });
 
-            modelBuilder.Entity("Infrastructure.Models.GamesToESRBRating.GamesToESRBRatingModel", b =>
+            modelBuilder.Entity("Infrastructure.Entities.GamesToESRBRating.GamesToESRBRatingModel", b =>
                 {
                     b.Property<int>("GameId")
                         .HasColumnType("int");
@@ -258,7 +258,7 @@ namespace Infrastructure.Migrations
                     b.ToTable("GamesToESRBRating");
                 });
 
-            modelBuilder.Entity("Infrastructure.Models.GamesToGenres.GamesToGenresModel", b =>
+            modelBuilder.Entity("Infrastructure.Entities.GamesToGenres.GamesToGenresModel", b =>
                 {
                     b.Property<int>("GameId")
                         .HasColumnType("int");
@@ -273,7 +273,7 @@ namespace Infrastructure.Migrations
                     b.ToTable("GamesToGenres");
                 });
 
-            modelBuilder.Entity("Infrastructure.Models.GamesToPlatform.GamesToPlatfrormModel", b =>
+            modelBuilder.Entity("Infrastructure.Entities.GamesToPlatform.GamesToPlatfrormModel", b =>
                 {
                     b.Property<int>("GameId")
                         .HasColumnType("int");
@@ -288,7 +288,7 @@ namespace Infrastructure.Migrations
                     b.ToTable("GamesToPlatfrorm");
                 });
 
-            modelBuilder.Entity("Infrastructure.Models.GamesToRating.GamesToRatingModel", b =>
+            modelBuilder.Entity("Infrastructure.Entities.GamesToRating.GamesToRatingModel", b =>
                 {
                     b.Property<int>("GameId")
                         .HasColumnType("int");
@@ -303,7 +303,7 @@ namespace Infrastructure.Migrations
                     b.ToTable("GamesToRating");
                 });
 
-            modelBuilder.Entity("Infrastructure.Models.GamesToScreenshots.GamesToScreenshotsModel", b =>
+            modelBuilder.Entity("Infrastructure.Entities.GamesToScreenshots.GamesToScreenshotsModel", b =>
                 {
                     b.Property<int>("GameId")
                         .HasColumnType("int");
@@ -319,7 +319,7 @@ namespace Infrastructure.Migrations
                     b.ToTable("GamesToScreenshots");
                 });
 
-            modelBuilder.Entity("Infrastructure.Models.GamesToStore.GamesToStoresModel", b =>
+            modelBuilder.Entity("Infrastructure.Entities.GamesToStore.GamesToStoresModel", b =>
                 {
                     b.Property<int>("GameId")
                         .HasColumnType("int");
@@ -334,7 +334,7 @@ namespace Infrastructure.Migrations
                     b.ToTable("GamesToStores");
                 });
 
-            modelBuilder.Entity("Infrastructure.Models.GamesToTags.GamesToTagsModel", b =>
+            modelBuilder.Entity("Infrastructure.Entities.GamesToTags.GamesToTagsModel", b =>
                 {
                     b.Property<int>("GamesId")
                         .HasColumnType("int");
@@ -349,7 +349,7 @@ namespace Infrastructure.Migrations
                     b.ToTable("GamesToTags");
                 });
 
-            modelBuilder.Entity("Infrastructure.Models.Genres.GenreModel", b =>
+            modelBuilder.Entity("Infrastructure.Entities.Genres.GenreModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -377,7 +377,7 @@ namespace Infrastructure.Migrations
                     b.ToTable("Genre");
                 });
 
-            modelBuilder.Entity("Infrastructure.Models.Platform.PlatformModel", b =>
+            modelBuilder.Entity("Infrastructure.Entities.Platform.PlatformModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -400,7 +400,7 @@ namespace Infrastructure.Migrations
                     b.ToTable("Platform");
                 });
 
-            modelBuilder.Entity("Infrastructure.Models.PlatformInfo.PlatformInfoModel", b =>
+            modelBuilder.Entity("Infrastructure.Entities.PlatformInfo.PlatformInfoModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -437,7 +437,7 @@ namespace Infrastructure.Migrations
                     b.ToTable("PlatformInfo");
                 });
 
-            modelBuilder.Entity("Infrastructure.Models.Rating.RatingModel", b =>
+            modelBuilder.Entity("Infrastructure.Entities.Rating.RatingModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -461,7 +461,7 @@ namespace Infrastructure.Migrations
                     b.ToTable("Rating");
                 });
 
-            modelBuilder.Entity("Infrastructure.Models.ShortScreenshot.ShortScreenshotModel", b =>
+            modelBuilder.Entity("Infrastructure.Entities.ShortScreenshot.ShortScreenshotModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -484,7 +484,7 @@ namespace Infrastructure.Migrations
                     b.ToTable("ShortScreenshot");
                 });
 
-            modelBuilder.Entity("Infrastructure.Models.Store.StoreModel", b =>
+            modelBuilder.Entity("Infrastructure.Entities.Store.StoreModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -503,7 +503,7 @@ namespace Infrastructure.Migrations
                     b.ToTable("Store");
                 });
 
-            modelBuilder.Entity("Infrastructure.Models.StoreInfo.StoreInfoModel", b =>
+            modelBuilder.Entity("Infrastructure.Entities.StoreInfo.StoreInfoModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -535,7 +535,7 @@ namespace Infrastructure.Migrations
                     b.ToTable("StoreInfo");
                 });
 
-            modelBuilder.Entity("Infrastructure.Models.Tags.TagModel", b =>
+            modelBuilder.Entity("Infrastructure.Entities.Tags.TagModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -570,13 +570,13 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("GamesModelPlatformModel", b =>
                 {
-                    b.HasOne("Infrastructure.Models.Games.GamesModel", null)
+                    b.HasOne("Infrastructure.Entities.Games.GamesModel", null)
                         .WithMany()
                         .HasForeignKey("GamesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Infrastructure.Models.Platform.PlatformModel", null)
+                    b.HasOne("Infrastructure.Entities.Platform.PlatformModel", null)
                         .WithMany()
                         .HasForeignKey("PlatformsId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -585,13 +585,13 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("GamesModelRatingModel", b =>
                 {
-                    b.HasOne("Infrastructure.Models.Games.GamesModel", null)
+                    b.HasOne("Infrastructure.Entities.Games.GamesModel", null)
                         .WithMany()
                         .HasForeignKey("GamesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Infrastructure.Models.Rating.RatingModel", null)
+                    b.HasOne("Infrastructure.Entities.Rating.RatingModel", null)
                         .WithMany()
                         .HasForeignKey("RatingsId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -600,13 +600,13 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("GamesModelStoreModel", b =>
                 {
-                    b.HasOne("Infrastructure.Models.Games.GamesModel", null)
+                    b.HasOne("Infrastructure.Entities.Games.GamesModel", null)
                         .WithMany()
                         .HasForeignKey("GamesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Infrastructure.Models.Store.StoreModel", null)
+                    b.HasOne("Infrastructure.Entities.Store.StoreModel", null)
                         .WithMany()
                         .HasForeignKey("StoresId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -615,49 +615,49 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("GamesModelTagModel", b =>
                 {
-                    b.HasOne("Infrastructure.Models.Games.GamesModel", null)
+                    b.HasOne("Infrastructure.Entities.Games.GamesModel", null)
                         .WithMany()
                         .HasForeignKey("GamesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Infrastructure.Models.Tags.TagModel", null)
+                    b.HasOne("Infrastructure.Entities.Tags.TagModel", null)
                         .WithMany()
                         .HasForeignKey("TagsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Infrastructure.Models.Games.GamesModel", b =>
+            modelBuilder.Entity("Infrastructure.Entities.Games.GamesModel", b =>
                 {
-                    b.HasOne("Infrastructure.Models.AddedByStatus.AddedByStatusModel", "Added_By_Status")
+                    b.HasOne("Infrastructure.Entities.AddedByStatus.AddedByStatusModel", "Added_By_Status")
                         .WithMany("Games")
                         .HasForeignKey("Added_By_StatusId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Infrastructure.Models.ESRBRating.ESRBRatingModel", null)
+                    b.HasOne("Infrastructure.Entities.ESRBRating.ESRBRatingModel", null)
                         .WithMany("Games")
                         .HasForeignKey("ESRBRatingModelId");
 
-                    b.HasOne("Infrastructure.Models.Genres.GenreModel", null)
+                    b.HasOne("Infrastructure.Entities.Genres.GenreModel", null)
                         .WithMany("Games")
                         .HasForeignKey("GenreModelId");
 
                     b.Navigation("Added_By_Status");
                 });
 
-            modelBuilder.Entity("Infrastructure.Models.GamesToAddedByStatus.GamesToAddedByStatusModel", b =>
+            modelBuilder.Entity("Infrastructure.Entities.GamesToAddedByStatus.GamesToAddedByStatusModel", b =>
                 {
-                    b.HasOne("Infrastructure.Models.AddedByStatus.AddedByStatusModel", "AddedByStatus")
+                    b.HasOne("Infrastructure.Entities.AddedByStatus.AddedByStatusModel", "AddedByStatus")
                         .WithMany("GamesToAddedByStatus")
                         .HasForeignKey("AddedByStatusId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Infrastructure.Models.Games.GamesModel", "Games")
+                    b.HasOne("Infrastructure.Entities.Games.GamesModel", "Games")
                         .WithOne("GamesToAddedByStatuses")
-                        .HasForeignKey("Infrastructure.Models.GamesToAddedByStatus.GamesToAddedByStatusModel", "GameId")
+                        .HasForeignKey("Infrastructure.Entities.GamesToAddedByStatus.GamesToAddedByStatusModel", "GameId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -666,17 +666,17 @@ namespace Infrastructure.Migrations
                     b.Navigation("Games");
                 });
 
-            modelBuilder.Entity("Infrastructure.Models.GamesToESRBRating.GamesToESRBRatingModel", b =>
+            modelBuilder.Entity("Infrastructure.Entities.GamesToESRBRating.GamesToESRBRatingModel", b =>
                 {
-                    b.HasOne("Infrastructure.Models.ESRBRating.ESRBRatingModel", "ESRBRatingModel")
+                    b.HasOne("Infrastructure.Entities.ESRBRating.ESRBRatingModel", "ESRBRatingModel")
                         .WithMany("GamesToESRBRating")
                         .HasForeignKey("ESRBId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Infrastructure.Models.Games.GamesModel", "Game")
+                    b.HasOne("Infrastructure.Entities.Games.GamesModel", "Game")
                         .WithOne("GamesToESRBRating")
-                        .HasForeignKey("Infrastructure.Models.GamesToESRBRating.GamesToESRBRatingModel", "GameId")
+                        .HasForeignKey("Infrastructure.Entities.GamesToESRBRating.GamesToESRBRatingModel", "GameId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -685,15 +685,15 @@ namespace Infrastructure.Migrations
                     b.Navigation("Game");
                 });
 
-            modelBuilder.Entity("Infrastructure.Models.GamesToGenres.GamesToGenresModel", b =>
+            modelBuilder.Entity("Infrastructure.Entities.GamesToGenres.GamesToGenresModel", b =>
                 {
-                    b.HasOne("Infrastructure.Models.Games.GamesModel", "Game")
+                    b.HasOne("Infrastructure.Entities.Games.GamesModel", "Game")
                         .WithMany("GamesToGenres")
                         .HasForeignKey("GameId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Infrastructure.Models.Genres.GenreModel", "Genre")
+                    b.HasOne("Infrastructure.Entities.Genres.GenreModel", "Genre")
                         .WithMany("GamesToGenres")
                         .HasForeignKey("GenreId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -704,15 +704,15 @@ namespace Infrastructure.Migrations
                     b.Navigation("Genre");
                 });
 
-            modelBuilder.Entity("Infrastructure.Models.GamesToPlatform.GamesToPlatfrormModel", b =>
+            modelBuilder.Entity("Infrastructure.Entities.GamesToPlatform.GamesToPlatfrormModel", b =>
                 {
-                    b.HasOne("Infrastructure.Models.Games.GamesModel", "Game")
+                    b.HasOne("Infrastructure.Entities.Games.GamesModel", "Game")
                         .WithMany("GamesToPlatfrorms")
                         .HasForeignKey("GameId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Infrastructure.Models.Platform.PlatformModel", "Platform")
+                    b.HasOne("Infrastructure.Entities.Platform.PlatformModel", "Platform")
                         .WithMany("GamesToPlatfrorms")
                         .HasForeignKey("PlatformId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -723,15 +723,15 @@ namespace Infrastructure.Migrations
                     b.Navigation("Platform");
                 });
 
-            modelBuilder.Entity("Infrastructure.Models.GamesToRating.GamesToRatingModel", b =>
+            modelBuilder.Entity("Infrastructure.Entities.GamesToRating.GamesToRatingModel", b =>
                 {
-                    b.HasOne("Infrastructure.Models.Games.GamesModel", "Game")
+                    b.HasOne("Infrastructure.Entities.Games.GamesModel", "Game")
                         .WithMany("GamesToRatings")
                         .HasForeignKey("GameId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Infrastructure.Models.Rating.RatingModel", "Rating")
+                    b.HasOne("Infrastructure.Entities.Rating.RatingModel", "Rating")
                         .WithMany("GamesToRatings")
                         .HasForeignKey("RatingId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -742,17 +742,17 @@ namespace Infrastructure.Migrations
                     b.Navigation("Rating");
                 });
 
-            modelBuilder.Entity("Infrastructure.Models.GamesToScreenshots.GamesToScreenshotsModel", b =>
+            modelBuilder.Entity("Infrastructure.Entities.GamesToScreenshots.GamesToScreenshotsModel", b =>
                 {
-                    b.HasOne("Infrastructure.Models.Games.GamesModel", "Game")
+                    b.HasOne("Infrastructure.Entities.Games.GamesModel", "Game")
                         .WithMany("GameToShortScreenshots")
                         .HasForeignKey("GameId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Infrastructure.Models.ShortScreenshot.ShortScreenshotModel", "ShortScreenshot")
+                    b.HasOne("Infrastructure.Entities.ShortScreenshot.ShortScreenshotModel", "ShortScreenshot")
                         .WithOne("GamesToScreenshots")
-                        .HasForeignKey("Infrastructure.Models.GamesToScreenshots.GamesToScreenshotsModel", "ScreenshotId")
+                        .HasForeignKey("Infrastructure.Entities.GamesToScreenshots.GamesToScreenshotsModel", "ScreenshotId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -761,15 +761,15 @@ namespace Infrastructure.Migrations
                     b.Navigation("ShortScreenshot");
                 });
 
-            modelBuilder.Entity("Infrastructure.Models.GamesToStore.GamesToStoresModel", b =>
+            modelBuilder.Entity("Infrastructure.Entities.GamesToStore.GamesToStoresModel", b =>
                 {
-                    b.HasOne("Infrastructure.Models.Games.GamesModel", "Game")
+                    b.HasOne("Infrastructure.Entities.Games.GamesModel", "Game")
                         .WithMany("GamesToStores")
                         .HasForeignKey("GameId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Infrastructure.Models.Store.StoreModel", "Store")
+                    b.HasOne("Infrastructure.Entities.Store.StoreModel", "Store")
                         .WithMany("GamesToStores")
                         .HasForeignKey("StoreId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -780,15 +780,15 @@ namespace Infrastructure.Migrations
                     b.Navigation("Store");
                 });
 
-            modelBuilder.Entity("Infrastructure.Models.GamesToTags.GamesToTagsModel", b =>
+            modelBuilder.Entity("Infrastructure.Entities.GamesToTags.GamesToTagsModel", b =>
                 {
-                    b.HasOne("Infrastructure.Models.Games.GamesModel", "Game")
+                    b.HasOne("Infrastructure.Entities.Games.GamesModel", "Game")
                         .WithMany("GamesToTags")
                         .HasForeignKey("GamesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Infrastructure.Models.Tags.TagModel", "Tag")
+                    b.HasOne("Infrastructure.Entities.Tags.TagModel", "Tag")
                         .WithMany("ToTagsModels")
                         .HasForeignKey("TagsId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -799,9 +799,9 @@ namespace Infrastructure.Migrations
                     b.Navigation("Tag");
                 });
 
-            modelBuilder.Entity("Infrastructure.Models.Platform.PlatformModel", b =>
+            modelBuilder.Entity("Infrastructure.Entities.Platform.PlatformModel", b =>
                 {
-                    b.HasOne("Infrastructure.Models.PlatformInfo.PlatformInfoModel", "Platform")
+                    b.HasOne("Infrastructure.Entities.PlatformInfo.PlatformInfoModel", "Platform")
                         .WithMany()
                         .HasForeignKey("PlatformId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -810,9 +810,9 @@ namespace Infrastructure.Migrations
                     b.Navigation("Platform");
                 });
 
-            modelBuilder.Entity("Infrastructure.Models.ShortScreenshot.ShortScreenshotModel", b =>
+            modelBuilder.Entity("Infrastructure.Entities.ShortScreenshot.ShortScreenshotModel", b =>
                 {
-                    b.HasOne("Infrastructure.Models.Games.GamesModel", "Game")
+                    b.HasOne("Infrastructure.Entities.Games.GamesModel", "Game")
                         .WithMany("Short_Screenshots")
                         .HasForeignKey("GameId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -821,9 +821,9 @@ namespace Infrastructure.Migrations
                     b.Navigation("Game");
                 });
 
-            modelBuilder.Entity("Infrastructure.Models.Store.StoreModel", b =>
+            modelBuilder.Entity("Infrastructure.Entities.Store.StoreModel", b =>
                 {
-                    b.HasOne("Infrastructure.Models.StoreInfo.StoreInfoModel", "Store")
+                    b.HasOne("Infrastructure.Entities.StoreInfo.StoreInfoModel", "Store")
                         .WithMany()
                         .HasForeignKey("StoreId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -832,21 +832,21 @@ namespace Infrastructure.Migrations
                     b.Navigation("Store");
                 });
 
-            modelBuilder.Entity("Infrastructure.Models.AddedByStatus.AddedByStatusModel", b =>
+            modelBuilder.Entity("Infrastructure.Entities.AddedByStatus.AddedByStatusModel", b =>
                 {
                     b.Navigation("Games");
 
                     b.Navigation("GamesToAddedByStatus");
                 });
 
-            modelBuilder.Entity("Infrastructure.Models.ESRBRating.ESRBRatingModel", b =>
+            modelBuilder.Entity("Infrastructure.Entities.ESRBRating.ESRBRatingModel", b =>
                 {
                     b.Navigation("Games");
 
                     b.Navigation("GamesToESRBRating");
                 });
 
-            modelBuilder.Entity("Infrastructure.Models.Games.GamesModel", b =>
+            modelBuilder.Entity("Infrastructure.Entities.Games.GamesModel", b =>
                 {
                     b.Navigation("GameToShortScreenshots");
 
@@ -869,35 +869,35 @@ namespace Infrastructure.Migrations
                     b.Navigation("Short_Screenshots");
                 });
 
-            modelBuilder.Entity("Infrastructure.Models.Genres.GenreModel", b =>
+            modelBuilder.Entity("Infrastructure.Entities.Genres.GenreModel", b =>
                 {
                     b.Navigation("Games");
 
                     b.Navigation("GamesToGenres");
                 });
 
-            modelBuilder.Entity("Infrastructure.Models.Platform.PlatformModel", b =>
+            modelBuilder.Entity("Infrastructure.Entities.Platform.PlatformModel", b =>
                 {
                     b.Navigation("GamesToPlatfrorms");
                 });
 
-            modelBuilder.Entity("Infrastructure.Models.Rating.RatingModel", b =>
+            modelBuilder.Entity("Infrastructure.Entities.Rating.RatingModel", b =>
                 {
                     b.Navigation("GamesToRatings");
                 });
 
-            modelBuilder.Entity("Infrastructure.Models.ShortScreenshot.ShortScreenshotModel", b =>
+            modelBuilder.Entity("Infrastructure.Entities.ShortScreenshot.ShortScreenshotModel", b =>
                 {
                     b.Navigation("GamesToScreenshots")
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Infrastructure.Models.Store.StoreModel", b =>
+            modelBuilder.Entity("Infrastructure.Entities.Store.StoreModel", b =>
                 {
                     b.Navigation("GamesToStores");
                 });
 
-            modelBuilder.Entity("Infrastructure.Models.Tags.TagModel", b =>
+            modelBuilder.Entity("Infrastructure.Entities.Tags.TagModel", b =>
                 {
                     b.Navigation("ToTagsModels");
                 });

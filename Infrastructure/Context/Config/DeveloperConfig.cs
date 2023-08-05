@@ -1,4 +1,4 @@
-﻿using Infrastructure.Models.Developer;
+﻿using Domain.Entities.Developer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System.Reflection.Emit;
@@ -9,6 +9,8 @@ namespace Infrastructure.Context.Config
     {
         public void Configure(EntityTypeBuilder<DevelopersModel> builder)
         {
+            builder.ToTable("Developer");
+
             builder
                 .Property(f => f.Id)
                 .ValueGeneratedOnAdd()
