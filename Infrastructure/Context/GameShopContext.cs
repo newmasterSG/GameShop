@@ -19,7 +19,7 @@ using Domain.Entities.ShortScreenshot;
 using Domain.Entities.Store;
 using Domain.Entities.StoreInfo;
 using Domain.Entities.Tags;
-using Domain.Entities.User;
+using Infrastructure.User;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
@@ -60,16 +60,14 @@ namespace Infrastructure.Context
 
         public DbSet<GamesToDeveloperModel> GamesToDevelopers { get; set; }
 
+        public override DbSet<UserModel> Users { get; set; }
+
+        public GameShopContext(DbContextOptions<GameShopContext> option) : base(option) { }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-        }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer("Server=localhost\\SQLEXPRESS;Database=GShop;Trusted_Connection=True;TrustServerCertificate=true");
-            optionsBuilder.EnableSensitiveDataLogging();
         }
     }
 }
