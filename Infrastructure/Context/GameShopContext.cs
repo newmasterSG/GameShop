@@ -19,12 +19,14 @@ using Domain.Entities.ShortScreenshot;
 using Domain.Entities.Store;
 using Domain.Entities.StoreInfo;
 using Domain.Entities.Tags;
+using Domain.Entities.User;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
 namespace Infrastructure.Context
 {
-    public class GameShopContext : DbContext
+    public class GameShopContext : IdentityDbContext<UserModel>
     {
         public DbSet<AddedByStatusModel> AddedByStatus { get; set; }
         public DbSet<GenreModel> Genres { get; set; }
