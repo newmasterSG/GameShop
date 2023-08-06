@@ -1,0 +1,18 @@
+﻿main {
+    flex: 1 0 auto;
+}
+
+footer {
+    flex: 0 0 auto;
+}
+
+
+@keyframes waveEffect {
+    0%, 100% {
+        box-shadow: 0 0 0 #860029;
+    }
+
+    50% {
+        box-shadow: 0 0 30px #de004e;
+    }
+}
