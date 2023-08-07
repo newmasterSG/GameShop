@@ -1,11 +1,28 @@
-﻿main {
+﻿@font-face {
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 700;
+    src: local('Open Sans Bold'), local('OpenSans-Bold'), url(http://themes.googleusercontent.com/static/fonts/opensans/v6/k3k702ZOKiLJc3WVjuplzKRDOzjiPcYnFooOUGCOsRk.woff) format('woff');
+}
+
+body {
+    background: #000;
+    font-family: 'Open Sans', sans-serif;
+}
+
+main {
     flex: 1 0 auto;
+}
+
+#main {
+    background-color: #04047b;
+    color: #ffffff;
+    text-shadow: 0 0 5px #ffffff, 0 0 10px #ffffff, 0 0 20px #ffffff, 0 0 40px #ff00de, 0 0 80px #ff00de, 0 0 90px #ff00de, 0 0 100px #ff00de, 0 0 150px #ff00de;
 }
 
 footer {
     flex: 0 0 auto;
 }
-
 
 @keyframes waveEffect {
     0%, 100% {

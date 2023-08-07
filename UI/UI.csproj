@@ -26,6 +26,10 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Scripts\" />
+    <Folder Include="Styles\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="wwwroot\css\standart.css" />
   </ItemGroup>
   
 

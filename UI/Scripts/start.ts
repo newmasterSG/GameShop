@@ -2,10 +2,11 @@
 
 myNavBar.style.backgroundColor = '#321450';
 myNavBar.style.border = '#321450';
-// Через TypeScript изменяем цвет текста ссылок внутри nav
+
+// Get all a from nav
 const navLinks = document.querySelectorAll('nav a');
 
-// Пример изменения цвета на красный
+// Change text color UI from standart to red
 if (navLinks) {
     navLinks.forEach(link => {
         (link as HTMLElement).style.color = 'red';
