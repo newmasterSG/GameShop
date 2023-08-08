@@ -22,6 +22,7 @@ main {
 
 footer {
     flex: 0 0 auto;
+    margin-top: 0;
 }
 
 @keyframes waveEffect {

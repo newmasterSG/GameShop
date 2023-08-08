@@ -7,9 +7,8 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace Infrastructure.UnitOfWork.UnitOfWork
 {
-    public class UnitOfWork<TContext> : IUnitOfWork<TContext> where TContext : DbContext
+    public class UnitOfWork<TContext> :IUnitOfWork where TContext : DbContext
     {
-        private bool disposed = false;
         private Dictionary<Type, object> _repositories;
 
         private readonly TContext _context;
@@ -18,39 +17,26 @@ namespace Infrastructure.UnitOfWork.UnitOfWork
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!this.disposed)
-            {
-                if (disposing)
-                {
-                    _context.Dispose();
-                }
-            }
-            this.disposed = true;
-        }
-
         public void Dispose()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
+           _context.Dispose();
         }
 
         public void Save()
         {
-            _context?.SaveChanges();
+            _context.SaveChanges();
         }
 
         public async Task SaveChangesAsync()
         {
-            await _context?.SaveChangesAsync();
+            await _context.SaveChangesAsync();
         }
         /// <summary>
         /// Gets the specified repository for the <typeparamref name="TEntity"/>.
         /// </summary>
         /// <param name="hasCustomRepository"><c>True</c> if providing custom repositry</param>
         /// <typeparam name="TEntity">The type of the entity.</typeparam>
-        /// <returns>An instance of type inherited from <see cref="IGenericRepository{TEntity}"/> interface.</returns>
+        /// <returns>An instance of type inherited from <see cref="IRepository{TEntity}"/> interface.</returns>
         public IRepository<TEntity> GetRepository<TEntity>(bool hasCustomRepository = false) where TEntity : class
         {
             if (_repositories == null)

@@ -22,10 +22,12 @@
   </ItemGroup>
   
   <ItemGroup>
+    <ProjectReference Include="..\Application\Application.csproj" />
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Scripts\" />
+    <Folder Include="ServiceProvider\" />
     <Folder Include="Styles\" />
   </ItemGroup>
   <ItemGroup>

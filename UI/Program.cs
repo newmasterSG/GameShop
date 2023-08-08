@@ -4,6 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using Infrastructure.User;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
+using Infrastructure.UnitOfWork.Interface;
+using Infrastructure.UnitOfWork.UnitOfWork;
+using Application.Services;
 
 namespace UI
 {
@@ -18,6 +21,9 @@ namespace UI
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
             builder.Services.AddDbContext<GameShopContext>(options =>
                 options.UseSqlServer(connectionString).EnableSensitiveDataLogging());
+
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork<GameShopContext>>();
+            builder.Services.AddScoped<IHomeService, HomeService>();
 
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 

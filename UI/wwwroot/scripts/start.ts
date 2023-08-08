@@ -1,4 +1,4 @@
-﻿const myNavBar = document.getElementById('myNavBar');
+const myNavBar = document.getElementById('myNavBar');
 
 // Get all a from nav
 const navLinks = document.querySelectorAll('nav a');
