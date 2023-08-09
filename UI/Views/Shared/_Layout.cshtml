@@ -39,7 +39,23 @@
                             <button class="btn btn-outline-light" type="submit">Search</button>
                         </form>
                     </div>
-                    <button class="btn btn-outline-light ml-2" onclick="openPopup()">Log in / Register</button>
+                    @if(!User.Identity.IsAuthenticated)
+                    {
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                Log in / Register
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                <li><a class="dropdown-item" href="~/Account/Index">Sign in</a></li>
+                                <li><a class="dropdown-item" href="#">Another action</a></li>
+                                <li><a class="dropdown-item" href="#">Something else here</a></li>
+                            </ul>
+                        </div>
+                    }
+                    else
+                    {
+                        <button >My Profile</button>
+                    }
                 </div>
             </div>
         </nav>

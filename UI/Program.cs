@@ -17,6 +17,7 @@ namespace UI
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+            builder.Services.AddDistributedMemoryCache();
             builder.Services.AddControllersWithViews();
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
             builder.Services.AddDbContext<GameShopContext>(options =>
@@ -24,6 +25,7 @@ namespace UI
 
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork<GameShopContext>>();
             builder.Services.AddScoped<IHomeService, HomeService>();
+            builder.Services.AddScoped<AccountServices>();
 
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -45,19 +47,19 @@ namespace UI
                 // User settings.
                 options.User.AllowedUserNameCharacters =
                 "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
-                options.User.RequireUniqueEmail = false;
+                options.User.RequireUniqueEmail = true;
+                options.SignIn.RequireConfirmedEmail = true;
             });
 
-            builder.Services.AddIdentityCore<UserModel>().AddEntityFrameworkStores<GameShopContext>();
+            builder.Services.AddIdentity<UserModel, IdentityRole>()
+                .AddEntityFrameworkStores<GameShopContext>()
+                .AddDefaultTokenProviders();
 
             builder.Services.ConfigureApplicationCookie(options =>
             {
                 // Cookie settings
                 options.Cookie.HttpOnly = true;
                 options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
-
-                options.LoginPath = "/Identity/Account/Login";
-                options.AccessDeniedPath = "/Identity/Account/AccessDenied";
                 options.SlidingExpiration = true;
             });
 
