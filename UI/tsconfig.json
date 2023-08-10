@@ -5,7 +5,9 @@
     "noEmitOnError": true,
     "removeComments": false,
     "sourceMap": true,
-    "target": "es5",
+    "target": "ES5",
+    "module": "commonjs",
+    "lib": [ "ES2015", "DOM" ],
     "outDir": "wwwroot/js"
   },
   "include": [

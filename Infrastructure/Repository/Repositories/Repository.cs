@@ -11,11 +11,11 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Repository.Repositories
 {
-    public class Repository<T> : IRepository<T> where T : EntityBase, new()
+    public class Repository<T> : IRepository<T> where T : class
     {
-        private readonly GameShopContext _dbContext;
+        private readonly DbContext _dbContext;
 
-        public Repository(GameShopContext dbContext)
+        public Repository(DbContext dbContext)
         {
             _dbContext = dbContext;
         }
@@ -46,31 +46,26 @@ namespace Infrastructure.Repository.Repositories
         public void Update(T entity)
         {
             _dbContext.Entry(entity).State = EntityState.Modified;
-            _dbContext.SaveChanges();
         }
 
         public void Delete(T entity)
         {
             _dbContext.Set<T>().Remove(entity);
-            _dbContext.SaveChanges();
         }
 
         public async Task InsertAsync(T entity)
         {
             await _dbContext.Set<T>().AddAsync(entity);
-            await _dbContext.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(T entity)
         {
             _dbContext.Set<T>().Remove(entity);
-            await _dbContext.SaveChangesAsync();
         }
 
         public async Task UpdateAsync(T entity)
         {
             _dbContext.Entry(entity).State = EntityState.Modified;
-            await _dbContext.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<T>> GetAllAsync()
@@ -104,6 +99,21 @@ namespace Infrastructure.Repository.Repositories
                 .Skip(skipElements)
                 .Take(takeElements)
                 .ToListAsync();
+        }
+
+        public IOrderedQueryable<T> OrderBy<K>(Expression<Func<T, K>> predicate)
+        {
+            return _dbContext.Set<T>().OrderBy(predicate);
+        }
+
+        public IQueryable<IGrouping<K, T>> GroupBy<K>(Expression<Func<T, K>> predicate)
+        {
+            return _dbContext.Set<T>().GroupBy(predicate);
+        }
+
+        public void RemoveRange(IEnumerable<T> entities)
+        {
+            _dbContext.RemoveRange(entities);
         }
     }
 }

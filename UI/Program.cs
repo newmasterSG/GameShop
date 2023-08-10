@@ -3,6 +3,15 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Infrastructure.User;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
+using Infrastructure.UnitOfWork.Interface;
+using Infrastructure.UnitOfWork.UnitOfWork;
+using Application.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Domain.Interfaces;
+using Infrastructure.Email;
 
 namespace UI
 {
@@ -13,10 +22,19 @@ namespace UI
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+            builder.Services.AddDistributedMemoryCache();
             builder.Services.AddControllersWithViews();
-            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+            var connectionString = builder.Configuration["ConnectionString"];
             builder.Services.AddDbContext<GameShopContext>(options =>
                 options.UseSqlServer(connectionString).EnableSensitiveDataLogging());
+
+            builder.Services.AddIdentityCore<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddEntityFrameworkStores<GameShopContext>();
+
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork<GameShopContext>>();
+            builder.Services.AddScoped<IHomeService, HomeService>();
+            builder.Services.AddScoped<AccountServices>();
+            builder.Services.AddTransient<IEmailSender, SmtpEmailSender>();
 
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -38,20 +56,38 @@ namespace UI
                 // User settings.
                 options.User.AllowedUserNameCharacters =
                 "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
-                options.User.RequireUniqueEmail = false;
+                options.User.RequireUniqueEmail = true;
+                options.SignIn.RequireConfirmedEmail = true;
             });
 
-            builder.Services.AddIdentityCore<UserModel>().AddEntityFrameworkStores<GameShopContext>();
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                    .AddJwtBearer(options =>
+                    {
+                        options.SaveToken = true;
+                        options.TokenValidationParameters = new TokenValidationParameters
+                        {
+                                ValidateIssuer = true,
+                                ValidateAudience = true,
+                                ValidateLifetime = true,
+                                ValidateIssuerSigningKey = true,
+                                ValidIssuer = builder.Configuration["Jwt:Issuer"],
+                                ValidAudience = builder.Configuration["Jwt:Audience"],
+                                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+                        };
+                    });
+
+
+            builder.Services.AddIdentity<UserModel, IdentityRole>()
+                .AddEntityFrameworkStores<GameShopContext>()
+                .AddDefaultTokenProviders();
 
             builder.Services.ConfigureApplicationCookie(options =>
             {
                 // Cookie settings
                 options.Cookie.HttpOnly = true;
                 options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
-
-                options.LoginPath = "/Identity/Account/Login";
-                options.AccessDeniedPath = "/Identity/Account/AccessDenied";
                 options.SlidingExpiration = true;
+                options.LoginPath = "/Account/Login";
             });
 
             var app = builder.Build();
@@ -67,9 +103,23 @@ namespace UI
             app.UseHttpsRedirection();
             app.UseDefaultFiles();
             app.UseStaticFiles();
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(
+                Path.Combine(builder.Environment.ContentRootPath, "Styles")),
+                RequestPath = "/StaticFiles"
+            });
+
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(
+                Path.Combine(builder.Environment.ContentRootPath, "Contents")),
+                RequestPath = "/Contents"
+            });
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllerRoute(
