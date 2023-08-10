@@ -1,6 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
-namespace UI.Models
+namespace UI.Models.User
 {
     public class UserModelValid
     {
@@ -51,5 +52,33 @@ namespace UI.Models
 
         [Display(Name = "Remember me")]
         public bool RememberMe { get; set; }
+    }
+
+    public class ForgotPasswordViewModel
+    {
+        [BindProperty]
+        [Required(ErrorMessage = "Введите email")]
+        [EmailAddress(ErrorMessage = "Введите корректный email")]
+        public string Email { get; set; }
+    }
+
+    public class ResetPasswordViewModel
+    {
+        [BindProperty]
+        [Required(ErrorMessage = "Введите новый пароль")]
+        [DataType(DataType.Password)]
+        public string NewPassword { get; set; }
+
+        [BindProperty]
+        [Required(ErrorMessage = "Подтвердите новый пароль")]
+        [Compare("NewPassword", ErrorMessage = "Пароли не совпадают")]
+        [DataType(DataType.Password)]
+        public string ConfirmPassword { get; set; }
+
+        [BindProperty]
+        public string Email { get; set; }
+
+        [BindProperty]
+        public string Token { get; set; }
     }
 }

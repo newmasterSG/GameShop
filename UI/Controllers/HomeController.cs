@@ -1,5 +1,5 @@
 ﻿using Application.DTO;
-using Application.Services;
+using Application.InterfaceServices;
 using Domain.Entities.Games;
 using Infrastructure.UnitOfWork.Interface;
 using Infrastructure.UnitOfWork.UnitOfWork;
