@@ -13,7 +13,6 @@ namespace UI.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IHomeService _unitOfWork;
-
         public HomeController(ILogger<HomeController> logger, IHomeService unitOfWork)
         {
             _logger = logger;

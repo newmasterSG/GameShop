@@ -39,7 +39,14 @@
                             <button class="btn btn-outline-light" type="submit">Search</button>
                         </form>
                     </div>
-                    @if(!User.Identity.IsAuthenticated)
+                    <button>My office</button>
+                    @if(User.Identity.IsAuthenticated)
+                    {
+                        <form asp-action="LogOut" asp-controller="Account" method="post">
+                            <button type="submit" class="btn btn-secondary">Log out</button>
+                        </form>
+                    }
+                    else
                     {
                         <div class="dropdown">
                             <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -51,10 +58,6 @@
                                 <li><a class="dropdown-item" href="#">Something else here</a></li>
                             </ul>
                         </div>
-                    }
-                    else
-                    {
-                        <button >My Profile</button>
                     }
                 </div>
             </div>

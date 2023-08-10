@@ -7,6 +7,11 @@ using Microsoft.Extensions.FileProviders;
 using Infrastructure.UnitOfWork.Interface;
 using Infrastructure.UnitOfWork.UnitOfWork;
 using Application.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Domain.Interfaces;
+using Infrastructure.Email;
 
 namespace UI
 {
@@ -19,13 +24,17 @@ namespace UI
             // Add services to the container.
             builder.Services.AddDistributedMemoryCache();
             builder.Services.AddControllersWithViews();
-            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+            var connectionString = builder.Configuration["ConnectionString"];
             builder.Services.AddDbContext<GameShopContext>(options =>
                 options.UseSqlServer(connectionString).EnableSensitiveDataLogging());
+
+            builder.Services.AddIdentityCore<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddEntityFrameworkStores<GameShopContext>();
 
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork<GameShopContext>>();
             builder.Services.AddScoped<IHomeService, HomeService>();
             builder.Services.AddScoped<AccountServices>();
+            builder.Services.AddTransient<IEmailSender, SmtpEmailSender>();
 
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -51,6 +60,23 @@ namespace UI
                 options.SignIn.RequireConfirmedEmail = true;
             });
 
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                    .AddJwtBearer(options =>
+                    {
+                        options.SaveToken = true;
+                        options.TokenValidationParameters = new TokenValidationParameters
+                        {
+                                ValidateIssuer = true,
+                                ValidateAudience = true,
+                                ValidateLifetime = true,
+                                ValidateIssuerSigningKey = true,
+                                ValidIssuer = builder.Configuration["Jwt:Issuer"],
+                                ValidAudience = builder.Configuration["Jwt:Audience"],
+                                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+                        };
+                    });
+
+
             builder.Services.AddIdentity<UserModel, IdentityRole>()
                 .AddEntityFrameworkStores<GameShopContext>()
                 .AddDefaultTokenProviders();
@@ -61,6 +87,7 @@ namespace UI
                 options.Cookie.HttpOnly = true;
                 options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
                 options.SlidingExpiration = true;
+                options.LoginPath = "/Account/Login";
             });
 
             var app = builder.Build();
@@ -83,8 +110,16 @@ namespace UI
                 RequestPath = "/StaticFiles"
             });
 
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(
+                Path.Combine(builder.Environment.ContentRootPath, "Contents")),
+                RequestPath = "/Contents"
+            });
+
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllerRoute(
