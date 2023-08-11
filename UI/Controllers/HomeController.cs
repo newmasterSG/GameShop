@@ -42,5 +42,13 @@ namespace UI.Controllers
 
             return Json(games);
         }
+
+        [HttpGet]
+        public async Task<ActionResult<List<GameDTO>>> GetAllGames()
+        {
+            var games = await _unitOfWork.GetAllGames();
+
+            return Json(games);
+        }
     }
 }

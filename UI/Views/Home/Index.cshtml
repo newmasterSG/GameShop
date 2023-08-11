@@ -9,9 +9,12 @@
 
 <div class="container mt-5">
     <h2 class="mb-4 text-center">Топ игры</h2>
+    <div class="text-end mt-3">
+        <a href="#" class="btn btn-primary">Показать все</a>
+    </div>
     <div id="topGamesCarousel" class="carousel slide w-25 mx-auto" data-ride="carousel">
         <div class="carousel-inner" id="carouselInner">
-            <!-- Здесь будут добавляться элементы карусели через AJAX -->
+           
         </div>
         <button class="carousel-control-prev" type="button" data-bs-target="#topGamesCarousel" data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -22,14 +25,14 @@
             <span class="visually-hidden">Next</span>
         </button>
     </div>
-    <div class="text-end mt-3">
-        <a href="#" class="btn btn-primary">Показать все</a>
+
+    <div class="row" id="card-row">
+        
     </div>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    $(document).ready(function () {
         // Выполняем AJAX запрос для получения списка игр
         $.ajax({
             type:'GET',
@@ -37,13 +40,11 @@
             method: 'GET',
             dataType: 'json',
             success: function (data) {
-                console.log(data);
                 // Генерируем элементы карусели на основе полученных данных
                 var carouselInner = $('#carouselInner');
                 var isFirst = true;
 
                 data.forEach(function (game) {
-                    console.log(game);
                     var carouselItem = $('<div class="carousel-item">');
                     if (isFirst) {
                         carouselItem.addClass('active');
@@ -70,5 +71,35 @@
                 console.error('Ошибка при получении списка игр.');
             }
         });
-    });
+
+            $.ajax({
+                url: '@Url.Action("GetAllGames", "Home")',
+                method: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    var cardRow = $('#card-row');
+
+                data.forEach(function (game) {
+                    var col = $('<div class="col-md-4 mb-3">');
+                    var card = $('<div class="card custom-card w-50">');
+                    var gameLink = $('<a>').attr('href', '/Games/GameDetails/' + game.id);
+                    var gameImage = $('<img class="card-img">').attr('src', game.image).attr('alt', game.name);
+                    var cardBody = $('<div class="card-body">');
+                    var title = $('<h5 class="card-title">').text(game.name);
+                    var price = $('<p class="card-text">').text(game.price);
+
+                    cardBody.append(title);
+                    cardBody.append(price);
+                    gameLink.append(gameImage);
+                    gameLink.append(cardBody);
+                    card.append(gameLink);
+                    col.append(card);
+                    cardRow.append(col);
+                });
+                },
+                error: function () {
+                    console.error('Ошибка при получении списка игр.');
+                }
+            });
+    
 </script>
