@@ -19,18 +19,9 @@ namespace UI.Controllers
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var carouselGames = await _unitOfWork.GetCarouselGames();
-            var allGames = await _unitOfWork.GetAllGames();
-
-            var viewModel = new
-            {
-                CarouselGames = carouselGames,
-                AllGames = allGames
-            };
-
-            return View(viewModel);
+            return View();
         }
 
         public IActionResult Privacy()
@@ -42,6 +33,14 @@ namespace UI.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<List<GameDTO>>> GetCarouselGames()
+        {
+            var games = await _unitOfWork.GetCarouselGames();
+
+            return Json(games);
         }
     }
 }

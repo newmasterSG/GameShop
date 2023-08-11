@@ -10,24 +10,8 @@
 <div class="container mt-5">
     <h2 class="mb-4 text-center">Топ игры</h2>
     <div id="topGamesCarousel" class="carousel slide w-25 mx-auto" data-ride="carousel">
-        <div class="carousel-inner">
-            <div class="carousel-item active">
-                <img src="@Model.CarouselGames[0].Image" class="d-block mx-auto img-fluid" alt="@Model.CarouselGames[0].Name">
-                <div class="carousel-caption">
-                    <h5 class="card-title">@Model.CarouselGames[0].Name</h5>
-                    <p class="card-text">@Model.CarouselGames[0].Price</p>
-                </div>
-            </div>
-            @foreach (var gam in Model.CarouselGames)
-            {
-                <div class="carousel-item">
-                    <img src="@gam.Image" class="d-block mx-auto img-fluid" alt="@gam.Name">
-                    <div class="carousel-caption">
-                        <h5 class="card-title">@gam.Name</h5>
-                        <p class="card-text">@gam.Price</p>
-                    </div>
-                </div>
-            }
+        <div class="carousel-inner" id="carouselInner">
+            <!-- Здесь будут добавляться элементы карусели через AJAX -->
         </div>
         <button class="carousel-control-prev" type="button" data-bs-target="#topGamesCarousel" data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -41,19 +25,50 @@
     <div class="text-end mt-3">
         <a href="#" class="btn btn-primary">Показать все</a>
     </div>
-    <div class="row">
-        @foreach (var game in Model.AllGames)
-        {
-            <div class="col-md-4 mb-3">
-                <div class="card custom-card w-50">
-                    <img src="@game.Image" class="card-img">
-                    <div class="card-body">
-                        <h5 class="card-title">@game.Name</h5>
-                        <p class="card-text">@game.Price</p>
-                    </div>
-                </div>
-            </div>
-        }
-    </div>
 </div>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // Выполняем AJAX запрос для получения списка игр
+        $.ajax({
+            type:'GET',
+            url: '@Url.Action("GetCarouselGames", "Home")',
+            method: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                console.log(data);
+                // Генерируем элементы карусели на основе полученных данных
+                var carouselInner = $('#carouselInner');
+                var isFirst = true;
+
+                data.forEach(function (game) {
+                    console.log(game);
+                    var carouselItem = $('<div class="carousel-item">');
+                    if (isFirst) {
+                        carouselItem.addClass('active');
+                        isFirst = false;
+                    }
+
+                    var gameLink = $('<a>').attr('href', '/Games/GameDetails/' + game.id);
+                    var gameImage = $('<img class="d-block mx-auto img-fluid">').attr('src', game.image).attr('alt', game.name);
+                    var carouselCaption = $('<div class="carousel-caption">');
+                    var title = $('<h5 class="card-title">').text(game.name);
+                    var price = $('<p class="card-text">').text(game.price);
+
+                    carouselCaption.append(title);
+                    carouselCaption.append(price);
+                    gameLink.append(gameImage);
+                    gameLink.append(carouselCaption);
+                    carouselItem.append(gameLink);
+                    carouselInner.append(carouselItem);
+                });
+
+            },
+            error: function () {
+                // Обработка ошибки, если не удалось получить данные
+                console.error('Ошибка при получении списка игр.');
+            }
+        });
+    });
+</script>
