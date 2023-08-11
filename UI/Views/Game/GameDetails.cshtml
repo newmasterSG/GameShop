@@ -1,0 +1,87 @@
+﻿@{
+    ViewData["Title"] = "Game Details";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <img id="gameImage" src="" alt="Game Image" class="img-fluid">
+        </div>
+        <div class="col-md-6">
+            <h2 id="gameTitle"></h2>
+            <div id="developers"></div>
+            <div id="tags"></div>
+            <div id="stores"></div>
+            <p id="price"></p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div id="screenshotsCarousel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner" id="screenshotsCarouselInner"></div>
+                <a class="carousel-control-prev" href="#screenshotsCarousel" role="button" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#screenshotsCarousel" role="button" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    var gameId = @ViewBag.GameId;
+
+    $.ajax({
+        type: 'GET',
+        url: '@Url.Action("GetGame", "Game")',
+        data: { id: gameId },
+        dataType: 'json',
+        success: function (data) {
+            $('#gameTitle').text(data.name);
+            $('#developers').html('<p>Developers: ' + data.developers.join(', ') + '</p>');
+            $('#tags').html('<p>Tags: ' + data.tags.join(', ') + '</p>');
+            $('#stores').html('<p>Stores: ' + data.stores.join(', ') + '</p>');
+            $('#price').text('Price: ' + data.price.toFixed(2));
+
+            $('#gameImage').attr('src', data.image);
+
+            // Populate screenshots carousel
+            var screenshotsCarouselInner = $('#screenshotsCarouselInner');
+            screenshotsCarouselInner.empty();
+            data.screenshots.forEach(function (screenshot, index) {
+                var activeClass = index === 0 ? 'active' : '';
+                var imgHtml = '<div class="carousel-item ' + activeClass + '">' +
+                    '<img src="' + screenshot + '" class="d-block w-100" alt="Screenshot">' +
+                    '</div>';
+                screenshotsCarouselInner.append(imgHtml);
+            });
+        },
+        error: function () {
+            console.error('Ошибка при получении данных об игре');
+        }
+    });
+</script>
+
+<style>
+    /* Дополнительные стили для адаптации страницы */
+    .container {
+        margin-top: 20px;
+    }
+
+    #gameImage {
+        max-height: 300px;
+        margin-bottom: 20px;
+    }
+
+    #developers, #tags, #stores, #price {
+        margin-top: 10px;
+    }
+
+    #screenshotsCarousel {
+        margin-top: 20px;
+    }
+</style>

@@ -35,6 +35,7 @@ namespace UI
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork<GameShopContext>>();
             builder.Services.AddScoped<IHomeService, HomeService>();
             builder.Services.AddScoped<AccountServices>();
+            builder.Services.AddScoped<GameService>();
             builder.Services.AddTransient<IEmailSender, SmtpEmailSender>();
 
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();

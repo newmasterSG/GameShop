@@ -51,7 +51,7 @@
                         isFirst = false;
                     }
 
-                    var gameLink = $('<a>').attr('href', '/Games/GameDetails/' + game.id);
+                var gameLink = $('<a>').attr('href', '@Url.Action("GameDetails","Game")/' + game.id);
                     var gameImage = $('<img class="d-block mx-auto img-fluid">').attr('src', game.image).attr('alt', game.name);
                     var carouselCaption = $('<div class="carousel-caption">');
                     var title = $('<h5 class="card-title">').text(game.name);
@@ -82,7 +82,7 @@
                 data.forEach(function (game) {
                     var col = $('<div class="col-md-4 mb-3">');
                     var card = $('<div class="card custom-card w-50">');
-                    var gameLink = $('<a>').attr('href', '/Games/GameDetails/' + game.id);
+                    var gameLink = $('<a>').attr('href', '@Url.Action("GameDetails","Game")/' + game.id);
                     var gameImage = $('<img class="card-img">').attr('src', game.image).attr('alt', game.name);
                     var cardBody = $('<div class="card-body">');
                     var title = $('<h5 class="card-title">').text(game.name);
