@@ -8,7 +8,8 @@ namespace UI.Controllers
     {
         private readonly ILogger<GameController> _logger;
         private readonly GameService _gameService;
-        public GameController(GameService gameService, ILogger<GameController> logger)
+        public GameController(GameService gameService, 
+            ILogger<GameController> logger)
         {
             _logger = logger;
             _gameService = gameService;

@@ -37,6 +37,7 @@
     <Folder Include="Scripts\" />
     <Folder Include="ServiceProvider\" />
     <Folder Include="Styles\" />
+    <Folder Include="Views\MyOffice\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Views\Account\ForgotPassword.cshtml" />

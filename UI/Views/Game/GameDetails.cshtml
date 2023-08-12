@@ -1,6 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Game Details";
 }
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
 <div class="container">
     <div class="row">
@@ -13,6 +14,29 @@
             <div id="tags"></div>
             <div id="stores"></div>
             <p id="price"></p>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#gameModal">
+                Buy Game
+            </button>
+            <!-- Modal -->
+            <div class="modal fade modal-dark" id="gameModal" tabindex="-1" aria-labelledby="gameModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="gameModalLabel">Game Title</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Choose the quantity:</p>
+                            <input type="number" id="quantityInput" min="1" value="1">
+                            <p class="mt-2">Total Price: <span id="totalPrice">0</span> USD</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" id="addToCart">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <div class="row">
@@ -31,10 +55,31 @@
         </div>
     </div>
 </div>
+
+<style>
+    /* Add your custom dark mode styles here */
+    .modal-dark .modal-content {
+        background-color: #333;
+        color: #fff;
+    }
+
+    .modal-dark .modal-header {
+        border-bottom: 1px solid #444;
+    }
+
+    .modal-dark .modal-body,
+    .modal-dark .modal-footer {
+        border-top: 1px solid #444;
+    }
+</style>
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 <script>
     var gameId = @ViewBag.GameId;
-
+    var priceValue;
+    var basePrice;
     $.ajax({
         type: 'GET',
         url: '@Url.Action("GetGame", "Game")',
@@ -52,18 +97,47 @@
             // Populate screenshots carousel
             var screenshotsCarouselInner = $('#screenshotsCarouselInner');
             screenshotsCarouselInner.empty();
-            data.screenshots.forEach(function (screenshot, index) {
-                var activeClass = index === 0 ? 'active' : '';
-                var imgHtml = '<div class="carousel-item ' + activeClass + '">' +
-                    '<img src="' + screenshot + '" class="d-block w-100" alt="Screenshot">' +
-                    '</div>';
-                screenshotsCarouselInner.append(imgHtml);
-            });
+            if (data.screenshots && Array.isArray(data.screenshots)) {
+                var screenshotsCarouselInner = $('#screenshotsCarouselInner');
+                screenshotsCarouselInner.empty();
+                data.screenshots.forEach(function (screenshot, index) {
+                    var activeClass = index === 0 ? 'active' : '';
+                    var imgHtml = '<div class="carousel-item ' + activeClass + '">' +
+                        '<img src="' + screenshot + '" class="d-block w-100" alt="Screenshot">' +
+                        '</div>';
+                    screenshotsCarouselInner.append(imgHtml);
+                });
+            } else {
+                console.error('No screenshots data available.');
+            }
+            var priceText = $('#price').text();
+            console.log(priceText);
+            priceValue = parseFloat(priceText.split(' ').pop());
+            basePrice = priceValue;
+
         },
         error: function () {
             console.error('Ошибка при получении данных об игре');
         }
     });
+
+        let quantity = 1;
+
+        $("#quantityInput").on("input", function () {
+            quantity = parseInt($(this).val());
+            updateTotalPrice();
+        });
+
+        $("#addToCart").click(function () {
+            // You can implement your own logic to add to the cart
+            // For now, let's just display an alert
+            alert("Added " + quantity + " items to the cart.");
+        });
+
+        function updateTotalPrice() {
+            const totalPrice = basePrice * quantity;
+        $("#totalPrice").text(totalPrice.toFixed(2)); // Округляем и отображаем два знака после запятой
+        }
 </script>
 
 <style>

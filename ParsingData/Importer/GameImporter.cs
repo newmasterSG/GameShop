@@ -11,7 +11,7 @@ using Domain.Entities.Tags;
 using Microsoft.EntityFrameworkCore;
 using System;
 
-namespace ParsingData
+namespace ParsingData.Importer
 {
     public class GameImporter
     {
@@ -39,17 +39,12 @@ namespace ParsingData
                     game1.GamesToDevelopers = new List<Domain.Entities.GamesToDeveloper.GamesToDeveloperModel>();
                 }
 
-                if (existDevAtGame == null)
+                if (existDevAtGame != null)
                 {
-                    game1.GamesToDevelopers.Add(new Domain.Entities.GamesToDeveloper.GamesToDeveloperModel()
-                    {
-                        Developer = developer,
-                        DeveloperId = (int)developer.Id,
-                    });
-
                     return game1;
                 }
-                if (game1.GamesToDevelopers.Count == 0 || game1.GamesToDevelopers.Count > 0)
+
+                if ((game1.GamesToDevelopers.Count == 0 || game1.GamesToDevelopers.Count > 0 ) && existDevAtGame == null)
                 {
 
                     game1.GamesToDevelopers.Add(new Domain.Entities.GamesToDeveloper.GamesToDeveloperModel()
