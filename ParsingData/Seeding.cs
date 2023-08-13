@@ -193,6 +193,64 @@ namespace ParsingData
                 Tba = false,
                 Updated = Updated,
                 Tags = tags,
+                Developer = new List<DevelopersModel>() { SeedDev() },
+                //GamesToAddedByStatuses = new Domain.Entities.GamesToAddedByStatus.GamesToAddedByStatusModel()
+                //{
+                //    AddedByStatus = addedByStatusModel,
+                //},
+                //GamesToDevelopers = new List<Domain.Entities.GamesToDeveloper.GamesToDeveloperModel>()
+                //{
+                //    new Domain.Entities.GamesToDeveloper.GamesToDeveloperModel()
+                //    {
+                //        Developer = SeedDev(),
+                //    }
+                //},
+                //GamesToESRBRating = new Domain.Entities.GamesToESRBRating.GamesToESRBRatingModel()
+                //{
+                //    ESRBRatingModel = eSRBRating,
+                //},
+                //GamesToGenres = new List<Domain.Entities.GamesToGenres.GamesToGenresModel>()
+                //{
+                //    new Domain.Entities.GamesToGenres.GamesToGenresModel()
+                //    {
+                //        Genre = genreModels[0],
+                //    }
+                //},
+                //GamesToPlatfrorms = new List<Domain.Entities.GamesToPlatform.GamesToPlatfrormModel>()
+                //{
+                //    new Domain.Entities.GamesToPlatform.GamesToPlatfrormModel()
+                //    {
+                //        Platform = platforms[0],
+                //    }
+                //},
+                //GamesToRatings = new List<Domain.Entities.GamesToRating.GamesToRatingModel>()
+                //{
+                //    new Domain.Entities.GamesToRating.GamesToRatingModel()
+                //    {
+                //        Rating = ratings[0],
+                //    }
+                //},
+                //GamesToStores = new List<Domain.Entities.GamesToStore.GamesToStoresModel>()
+                //{
+                //    new Domain.Entities.GamesToStore.GamesToStoresModel()
+                //    {
+                //        Store = stores[0],
+                //    }
+                //},
+                //GamesToTags = new List<Domain.Entities.GamesToTags.GamesToTagsModel>()
+                //{
+                //    new Domain.Entities.GamesToTags.GamesToTagsModel()
+                //    {
+                //        Tag = tags[0],
+                //    }
+                //},
+                //GameToShortScreenshots = new List<Domain.Entities.GamesToScreenshots.GamesToScreenshotsModel>()
+                //{
+                //    new Domain.Entities.GamesToScreenshots.GamesToScreenshotsModel()
+                //    {
+                //        ShortScreenshot = shortScreenshots[0],
+                //    }
+                //}
             };
         }
 

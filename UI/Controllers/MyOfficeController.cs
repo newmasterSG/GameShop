@@ -8,5 +8,10 @@ namespace UI.Controllers
         {
             return View();
         }
+
+        public IActionResult Card()
+        {
+            return View();
+        }
     }
 }

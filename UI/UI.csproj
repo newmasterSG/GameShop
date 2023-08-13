@@ -32,12 +32,11 @@
   <ItemGroup>
     <ProjectReference Include="..\Application\Application.csproj" />
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
+    <ProjectReference Include="..\ParsingData\ParsingData.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Scripts\" />
     <Folder Include="ServiceProvider\" />
     <Folder Include="Styles\" />
-    <Folder Include="Views\MyOffice\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Views\Account\ForgotPassword.cshtml" />

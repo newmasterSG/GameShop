@@ -50,7 +50,7 @@ namespace Application.Services
                 ScrenShoots = screenShoots.Select(x => x.Image).ToList(),
                 Tags = tags.Select(x => x.Name).ToList(),
                 Image = game.Background_Image,
-                Stores = store.Select(x => x.Store.Name).ToList(),
+                Stores = store.Select(x => x.Store?.Name).ToList(),
             };
 
             return gamesView;

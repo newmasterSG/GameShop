@@ -36,6 +36,14 @@ namespace Infrastructure.Context
 
         public DbSet<ESRBRatingModel> ESRBRatings { get; set; }
 
+        public DbSet<GamesToGenresModel> GamesToGenres { get; set; }
+
+        public DbSet<GamesToRatingModel> GamesToRating { get; set; }
+
+        public DbSet<GamesToStoresModel> GamesToStores { get; set; }
+
+        public DbSet<GamesToTagsModel> GamesToTags { get; set; }
+
         public DbSet<GamesToPlatfrormModel> GamesToPlatfrorms { get; set; }
 
         public DbSet<PlatformModel> PlatformModels { get; set; }

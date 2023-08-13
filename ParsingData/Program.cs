@@ -22,7 +22,7 @@ namespace ParsingData
             string gamesUrl = "https://api.rawg.io/api/games?key={0}&developers={1}&page=";
 
             var optionsBuilder = new DbContextOptionsBuilder<GameShopContext>();
-            optionsBuilder.UseSqlServer("Server=localhost\\SQLEXPRESS;Database=GShop;Trusted_Connection=True;TrustServerCertificate=true")
+            optionsBuilder.UseSqlServer("Server=localhost\\SQLEXPRESS;Database=GameShop;Trusted_Connection=True;TrustServerCertificate=true")
                           .EnableSensitiveDataLogging();
 
             using (GameShopContext gameShopContext = new GameShopContext(optionsBuilder.Options))

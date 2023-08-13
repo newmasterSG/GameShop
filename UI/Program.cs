@@ -13,18 +13,21 @@ using System.Text;
 using Domain.Interfaces;
 using Infrastructure.Email;
 using Application.InterfaceServices;
+using IdentityModel;
+using ParsingData;
 
 namespace UI
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
             builder.Services.AddDistributedMemoryCache();
             builder.Services.AddControllersWithViews();
+
             var connectionString = builder.Configuration["ConnectionString"];
             builder.Services.AddDbContext<GameShopContext>(options =>
                 options.UseSqlServer(connectionString).EnableSensitiveDataLogging());
@@ -118,6 +121,32 @@ namespace UI
                 Path.Combine(builder.Environment.ContentRootPath, "Contents")),
                 RequestPath = "/Contents"
             });
+
+
+            //Seeding data if they are not existed
+            using(var scope = app.Services.CreateScope())
+            {
+                var dbContext = scope.ServiceProvider.GetService<GameShopContext>();
+
+                dbContext.Database.EnsureCreated();
+
+                var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+                var roles = new[] { "Admin", "Manager", "Buyer" };
+
+                //var gameEntity = Seeding.Seed();
+                
+                //dbContext.Games.Add(gameEntity);
+
+                foreach (var role in roles)
+                {
+                    if(!await roleManager.RoleExistsAsync(role))
+                    {
+                        await roleManager.CreateAsync(new IdentityRole(role));
+                    }    
+                }
+                //dbContext.SaveChanges();
+            }
 
             app.UseRouting();
 

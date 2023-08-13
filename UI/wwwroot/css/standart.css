@@ -25,6 +25,18 @@ footer {
     margin-top: 0;
 }
 
+.cart-icon {
+    display: inline-block;
+    margin: 10px;
+    text-decoration: none;
+}
+
+    .cart-icon img {
+        width: 30px;
+        height: 30px;
+        vertical-align: middle;
+    }
+
 @keyframes waveEffect {
     0%, 100% {
         box-shadow: 0 0 0 #860029;
