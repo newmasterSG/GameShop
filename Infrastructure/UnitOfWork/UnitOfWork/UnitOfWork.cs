@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace Infrastructure.UnitOfWork.UnitOfWork
 {
-    public class UnitOfWork<TContext> :IUnitOfWork where TContext : DbContext
+    public class UnitOfWork<TContext> : IUnitOfWork where TContext : DbContext
     {
         private Dictionary<Type, object> _repositories;
 

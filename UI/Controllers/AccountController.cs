@@ -16,7 +16,7 @@ namespace UI.Controllers
     {
         private ILogger<AccountController> _logger;
         private AccountServices _accountServices;
-        private readonly IEmailSender _emailSender;
+        private readonly EmailSender _emailSender;
         private readonly UserManager<UserModel> _userManager;
         private readonly SignInManager<UserModel> _signInManager;
         private readonly IWebHostEnvironment _webHostEnvironment;
@@ -24,7 +24,7 @@ namespace UI.Controllers
             AccountServices accountServices, 
             UserManager<UserModel> userManager, 
             SignInManager<UserModel> signInManager,
-            IEmailSender emailSender,
+            EmailSender emailSender,
             IWebHostEnvironment webHostEnvironment)
         {
             _accountServices = accountServices;
@@ -78,7 +78,7 @@ namespace UI.Controllers
                         // Replace the placeholder with the actual link
                         htmlTemplate = htmlTemplate.Replace("{{CONFIRMATION_LINK}}", confirmationLink);
 
-                        await _emailSender.SendEmailAsync(model.Email, null, "Confirm Your Email",
+                        await _emailSender.SendEmailAsync(model.Email, "", "Confirm Your Email",
                             htmlTemplate, true);
 
                         // Redirect to a page informing the user to check their email
@@ -239,7 +239,6 @@ namespace UI.Controllers
         }
 
         [HttpGet]
-        [ValidateAntiForgeryToken]
         [AllowAnonymous]
         public async Task<IActionResult> EmailConfirmed(string userId, string token)
         {

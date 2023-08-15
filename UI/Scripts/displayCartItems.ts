@@ -8,12 +8,18 @@
 document.addEventListener("DOMContentLoaded", function () {
     const cartData: ProductData[] = JSON.parse(localStorage.getItem('cart')) || [];
     const cartItemsContainer = document.getElementById('cartItems');
+    const payButton = document.getElementById('payButton');
+    const totalPriceContainer = document.getElementById('totalPrice');
 
     if (cartData.length > 0) {
+        const payButton = document.createElement('button');
+        payButton.textContent = 'Pay';
+        payButton.classList.add('btn', 'btn-primary');
+
         // Creating a container with Bootstrap
         const container = document.createElement('div');
         container.classList.add('row', 'row-cols-2', 'g-4');
-
+        let totalSum = 0;
         cartData.forEach(function (product, index) {
             const col = document.createElement('div');
             col.classList.add('col');
@@ -60,8 +66,11 @@ document.addEventListener("DOMContentLoaded", function () {
             card.appendChild(cardBody);
             col.appendChild(card);
             container.appendChild(col);
+            totalSum += product.price * product.quantity;
         });
-
+        if (totalPriceContainer) {
+            totalPriceContainer.textContent = `Total Price: ${totalSum.toFixed(2)} USD`;
+        }
         if (cartItemsContainer) {
             cartItemsContainer.appendChild(container);
         }

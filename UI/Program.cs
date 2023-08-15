@@ -15,6 +15,10 @@ using Infrastructure.Email;
 using Application.InterfaceServices;
 using IdentityModel;
 using ParsingData;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+using System.Security.Claims;
+using Infrastructure.Email.Options;
 
 namespace UI
 {
@@ -32,6 +36,8 @@ namespace UI
             builder.Services.AddDbContext<GameShopContext>(options =>
                 options.UseSqlServer(connectionString).EnableSensitiveDataLogging());
 
+            builder.Services.Configure<SmtpOptions>(builder.Configuration.GetSection("Smtp"));
+
             builder.Services.AddIdentityCore<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<GameShopContext>();
 
@@ -39,8 +45,8 @@ namespace UI
             builder.Services.AddScoped<IHomeService, HomeService>();
             builder.Services.AddScoped<AccountServices>();
             builder.Services.AddScoped<GameService>();
-            builder.Services.AddTransient<IEmailSender, SmtpEmailSender>();
-
+            builder.Services.AddTransient<EmailSender, SmtpEmailSender>();
+            builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
             builder.Services.Configure<IdentityOptions>(options =>
@@ -64,6 +70,19 @@ namespace UI
                 options.User.RequireUniqueEmail = true;
                 options.SignIn.RequireConfirmedEmail = true;
             });
+            builder.Services.AddAuthentication(option =>
+            {
+                option.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                option.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                option.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            })
+           .AddCookie(options =>
+           {
+               options.Cookie.HttpOnly = true;
+               options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
+               options.SlidingExpiration = true;
+               options.LoginPath = "/Account/Login";
+           });
 
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                     .AddJwtBearer(options =>
@@ -85,15 +104,6 @@ namespace UI
             builder.Services.AddIdentity<UserModel, IdentityRole>()
                 .AddEntityFrameworkStores<GameShopContext>()
                 .AddDefaultTokenProviders();
-
-            builder.Services.ConfigureApplicationCookie(options =>
-            {
-                // Cookie settings
-                options.Cookie.HttpOnly = true;
-                options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
-                options.SlidingExpiration = true;
-                options.LoginPath = "/Account/Login";
-            });
 
             var app = builder.Build();
 
@@ -134,9 +144,9 @@ namespace UI
 
                 var roles = new[] { "Admin", "Manager", "Buyer" };
 
-                //var gameEntity = Seeding.Seed();
+                var gameEntity = Seeding.Seed();
                 
-                //dbContext.Games.Add(gameEntity);
+                dbContext.Games.Add(gameEntity);
 
                 foreach (var role in roles)
                 {
@@ -145,12 +155,33 @@ namespace UI
                         await roleManager.CreateAsync(new IdentityRole(role));
                     }    
                 }
-                //dbContext.SaveChanges();
+               dbContext.SaveChanges();
             }
 
             app.UseRouting();
 
             app.UseAuthentication();
+
+            app.Use(async (context, next) =>
+            {
+                var user = context.User;
+
+                if (user.Identity.IsAuthenticated)
+                {
+                    var userService = context.RequestServices.GetRequiredService<IUserService>();
+                    bool isEmailVerified = userService.IsEmailVerified(user.Identity.Name);
+
+                    if (!isEmailVerified)
+                    {
+                        await context.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+                        context.Response.Redirect("/Home/Index");
+                        return;
+                    }
+                }
+
+                await next();
+            });
+
             app.UseAuthorization();
 
             app.MapControllerRoute(

@@ -5,7 +5,14 @@
 }
 <h1>Card Page</h1>
 
-<div id="cartItems" class="container mt-4"></div>
-
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8" id="cartItems"></div>
+        <div class="col-md-4">
+            <div id="totalPrice" class="text-end mt-3">Total Price: 0.00 USD</div>
+            <button id="payButton" class="btn btn-primary mt-3">Pay</button>
+        </div>
+    </div>
+</div>
  <script src="~/js/displayCartItems.js"></script>
  <script src="~/js/cartLogic.js"></script>

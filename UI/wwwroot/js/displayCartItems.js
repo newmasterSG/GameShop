@@ -1,10 +1,16 @@
 document.addEventListener("DOMContentLoaded", function () {
     var cartData = JSON.parse(localStorage.getItem('cart')) || [];
     var cartItemsContainer = document.getElementById('cartItems');
+    var payButton = document.getElementById('payButton');
+    var totalPriceContainer = document.getElementById('totalPrice');
     if (cartData.length > 0) {
+        var payButton_1 = document.createElement('button');
+        payButton_1.textContent = 'Pay';
+        payButton_1.classList.add('btn', 'btn-primary');
         // Creating a container with Bootstrap
         var container_1 = document.createElement('div');
         container_1.classList.add('row', 'row-cols-2', 'g-4');
+        var totalSum_1 = 0;
         cartData.forEach(function (product, index) {
             var col = document.createElement('div');
             col.classList.add('col');
@@ -45,7 +51,11 @@ document.addEventListener("DOMContentLoaded", function () {
             card.appendChild(cardBody);
             col.appendChild(card);
             container_1.appendChild(col);
+            totalSum_1 += product.price * product.quantity;
         });
+        if (totalPriceContainer) {
+            totalPriceContainer.textContent = "Total Price: ".concat(totalSum_1.toFixed(2), " USD");
+        }
         if (cartItemsContainer) {
             cartItemsContainer.appendChild(container_1);
         }

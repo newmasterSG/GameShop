@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Domain.Interfaces
 {
-    public interface IEmailSender
+    public abstract class EmailSender
     {
-        Task SendEmailAsync(string to, string from, string subject, string body, bool htmlBody);
+        public abstract Task SendEmailAsync(string to, string from, string subject, string body, bool htmlBody);
     }
 }

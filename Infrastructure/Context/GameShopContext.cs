@@ -1,10 +1,9 @@
 ﻿using Domain.Entities.AddedByStatus;
 using Domain.Entities.Developer;
 using Domain.Entities.ESRBRating;
+using Domain.Entities.GameKeys;
 using Domain.Entities.Games;
-using Domain.Entities.GamesToAddedByStatus;
 using Domain.Entities.GamesToDeveloper;
-using Domain.Entities.GamesToESRBRating;
 using Domain.Entities.GamesToGenres;
 using Domain.Entities.GamesToPlatform;
 using Domain.Entities.GamesToRating;
@@ -12,6 +11,8 @@ using Domain.Entities.GamesToScreenshots;
 using Domain.Entities.GamesToStore;
 using Domain.Entities.GamesToTags;
 using Domain.Entities.Genres;
+using Domain.Entities.Orders;
+using Domain.Entities.OrderToGame;
 using Domain.Entities.Platform;
 using Domain.Entities.PlatformInfo;
 using Domain.Entities.Rating;
@@ -31,8 +32,6 @@ namespace Infrastructure.Context
         public DbSet<AddedByStatusModel> AddedByStatus { get; set; }
         public DbSet<GenreModel> Genres { get; set; }
         public DbSet<GamesModel> Games { get; set; }
-
-        public DbSet<AddedByStatusModel> Additions { get; set; }
 
         public DbSet<ESRBRatingModel> ESRBRatings { get; set; }
 
@@ -60,8 +59,6 @@ namespace Infrastructure.Context
 
         public DbSet<TagModel> Tags { get; set; }
 
-        public DbSet<GamesToAddedByStatusModel> GamesToAddedByStatuses { get; set; }
-
         public DbSet<GamesToScreenshotsModel> GamesToScreenshots { get; set; }
 
         public DbSet<DevelopersModel> Developers { get; set; }
@@ -69,6 +66,12 @@ namespace Infrastructure.Context
         public DbSet<GamesToDeveloperModel> GamesToDevelopers { get; set; }
 
         public override DbSet<UserModel> Users { get; set; }
+
+        public DbSet<GameKey> GameKeys { get; set; }
+
+        public DbSet<Order> Orders { get; set; }
+
+        public DbSet<OrderGame> OrderGames { get; set; }
 
         public GameShopContext(DbContextOptions<GameShopContext> option) : base(option) { }
 
