@@ -3,6 +3,7 @@
     quantity: number;
     price: number;
     image: string;
+    id: number;
 }
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -37,12 +38,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
             const cardBody = document.createElement('div');
             cardBody.classList.add('card-body');
+            cardBody.setAttribute('data-game-id', product.id.toString());
 
             const infoDiv = document.createElement('div');
             infoDiv.classList.add('cart-item-info');
             infoDiv.textContent = `Name: ${product.name}, Quantity: ${product.quantity}, Price: ${product.price}`;
-            cardBody.appendChild(infoDiv);
 
+            cardBody.appendChild(infoDiv);
             // Adding a delete button
             const removeButton = document.createElement('button');
             removeButton.textContent = 'Remove';
@@ -82,6 +84,7 @@ document.addEventListener("DOMContentLoaded", function () {
             cartItemsContainer.appendChild(emptyCartMessage);
         }
     }
+
 });
 
 function refreshCartItems() {

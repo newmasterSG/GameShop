@@ -25,6 +25,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
             var cardBody = document.createElement('div');
             cardBody.classList.add('card-body');
+            cardBody.setAttribute('data-game-id', product.id.toString());
             var infoDiv = document.createElement('div');
             infoDiv.classList.add('cart-item-info');
             infoDiv.textContent = "Name: ".concat(product.name, ", Quantity: ").concat(product.quantity, ", Price: ").concat(product.price);

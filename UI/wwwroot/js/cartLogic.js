@@ -18,11 +18,14 @@ document.addEventListener("DOMContentLoaded", function () {
         addToCartButton.addEventListener("click", function () {
             var productName = document.getElementById('gameTitle').textContent;
             var image = document.getElementById('gameImage').getAttribute('src');
+            var gameModal = document.getElementById('gameModal');
+            var gameId = parseInt(gameModal.getAttribute('data-gameid'));
             var productData = {
                 name: productName,
                 quantity: quantity,
                 price: basePrice,
                 image: image,
+                id: gameId,
             };
             var cart = JSON.parse(localStorage.getItem('cart')) || [];
             cart.push(productData);

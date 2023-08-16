@@ -14,11 +14,11 @@
             <div id="tags"></div>
             <div id="stores"></div>
             <p id="price"></p>
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#gameModal">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#gameModal" data-gameid="@ViewBag.GameId">
                 Buy Game
             </button>
             <!-- Modal -->
-            <div class="modal fade modal-dark" id="gameModal" tabindex="-1" aria-labelledby="gameModalLabel" aria-hidden="true">
+            <div class="modal fade modal-dark" id="gameModal" tabindex="-1" aria-labelledby="gameModalLabel" aria-hidden="true" data-gameid="@ViewBag.GameId">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">

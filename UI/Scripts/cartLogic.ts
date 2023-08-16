@@ -6,6 +6,7 @@ interface ProductData {
     quantity: number;
     price: number;
     image: string;
+    id: number;
 }
 
 function updateTotalPrice(basePrice: number) {
@@ -29,12 +30,17 @@ document.addEventListener("DOMContentLoaded", function () {
         addToCartButton.addEventListener("click", function () {
             const productName = document.getElementById('gameTitle').textContent;
             const image = document.getElementById('gameImage').getAttribute('src');
+            const gameModal = document.getElementById('gameModal');
+            const gameId = parseInt(gameModal.getAttribute('data-gameid'));
+
             const productData: ProductData = {
                 name: productName,
                 quantity: quantity,
                 price: basePrice,
                 image: image,
+                id: gameId,
             };
+
 
             let cart: ProductData[] = JSON.parse(localStorage.getItem('cart')) || [];
             cart.push(productData);

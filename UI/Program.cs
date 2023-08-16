@@ -48,7 +48,7 @@ namespace UI
             builder.Services.AddTransient<EmailSender, SmtpEmailSender>();
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-
+            builder.Services.AddScoped<OrderServices>();
             builder.Services.Configure<IdentityOptions>(options =>
             {
                 // Password settings.
@@ -144,9 +144,9 @@ namespace UI
 
                 var roles = new[] { "Admin", "Manager", "Buyer" };
 
-                var gameEntity = Seeding.Seed();
+                //var gameEntity = Seeding.Seed();
                 
-                dbContext.Games.Add(gameEntity);
+                //dbContext.Games.Add(gameEntity);
 
                 foreach (var role in roles)
                 {
@@ -155,7 +155,7 @@ namespace UI
                         await roleManager.CreateAsync(new IdentityRole(role));
                     }    
                 }
-               dbContext.SaveChanges();
+               //dbContext.SaveChanges();
             }
 
             app.UseRouting();
