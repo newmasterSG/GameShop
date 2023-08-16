@@ -148,7 +148,10 @@ namespace UI
 
                 var gameEntity = Seeding.Seed();
                 
-                dbContext.Games.Add(gameEntity);
+                if(await dbContext.Games.FirstOrDefaultAsync(g => g.Name == gameEntity.Name) == null)
+                {
+                    dbContext.Games.Add(gameEntity);
+                }
 
                 string email = "testing.project.ts@gmail.com";
                 string userPassword = "Eg.1234";

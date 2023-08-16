@@ -26,7 +26,7 @@ namespace Application.Services
         /// <param name="userId"></param>
         /// <param name="gameIds"></param>
         /// <exception cref="Exception"></exception>
-        public void CreateOrder(string userId, Dictionary<int,int> gameIds)
+        public void CreateOrder(string userId, Dictionary<int,int> gameIds, decimal price)
         {
             Guid guid = new Guid(userId);
 
@@ -35,6 +35,7 @@ namespace Application.Services
                 OrderDate = DateTime.Now,
                 UserId = guid,
                 OrderedGames = new List<OrderGame>(),
+                Price = price,
             };
 
             foreach (var gameId in gameIds)

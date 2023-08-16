@@ -4,6 +4,7 @@ using Infrastructure.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Globalization;
 
 namespace UI.Controllers
 {
@@ -36,16 +37,20 @@ namespace UI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> BuyGames(OrderDTO orderDTO, string name)
+        public async Task<IActionResult> BuyGames(OrderDTO orderDTO, string name, string price)
         {
             // Get the user ID, for example, through ASP.NET Identity
             var user = await _userManager.FindByNameAsync(name);
 
             var userId = user.Id;
+            decimal prices;
+            CultureInfo culture = CultureInfo.InvariantCulture;
+            if (Decimal.TryParse(price, NumberStyles.Any, culture, out prices))
+            {
+                _orderServices.CreateOrder(userId, orderDTO.GameIds, prices);
+            }
 
-            _orderServices.CreateOrder(userId, orderDTO.GameIds);
-
-            // ... your post-purchase processing code ...
+            //  post-purchase processing code ...
 
             return RedirectToAction("Index", "Home");
         }

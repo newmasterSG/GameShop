@@ -33,16 +33,21 @@
             gameQuantities[gameId] = gameCount; // Сохраняем количество игр для данного gameId
         });
 
+        var totalPriceElement = $("#totalPrice");
+        var totalPriceText = totalPriceElement.text();
+        var totalPriceMatch = totalPriceText.match(/[\d\.]+/);
+        var totalPriceString = totalPriceMatch[0]; // Просто берем строковое значение
 
         // Perform the AJAX request
         $.ajax({
-            url: "/MyOffice/BuyGames", // Your controller URL
+            url: "/MyOffice/BuyGames",
             method: "POST",
             data: {
                 orderDTO: {
-                    gameIds: gameQuantities
+                    gameIds: gameQuantities,
                 },
-                name: "@User.Identity.Name" // Assuming Razor syntax
+                name: "@User.Identity.Name",// Assuming Razor syntax
+                price: totalPriceString
             },
             success: function (response) {
                 // Handle the success response if needed
@@ -53,5 +58,9 @@
                 console.error("AJAX request error:", error);
             }
         });
+
+        localStorage.clear();
+
+        document.location.reload();
     });
 </script>
