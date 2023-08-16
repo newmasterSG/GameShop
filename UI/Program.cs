@@ -142,11 +142,16 @@ namespace UI
 
                 var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
+                var userManager = scope.ServiceProvider.GetRequiredService<UserManager<UserModel>>();
+
                 var roles = new[] { "Admin", "Manager", "Buyer" };
 
-                //var gameEntity = Seeding.Seed();
+                var gameEntity = Seeding.Seed();
                 
-                //dbContext.Games.Add(gameEntity);
+                dbContext.Games.Add(gameEntity);
+
+                string email = "testing.project.ts@gmail.com";
+                string userPassword = "Eg.1234";
 
                 foreach (var role in roles)
                 {
@@ -155,7 +160,26 @@ namespace UI
                         await roleManager.CreateAsync(new IdentityRole(role));
                     }    
                 }
-               //dbContext.SaveChanges();
+
+                if (await userManager.FindByEmailAsync(email) == null)
+                {
+                    UserModel adminUser = new UserModel
+                    {
+                        UserName = email,
+                        Email = email,
+                        EmailConfirmed = true,
+                    };
+
+                    IdentityResult result = await userManager.CreateAsync(adminUser, userPassword);
+
+                    if (result.Succeeded)
+                    {
+                        await userManager.AddClaimAsync(adminUser, new Claim(ClaimTypes.Role, "Buyer"));
+                        await userManager.AddClaimAsync(adminUser, new Claim(ClaimTypes.Name, adminUser.UserName));
+                        await userManager.AddToRoleAsync(adminUser, "Buyer");
+                    }
+                }
+                dbContext.SaveChanges();
             }
 
             app.UseRouting();

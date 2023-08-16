@@ -21,21 +21,26 @@
 
     $("#payButton").click(function (e) {
 
-        var gameIds = []; // Массив для хранения числовых ID игр
+        var gameIds = [];
+        var gameQuantities = {}; // Создаем объект для хранения количества игр по gameId
 
         // Собираем числовые ID игр из атрибутов data-game-id
         $(".card-body").each(function () {
-            gameIds.push(parseInt($(this).attr('data-game-id')));
+            var gameId = parseInt($(this).attr('data-game-id'));
+            var cartItemInfo = $(this).find('.cart-item-info'); // Находим элемент с классом cart-item-info внутри текущего .card-body
+            var gameCount = parseInt(cartItemInfo.attr('data-game-count')); // Получаем количество игр для данного gameId из cart-item-info
+            gameIds.push(gameId);
+            gameQuantities[gameId] = gameCount; // Сохраняем количество игр для данного gameId
         });
 
-        console.log(gameIds);
+
         // Perform the AJAX request
         $.ajax({
             url: "/MyOffice/BuyGames", // Your controller URL
             method: "POST",
             data: {
                 orderDTO: {
-                    gameIds: gameIds
+                    gameIds: gameQuantities
                 },
                 name: "@User.Identity.Name" // Assuming Razor syntax
             },

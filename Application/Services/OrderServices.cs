@@ -20,7 +20,13 @@ namespace Application.Services
             _context = context;
         }
 
-        public void CreateOrder(string userId, List<int> gameIds)
+        /// <summary>
+        /// Method that create Order and do bool field true
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="gameIds"></param>
+        /// <exception cref="Exception"></exception>
+        public void CreateOrder(string userId, Dictionary<int,int> gameIds)
         {
             Guid guid = new Guid(userId);
 
@@ -33,14 +39,20 @@ namespace Application.Services
 
             foreach (var gameId in gameIds)
             {
-                var game = _context.GetRepository<GamesModel>().GetById(gameId);
+                // Take game by id
+                var game = _context.GetRepository<GamesModel>().GetById(gameId.Key);
+
                 if (game != null)
                 {
-                    var keys = _context.GetRepository<GameKey>().List(g => g.GameId == game.Id);
-                    //var keys = game.GameKeys;
+                    //Taking key that false isBuy field
+                    var keys = _context.GetRepository<GameKey>().List(g => g.GameId == game.Id).Where(k => k.IsBuy == false).Take(gameId.Value).ToList();
                     if (keys != null)
                     {
-                        game.GameKeys.RemoveRange
+                        foreach(var key in keys)
+                        {
+                            key.IsBuy = true;
+                        }
+
                         order.OrderedGames.Add(new OrderGame { Game = game, });
                     }
                     else

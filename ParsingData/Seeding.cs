@@ -9,6 +9,7 @@ using Domain.Entities.Rating;
 using Domain.Entities.ShortScreenshot;
 using Domain.Entities.Store;
 using Domain.Entities.Tags;
+using Infrastructure.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -8,6 +8,6 @@ namespace Application.DTO
 {
     public class OrderDTO
     {
-        public List<int> GameIds { get; set; }
+        public Dictionary<int, int> GameIds { get; set; }
     }
 }

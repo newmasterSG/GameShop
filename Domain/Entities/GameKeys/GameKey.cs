@@ -14,5 +14,6 @@ namespace Domain.Entities.GameKeys
         public int GameId { get; set; }
 
         public GamesModel Game { get; set; }
+        public bool IsBuy { get; set; }
     }
 }

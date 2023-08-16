@@ -42,6 +42,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             const infoDiv = document.createElement('div');
             infoDiv.classList.add('cart-item-info');
+            infoDiv.setAttribute('data-game-count', product.quantity.toString());
             infoDiv.textContent = `Name: ${product.name}, Quantity: ${product.quantity}, Price: ${product.price}`;
 
             cardBody.appendChild(infoDiv);

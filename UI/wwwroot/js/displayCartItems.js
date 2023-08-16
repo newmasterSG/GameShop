@@ -28,6 +28,7 @@ document.addEventListener("DOMContentLoaded", function () {
             cardBody.setAttribute('data-game-id', product.id.toString());
             var infoDiv = document.createElement('div');
             infoDiv.classList.add('cart-item-info');
+            infoDiv.setAttribute('data-game-count', product.quantity.toString());
             infoDiv.textContent = "Name: ".concat(product.name, ", Quantity: ").concat(product.quantity, ", Price: ").concat(product.price);
             cardBody.appendChild(infoDiv);
             // Adding a delete button
