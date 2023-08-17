@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Security.Claims;
-using UI.Models;
+using UI.Models.User;
 
 namespace UI.Controllers
 {
@@ -16,7 +16,7 @@ namespace UI.Controllers
     {
         private ILogger<AccountController> _logger;
         private AccountServices _accountServices;
-        private readonly IEmailSender _emailSender;
+        private readonly EmailSender _emailSender;
         private readonly UserManager<UserModel> _userManager;
         private readonly SignInManager<UserModel> _signInManager;
         private readonly IWebHostEnvironment _webHostEnvironment;
@@ -24,7 +24,7 @@ namespace UI.Controllers
             AccountServices accountServices, 
             UserManager<UserModel> userManager, 
             SignInManager<UserModel> signInManager,
-            IEmailSender emailSender,
+            EmailSender emailSender,
             IWebHostEnvironment webHostEnvironment)
         {
             _accountServices = accountServices;
@@ -60,7 +60,9 @@ namespace UI.Controllers
 
                     if (result.Succeeded)
                     {
-                        await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Role, "User"));
+                        await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Role, "Buyer"));
+                        await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Name, user.UserName));
+                        await _userManager.AddToRoleAsync(user, "Buyer");
 
                         await _signInManager.SignInAsync(user, isPersistent: false);
 
@@ -68,7 +70,7 @@ namespace UI.Controllers
                         var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 
                         // Generate a confirmation link
-                        var confirmationLink = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, token }, Request.Scheme);
+                        var confirmationLink = Url.Action("EmailConfirmed", "Account", new { userId = user.Id, token }, Request.Scheme);
 
                         // Load the HTML template "Path/To/Your/EmailConfirmationSent.cshtml"
                         var htmlTemplate = System.IO.File.ReadAllText(Path.Combine(_webHostEnvironment.ContentRootPath + "/Contents/EmailConfirmationSent.cshtml"));
@@ -76,7 +78,7 @@ namespace UI.Controllers
                         // Replace the placeholder with the actual link
                         htmlTemplate = htmlTemplate.Replace("{{CONFIRMATION_LINK}}", confirmationLink);
 
-                        await _emailSender.SendEmailAsync(model.Email, null, "Confirm Your Email",
+                        await _emailSender.SendEmailAsync(model.Email, "", "Confirm Your Email",
                             htmlTemplate, true);
 
                         // Redirect to a page informing the user to check their email
@@ -135,30 +137,110 @@ namespace UI.Controllers
             return View(model);
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult ForgotPassword()
         {
             return View();
         }
 
+        [AllowAnonymous]
         [HttpPost]
-        public async Task<IActionResult> ForgotPassword(string email)
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel viewModel)
         {
-            var user = await _userManager.FindByEmailAsync(email);
-            if (user == null)
+            if(!ModelState.IsValid)
             {
-                // Обработка ошибки
+                ModelState.AddModelError("", "Не верные данны");
+                return View();
             }
 
-            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-            // Отправка ссылки с токеном на восстановление пароля
+            if(string.IsNullOrEmpty(viewModel.Email))
+            {
+                ModelState.AddModelError("", "Empty field");
+                return View();
+            }
 
-            return View("ForgotPasswordConfirmation");
+            var user = await _userManager.FindByEmailAsync(viewModel.Email);
+
+            if (user == null)
+            {
+                ModelState.AddModelError("", $"User is not found");
+                return View();
+            }
+
+            // Отправка ссылки с токеном на восстановление пароля
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+
+            // Generate a confirmation link
+            var confirmationLink = Url.Action("ResetPassword", "Account", new { userId = user.Id, token }, Request.Scheme);
+
+            // Load the HTML template "Path/To/Your/EmailConfirmationSent.cshtml"
+            var htmlTemplate = System.IO.File.ReadAllText(Path.Combine(_webHostEnvironment.ContentRootPath + "/Contents/RecoveryPassword.cshtml"));
+
+            // Replace the placeholder with the actual link
+            htmlTemplate = htmlTemplate.Replace("{{CONFIRMATION_LINK}}", confirmationLink);
+
+            await _emailSender.SendEmailAsync(user.Email, null, "Password recovery",
+                htmlTemplate, true);
+
+            return View("RedirectToPage");
         }
 
         [HttpGet]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ConfirmEmail(string userId, string token)
+        [AllowAnonymous]
+        public IActionResult ResetPassword(string email, string token)
+        {
+            var model = new ResetPasswordViewModel
+            {
+                Email = email,
+                Token = token
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel viewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(viewModel);
+            }
+
+            var user = await _userManager.FindByEmailAsync(viewModel.Email);
+            if(user == null)
+            {
+                ModelState.AddModelError("","Not found");
+                return View();
+            }
+
+            await _userManager.ResetPasswordAsync(user, viewModel.Token ,viewModel.NewPassword);
+
+            return RedirectToAction("PasswordChangedConfirmation");
+        }
+
+        [HttpGet]
+        public IActionResult PasswordResetConfirmation()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult EmailConfirmationFailed()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult EmailConfirmationSent()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> EmailConfirmed(string userId, string token)
         {
             if (userId == null || token == null)
             {
@@ -198,27 +280,6 @@ namespace UI.Controllers
             else
             {
                 return RedirectToAction("Index","Home");
-            }
-        }
-
-        // GET: AccountController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: AccountController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
             }
         }
     }

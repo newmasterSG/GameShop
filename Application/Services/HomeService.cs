@@ -1,6 +1,11 @@
 ﻿using Application.DTO;
+using Application.InterfaceServices;
 using Domain.Entities;
+using Domain.Entities.Developer;
 using Domain.Entities.Games;
+using Domain.Entities.GamesToDeveloper;
+using Domain.Entities.GamesToStore;
+using Domain.Entities.ShortScreenshot;
 using Infrastructure.Context;
 using Infrastructure.Repository.Interfaces;
 using Infrastructure.UnitOfWork.Interface;
@@ -27,6 +32,7 @@ namespace Application.Services
             {
                 gameDTOsForCarousel.Add(new GameDTO()
                 {
+                    Id = (int)game.Id,
                     Name = game.Name,
                     Image = game.Background_Image,
                     Owned = game.Added_By_Status?.Owned ?? 4000,
@@ -45,6 +51,7 @@ namespace Application.Services
             {
                 gameDTOs.Add(new GameDTO()
                 {
+                    Id = (int)game.Id,
                     Name = game.Name,
                     Image = game.Background_Image,
                     Owned = game.Added_By_Status?.Owned ?? 4000,
@@ -64,6 +71,7 @@ namespace Application.Services
             {
                 gameDTOs.Add(new GameDTO()
                 {
+                    Id = (int)item.Id,
                     Name = item.Name,
                     Image = item.Background_Image,
                     Price = (decimal)new Random().NextDouble(),

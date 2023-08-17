@@ -1,9 +1,8 @@
 ﻿using Domain.Entities.AddedByStatus;
 using Domain.Entities.Developer;
 using Domain.Entities.ESRBRating;
-using Domain.Entities.GamesToAddedByStatus;
+using Domain.Entities.GameKeys;
 using Domain.Entities.GamesToDeveloper;
-using Domain.Entities.GamesToESRBRating;
 using Domain.Entities.GamesToGenres;
 using Domain.Entities.GamesToPlatform;
 using Domain.Entities.GamesToRating;
@@ -11,6 +10,8 @@ using Domain.Entities.GamesToScreenshots;
 using Domain.Entities.GamesToStore;
 using Domain.Entities.GamesToTags;
 using Domain.Entities.Genres;
+using Domain.Entities.Orders;
+using Domain.Entities.OrderToGame;
 using Domain.Entities.Platform;
 using Domain.Entities.Rating;
 using Domain.Entities.ShortScreenshot;
@@ -53,10 +54,6 @@ namespace Domain.Entities.Games
 
         public List<GamesToPlatfrormModel> GamesToPlatfrorms { get; set; }
 
-        public GamesToAddedByStatusModel GamesToAddedByStatuses { get; set; }
-
-        public GamesToESRBRatingModel GamesToESRBRating { get; set; }
-
         public List<GamesToRatingModel> GamesToRatings { get;set; }
 
         public List<GamesToScreenshotsModel> GameToShortScreenshots { get; set; }
@@ -64,5 +61,8 @@ namespace Domain.Entities.Games
         public List<GamesToStoresModel> GamesToStores { get; set; }
 
         public List<GamesToDeveloperModel> GamesToDevelopers { get; set; }
+        public List<GameKey> GameKeys { get; set; }
+        public List<OrderGame> OrderedGames { get; set; }
+        public List<Order> Orders { get; set; }
     }
 }

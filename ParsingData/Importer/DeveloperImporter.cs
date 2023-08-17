@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ParsingData
+namespace ParsingData.Importer
 {
     public class DeveloperImporter
     {

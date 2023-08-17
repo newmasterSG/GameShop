@@ -1,0 +1,26 @@
+﻿@{
+}
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model UI.Models.Search.SearchViewModel
+
+@if (Model.PagedSearchResults != null && Model.PagedSearchResults.Count > 0)
+{
+    <h3>Search Results:</h3>
+    <ul>
+        @foreach (var game in Model.PagedSearchResults)
+        {
+            <li>
+                <div>
+                    <h4>@game.Name</h4>
+                    <img src="@game.Image" alt="Game Image" />
+                    <p>Price: @game.Price</p>
+                    <p>Owned: @game.Owned</p>
+                </div>
+            </li>
+        }
+    </ul>
+
+    <div>
+        <pager pager-list="@Model.PagedSearchResults" asp-action="Search" asp-route-gameName="@Model.GameName"></pager>
+    </div>
+}

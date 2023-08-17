@@ -13,7 +13,7 @@
     <header>
         <nav id="myNavBar" class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container-fluid">
-                <a class="navbar-brand" href="#">
+                <a class="navbar-brand" href="~/Home/Index">
                     UI
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
@@ -22,9 +22,6 @@
                 </button>
                 <div class="collapse navbar-collapse align-content-between" id="navbarNav">
                     <ul class="navbar-nav ml-auto">
-                        <li class="nav-item active">
-                            <a class="nav-link" href="#">Home</a>
-                        </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">About</a>
                         </li>
@@ -34,31 +31,19 @@
                         <!-- Add more pages here as needed -->
                     </ul>
                     <div class="container">
-                        <form class="input-group">
-                            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                        @using (Html.BeginForm("Search", "Game", FormMethod.Post))
+                        {
+                            <input class="form-control mr-sm-2" type="search" placeholder="Search" name="GameName" aria-label="Search">
                             <button class="btn btn-outline-light" type="submit">Search</button>
-                        </form>
+                        }
                     </div>
-                    <button>My office</button>
-                    @if(User.Identity.IsAuthenticated)
-                    {
-                        <form asp-action="LogOut" asp-controller="Account" method="post">
-                            <button type="submit" class="btn btn-secondary">Log out</button>
-                        </form>
-                    }
-                    else
-                    {
-                        <div class="dropdown">
-                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                Log in / Register
-                            </button>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                <li><a class="dropdown-item" href="~/Account/Index">Sign in</a></li>
-                                <li><a class="dropdown-item" href="#">Another action</a></li>
-                                <li><a class="dropdown-item" href="#">Something else here</a></li>
-                            </ul>
-                        </div>
-                    }
+
+                        <button>My office</button>
+
+                    <a class="cart-icon" href="~/MyOffice/Card">
+                        <img src="cart-icon.png" alt="Корзина">
+                    </a>
+                    @await Component.InvokeAsync("LoginRegister")
                 </div>
             </div>
         </nav>

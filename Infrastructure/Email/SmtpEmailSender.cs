@@ -1,46 +1,57 @@
 ﻿using Domain.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using MimeKit;
+using MailKit.Net.Smtp;
 using System.Net;
-using System.Net.Mail;
+using Infrastructure.Email.Options;
+using Microsoft.Extensions.Options;
+using MailKit.Security;
 
 namespace Infrastructure.Email
 {
-    public class SmtpEmailSender : IEmailSender
+    public class SmtpEmailSender : EmailSender
     {
         private readonly ILogger<SmtpEmailSender> _logger;
-        private readonly SmtpClient _smtpClient;
-        private readonly IConfiguration _config;
-        public SmtpEmailSender(ILogger<SmtpEmailSender> logger, IConfiguration config)
+        private readonly SmtpOptions _smtpOptions;
+
+        public SmtpEmailSender(ILogger<SmtpEmailSender> logger, IOptions<SmtpOptions> smtpOptions)
         {
             _logger = logger;
-            _config = config;
-            var smtpSettings = config.GetSection("Smtp");
-            _smtpClient = new SmtpClient()
-            {
-                Host = smtpSettings["Host"],
-                Port = int.Parse(smtpSettings["Port"]),
-                Credentials = new NetworkCredential(smtpSettings["Username"], smtpSettings["Password"]),
-                EnableSsl = true,
-            };
+            _smtpOptions = smtpOptions.Value;
         }
 
-        public async Task SendEmailAsync(string to, string from, string subject, string body, bool htmlBody)
+        public override async Task SendEmailAsync(string to, string from, string subject, string body, bool htmlBody)
         {
             try
             {
-                var message = new MailMessage
+                if(from == null)
                 {
-                    From = new MailAddress(from ?? _config.GetSection("Smtp")["Username"]),
-                    Subject = subject,
-                    Body = body,
-                    IsBodyHtml = htmlBody,
-                };
-                message.To.Add(new MailAddress(to));
-                await _smtpClient.SendMailAsync(message);
+                    from = _smtpOptions.Username;
+                }
+                var message = new MimeMessage();
+                message.From.Add(new MailboxAddress(from, _smtpOptions.Username));
+                message.To.Add(new MailboxAddress("" ,to));
+                message.Subject = subject;
+
+                var bodyBuilder = new BodyBuilder();
+                bodyBuilder.HtmlBody = body;
+                bodyBuilder.TextBody = body;
+                message.Body = bodyBuilder.ToMessageBody();
+
+                using (var client = new SmtpClient())
+                {
+                    await client.ConnectAsync(_smtpOptions.Host, _smtpOptions.Port, SecureSocketOptions.StartTls); // Using _smtpOptions.Host and _smtpOptions.Port
+                    client.AuthenticationMechanisms.Remove("XOAUTH2");
+                    await client.AuthenticateAsync(new NetworkCredential(_smtpOptions.Username, _smtpOptions.Password)); // Using _smtpOptions.Username and _smtpOptions.Password
+
+                    await client.SendAsync(message);
+                    await client.DisconnectAsync(true);
+                }
+
                 _logger.LogWarning("Sending email to {to} from {from} with subject {subject}.", to, from, subject);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _logger.LogError(ex, ex.Message);
             }

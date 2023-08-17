@@ -1,6 +1,6 @@
 ﻿using Application.DTO;
 
-namespace Application.Services
+namespace Application.InterfaceServices
 {
     public interface IHomeService
     {

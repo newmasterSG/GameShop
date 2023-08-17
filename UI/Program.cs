@@ -12,21 +12,31 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Domain.Interfaces;
 using Infrastructure.Email;
+using Application.InterfaceServices;
+using IdentityModel;
+using ParsingData;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+using System.Security.Claims;
+using Infrastructure.Email.Options;
 
 namespace UI
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
             builder.Services.AddDistributedMemoryCache();
             builder.Services.AddControllersWithViews();
+
             var connectionString = builder.Configuration["ConnectionString"];
             builder.Services.AddDbContext<GameShopContext>(options =>
                 options.UseSqlServer(connectionString).EnableSensitiveDataLogging());
+
+            builder.Services.Configure<SmtpOptions>(builder.Configuration.GetSection("Smtp"));
 
             builder.Services.AddIdentityCore<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<GameShopContext>();
@@ -34,10 +44,11 @@ namespace UI
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork<GameShopContext>>();
             builder.Services.AddScoped<IHomeService, HomeService>();
             builder.Services.AddScoped<AccountServices>();
-            builder.Services.AddTransient<IEmailSender, SmtpEmailSender>();
-
+            builder.Services.AddScoped<GameService>();
+            builder.Services.AddTransient<EmailSender, SmtpEmailSender>();
+            builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-
+            builder.Services.AddScoped<OrderServices>();
             builder.Services.Configure<IdentityOptions>(options =>
             {
                 // Password settings.
@@ -59,6 +70,19 @@ namespace UI
                 options.User.RequireUniqueEmail = true;
                 options.SignIn.RequireConfirmedEmail = true;
             });
+            builder.Services.AddAuthentication(option =>
+            {
+                option.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                option.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                option.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            })
+           .AddCookie(options =>
+           {
+               options.Cookie.HttpOnly = true;
+               options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
+               options.SlidingExpiration = true;
+               options.LoginPath = "/Account/Login";
+           });
 
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                     .AddJwtBearer(options =>
@@ -80,15 +104,6 @@ namespace UI
             builder.Services.AddIdentity<UserModel, IdentityRole>()
                 .AddEntityFrameworkStores<GameShopContext>()
                 .AddDefaultTokenProviders();
-
-            builder.Services.ConfigureApplicationCookie(options =>
-            {
-                // Cookie settings
-                options.Cookie.HttpOnly = true;
-                options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
-                options.SlidingExpiration = true;
-                options.LoginPath = "/Account/Login";
-            });
 
             var app = builder.Build();
 
@@ -117,9 +132,83 @@ namespace UI
                 RequestPath = "/Contents"
             });
 
+
+            //Seeding data if they are not existed
+            using(var scope = app.Services.CreateScope())
+            {
+                var dbContext = scope.ServiceProvider.GetService<GameShopContext>();
+
+                dbContext.Database.EnsureCreated();
+
+                var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+                var userManager = scope.ServiceProvider.GetRequiredService<UserManager<UserModel>>();
+
+                var roles = new[] { "Admin", "Manager", "Buyer" };
+
+                var gameEntity = Seeding.Seed();
+                
+                if(await dbContext.Games.FirstOrDefaultAsync(g => g.Name == gameEntity.Name) == null)
+                {
+                    dbContext.Games.Add(gameEntity);
+                }
+
+                string email = "testing.project.ts@gmail.com";
+                string userPassword = "Eg.1234";
+
+                foreach (var role in roles)
+                {
+                    if(!await roleManager.RoleExistsAsync(role))
+                    {
+                        await roleManager.CreateAsync(new IdentityRole(role));
+                    }    
+                }
+
+                if (await userManager.FindByEmailAsync(email) == null)
+                {
+                    UserModel adminUser = new UserModel
+                    {
+                        UserName = email,
+                        Email = email,
+                        EmailConfirmed = true,
+                    };
+
+                    IdentityResult result = await userManager.CreateAsync(adminUser, userPassword);
+
+                    if (result.Succeeded)
+                    {
+                        await userManager.AddClaimAsync(adminUser, new Claim(ClaimTypes.Role, "Buyer"));
+                        await userManager.AddClaimAsync(adminUser, new Claim(ClaimTypes.Name, adminUser.UserName));
+                        await userManager.AddToRoleAsync(adminUser, "Buyer");
+                    }
+                }
+                dbContext.SaveChanges();
+            }
+
             app.UseRouting();
 
             app.UseAuthentication();
+
+            app.Use(async (context, next) =>
+            {
+                var user = context.User;
+
+                if (user.Identity.IsAuthenticated)
+                {
+                    var userService = context.RequestServices.GetRequiredService<IUserService>();
+                    bool isEmailVerified = userService.IsEmailVerified(user.Identity.Name);
+
+                    if (!isEmailVerified)
+                    {
+                        await context.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+                        context.Response.Redirect("/Home/Index");
+                        return;
+                    }
+                }
+
+                await next();
+            });
+
             app.UseAuthorization();
 
             app.MapControllerRoute(

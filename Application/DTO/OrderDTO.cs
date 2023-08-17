@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ParsingData
+namespace Application.DTO
 {
-    public interface IDeserializer<T,G>
+    public class OrderDTO
     {
-        Task<T> Deserialize(G obj);
+        public Dictionary<int, int> GameIds { get; set; }
     }
 }
