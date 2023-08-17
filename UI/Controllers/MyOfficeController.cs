@@ -47,7 +47,14 @@ namespace UI.Controllers
             CultureInfo culture = CultureInfo.InvariantCulture;
             if (Decimal.TryParse(price, NumberStyles.Any, culture, out prices))
             {
-                _orderServices.CreateOrder(userId, orderDTO.GameIds, prices);
+                try
+                {
+                    _orderServices.CreateOrder(userId, orderDTO.GameIds, prices);
+                }
+                catch(Exception ex) 
+                {
+                    
+                }
             }
 
             //  post-purchase processing code ...

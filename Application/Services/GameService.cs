@@ -55,5 +55,24 @@ namespace Application.Services
 
             return gamesView;
         }
+
+        public async Task<List<GameDTO>> SearchGame(string name)
+        {
+            var dbGames =  await _unitOfWork.GetRepository<GamesModel>().ListAsync(g => g.Name == name);
+            var games = new List<GameDTO>();
+            foreach(var game in dbGames)
+            {
+                games.Add(new GameDTO
+                {
+                    Id = (int)game.Id,
+                    Name = game.Name,
+                    Image = game.Background_Image,
+                    Owned = game.Added_By_Status?.Owned ?? 4000,
+                    Price = (decimal)new Random().NextDouble(),
+                });
+            }
+
+            return games;
+        }
     }
 }

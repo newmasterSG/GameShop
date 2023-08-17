@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using IdentityModel;
 using System.Linq.Expressions;
 
 namespace Infrastructure.Repository.Interfaces
@@ -34,5 +35,8 @@ namespace Infrastructure.Repository.Interfaces
         /// Remove range of given entities
         /// </summary>
         void RemoveRange(IEnumerable<T> entities);
+
+        T Find(Expression<Func<T, bool>> match);
+
     }
 }

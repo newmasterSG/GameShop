@@ -8,6 +8,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using IdentityModel;
 
 namespace Infrastructure.Repository.Repositories
 {
@@ -114,6 +115,11 @@ namespace Infrastructure.Repository.Repositories
         public void RemoveRange(IEnumerable<T> entities)
         {
             _dbContext.RemoveRange(entities);
+        }
+
+        public T Find(Expression<Func<T, bool>> match)
+        {
+            return _dbContext.Set<T>().SingleOrDefault(match);
         }
     }
 }

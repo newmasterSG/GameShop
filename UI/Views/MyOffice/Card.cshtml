@@ -51,16 +51,13 @@
             },
             success: function (response) {
                 // Handle the success response if needed
-                console.log("AJAX request successful");
+                localStorage.clear();
+                document.location.reload();
             },
             error: function (xhr, status, error) {
                 // Handle the error if needed
                 console.error("AJAX request error:", error);
             }
         });
-
-        localStorage.clear();
-
-        document.location.reload();
     });
 </script>

@@ -31,10 +31,11 @@
                         <!-- Add more pages here as needed -->
                     </ul>
                     <div class="container">
-                        <form class="input-group">
-                            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                        @using (Html.BeginForm("Search", "Game", FormMethod.Post))
+                        {
+                            <input class="form-control mr-sm-2" type="search" placeholder="Search" name="GameName" aria-label="Search">
                             <button class="btn btn-outline-light" type="submit">Search</button>
-                        </form>
+                        }
                     </div>
 
                         <button>My office</button>

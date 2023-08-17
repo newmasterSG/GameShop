@@ -1,6 +1,8 @@
 ﻿using Application.DTO;
 using Application.Services;
 using Microsoft.AspNetCore.Mvc;
+using PagedList;
+using UI.Models.Search;
 
 namespace UI.Controllers
 {
@@ -41,6 +43,26 @@ namespace UI.Controllers
             }
 
             return Json(game);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Search(SearchViewModel viewModel, int? page)
+        {
+            int pageNumber = page ?? 1;
+            int pageSize = 12;
+
+            var games = await _gameService.SearchGame(viewModel.GameName);
+
+            if (games == null || games.Count == 0)
+            {
+                ModelState.AddModelError("", "No such games");
+            }
+            else
+            {
+                viewModel.PagedSearchResults = new StaticPagedList<GameDTO>(games, pageNumber, pageSize, games.Count);
+            }
+
+            return View(viewModel);
         }
     }
 }
