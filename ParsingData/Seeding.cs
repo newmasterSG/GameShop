@@ -264,23 +264,23 @@ namespace ParsingData
             {
                 new GameKey()
                 {
-                    Key = new Guid(),
+                    Key = Guid.NewGuid(),
                 },
                 new GameKey()
                 {
-                    Key = new Guid(),
+                    Key = Guid.NewGuid(),
                 },
                 new GameKey()
                 {
-                    Key = new Guid(),
+                    Key = Guid.NewGuid(),
                 },
                 new GameKey()
                 {
-                    Key = new Guid(),
+                    Key = Guid.NewGuid(),
                 },
                 new GameKey()
                 {
-                    Key = new Guid(),
+                    Key = Guid.NewGuid(),
                 },
             };
         }

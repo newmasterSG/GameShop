@@ -1,4 +1,5 @@
 ﻿using Domain.Entities.Games;
+using Domain.Entities.Orders;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,5 +16,9 @@ namespace Domain.Entities.GameKeys
 
         public GamesModel Game { get; set; }
         public bool IsBuy { get; set; }
+
+        public Order? Order { get; set; }
+
+        public int? OrderId { get; set; }
     }
 }

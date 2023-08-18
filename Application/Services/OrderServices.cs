@@ -1,8 +1,10 @@
-﻿using Domain.Entities.GameKeys;
+﻿using Application.DTO;
+using Domain.Entities.GameKeys;
 using Domain.Entities.Games;
 using Domain.Entities.Orders;
 using Domain.Entities.OrderToGame;
 using Infrastructure.UnitOfWork.Interface;
+using Infrastructure.User;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -36,6 +38,7 @@ namespace Application.Services
                 UserId = guid,
                 OrderedGames = new List<OrderGame>(),
                 Price = price,
+                GameKeys = new List<GameKey>(),
             };
 
             foreach (var gameId in gameIds)
@@ -52,9 +55,10 @@ namespace Application.Services
                         foreach(var key in keys)
                         {
                             key.IsBuy = true;
+                            order.GameKeys.Add(key);
                         }
 
-                        order.OrderedGames.Add(new OrderGame { Game = game, });
+                        order.OrderedGames.Add(new OrderGame { Game = game, } );
                     }
                     else
                     {
@@ -65,6 +69,42 @@ namespace Application.Services
 
             _context.GetRepository<Order>().Insert(order);
             _context.Save();
+        }
+
+        public async Task<List<OrderPurchaseDto>> GetOrderPurchases(string userName)
+        {
+            var orders = new List<OrderPurchaseDto>();
+
+            var user = _context.GetRepository<UserModel>().Find(u => u.UserName == userName);
+
+            var dbOrders = await _context.GetRepository<Order>().ListAsync(o => o.UserId.ToString() == user.Id);
+            
+            foreach (var dbOrder in dbOrders)
+            {
+                var dbOrderedGames = await _context.GetRepository<OrderGame>().ListAsync(og => og.OrderId == dbOrder.Id);
+
+                var orderPurchase = new OrderPurchaseDto
+                {
+                    Id = dbOrder.Id,
+                    Count = dbOrderedGames.Count(),
+                    TotalPrice = dbOrder.Price,
+                    Games = new List<string>(),
+                    Keys = new List<Guid>()
+                };
+
+                foreach (var orderedGame in dbOrderedGames)
+                {
+                    var game = await _context.GetRepository<GamesModel>().GetByIdAsync(orderedGame.GameId);
+                    orderPurchase.Games.Add(game.Name);
+                    var dbGameKeys = await _context.GetRepository<GameKey>().ListAsync(k => k.GameId == game.Id);
+                    var gameKeys = dbGameKeys.Where(gk => gk.IsBuy && gk.OrderId == dbOrder.Id).Select(gk => gk.Key);
+                    orderPurchase.Keys.AddRange(gameKeys);
+                }
+
+                orders.Add(orderPurchase);
+            }
+
+            return orders;
         }
     }
 }
