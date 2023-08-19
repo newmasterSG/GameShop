@@ -1,6 +1,4 @@
-﻿using Domain.Entities.ShortScreenshot;
-using Domain.Entities.Store;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Entities
 {

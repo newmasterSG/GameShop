@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Domain.Entities.ESRBRating
+namespace Domain.Entities
 {
-    public class ESRBRatingEntity: EntityBase
+    public class ESRBRatingEntity : EntityBase
     {
         public new int? Id { get; set; }
         public string? Name { get; set; }

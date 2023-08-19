@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Domain.Entities.PlatformInfo
+namespace Domain.Entities
 {
     public class PlatformInfoEntity : EntityBase
     {

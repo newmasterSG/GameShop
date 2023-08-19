@@ -1,7 +1,6 @@
-﻿using Domain.Entities.StoreInfo;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Domain.Entities.Store
+namespace Domain.Entities
 {
     public class StoreEntity : EntityBase
     {

@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Domain.Entities.Genres
+namespace Domain.Entities
 {
-    public class GenreEntity: EntityBase
+    public class GenreEntity : EntityBase
     {
         public new int? Id { get; set; }
         public string? Name { get; set; }

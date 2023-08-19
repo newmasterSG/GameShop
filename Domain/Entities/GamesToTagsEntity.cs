@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Domain.Entities.GamesToTags
+namespace Domain.Entities
 {
     public class GamesToTagsEntity
     {

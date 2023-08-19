@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Domain.Entities.Rating
+namespace Domain.Entities
 {
-    public class RatingEntity: EntityBase
+    public class RatingEntity : EntityBase
     {
         public new int? Id { get; set; }
         public string? Title { get; set; }

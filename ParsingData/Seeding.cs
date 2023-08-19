@@ -1,6 +1,4 @@
 ﻿using Domain.Entities;
-using Domain.Entities.ShortScreenshot;
-using Domain.Entities.Store;
 using Infrastructure.User;
 using System;
 using System.Collections.Generic;
