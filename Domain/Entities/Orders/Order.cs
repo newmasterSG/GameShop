@@ -1,10 +1,6 @@
-﻿using Domain.Entities.Games;
+﻿using Domain.Entities.GameKeys;
+using Domain.Entities.Games;
 using Domain.Entities.OrderToGame;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Domain.Entities.Orders
 {
@@ -17,5 +13,7 @@ namespace Domain.Entities.Orders
         public decimal Price { get; set; }
 
         public ICollection<GamesModel> Games { get; set; }
+
+        public ICollection<GameKey> GameKeys { get; set; }
     }
 }

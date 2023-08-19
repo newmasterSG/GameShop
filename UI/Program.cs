@@ -19,6 +19,10 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
 using Infrastructure.Email.Options;
+using UI.ServiceProvider;
+using UI.Middlewares;
+using Microsoft.AspNetCore.Localization;
+using System.Globalization;
 
 namespace UI
 {
@@ -28,53 +32,19 @@ namespace UI
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
-            builder.Services.AddDistributedMemoryCache();
-            builder.Services.AddControllersWithViews();
-
             var connectionString = builder.Configuration["ConnectionString"];
             builder.Services.AddDbContext<GameShopContext>(options =>
                 options.UseSqlServer(connectionString).EnableSensitiveDataLogging());
 
-            builder.Services.Configure<SmtpOptions>(builder.Configuration.GetSection("Smtp"));
+            builder.Services
+                .AddConfig(builder.Configuration)
+                .AddMyDependencyGroup();
 
-            builder.Services.AddIdentityCore<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<GameShopContext>();
-
-            builder.Services.AddScoped<IUnitOfWork, UnitOfWork<GameShopContext>>();
-            builder.Services.AddScoped<IHomeService, HomeService>();
-            builder.Services.AddScoped<AccountServices>();
-            builder.Services.AddScoped<GameService>();
-            builder.Services.AddTransient<EmailSender, SmtpEmailSender>();
-            builder.Services.AddScoped<IUserService, UserService>();
-            builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-            builder.Services.AddScoped<OrderServices>();
-            builder.Services.Configure<IdentityOptions>(options =>
-            {
-                // Password settings.
-                options.Password.RequireDigit = true;
-                options.Password.RequireLowercase = true;
-                options.Password.RequireNonAlphanumeric = true;
-                options.Password.RequireUppercase = true;
-                options.Password.RequiredLength = 6;
-                options.Password.RequiredUniqueChars = 1;
-
-                // Lockout settings.
-                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
-                options.Lockout.MaxFailedAccessAttempts = 5;
-                options.Lockout.AllowedForNewUsers = true;
-
-                // User settings.
-                options.User.AllowedUserNameCharacters =
-                "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
-                options.User.RequireUniqueEmail = true;
-                options.SignIn.RequireConfirmedEmail = true;
-            });
             builder.Services.AddAuthentication(option =>
             {
                 option.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                option.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 option.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                option.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
            .AddCookie(options =>
            {
@@ -82,31 +52,42 @@ namespace UI
                options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
                options.SlidingExpiration = true;
                options.LoginPath = "/Account/Login";
-           });
+           })
+           .AddJwtBearer(options =>
+            {
+                options.SaveToken = true;
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = builder.Configuration["Jwt:Issuer"],
+                    ValidAudience = builder.Configuration["Jwt:Audience"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+                };
+            });
 
-            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                    .AddJwtBearer(options =>
-                    {
-                        options.SaveToken = true;
-                        options.TokenValidationParameters = new TokenValidationParameters
-                        {
-                                ValidateIssuer = true,
-                                ValidateAudience = true,
-                                ValidateLifetime = true,
-                                ValidateIssuerSigningKey = true,
-                                ValidIssuer = builder.Configuration["Jwt:Issuer"],
-                                ValidAudience = builder.Configuration["Jwt:Audience"],
-                                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
-                        };
-                    });
-
-
-            builder.Services.AddIdentity<UserModel, IdentityRole>()
+            builder.Services.AddIdentity<UserModel, IdentityRole>(option => option.SignIn.RequireConfirmedEmail = true)
                 .AddEntityFrameworkStores<GameShopContext>()
                 .AddDefaultTokenProviders();
 
             var app = builder.Build();
 
+            var supportedCultures = new[]
+            {
+                new CultureInfo("en"),
+                new CultureInfo("uk"),
+            };
+
+            app.UseRequestLocalization(new RequestLocalizationOptions
+            {
+                DefaultRequestCulture = new RequestCulture("en"),
+                SupportedCultures = supportedCultures,
+                SupportedUICultures = supportedCultures,
+            });
+
+            app.UseCulture();
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
             {
@@ -118,12 +99,6 @@ namespace UI
             app.UseHttpsRedirection();
             app.UseDefaultFiles();
             app.UseStaticFiles();
-            app.UseStaticFiles(new StaticFileOptions
-            {
-                FileProvider = new PhysicalFileProvider(
-                Path.Combine(builder.Environment.ContentRootPath, "Styles")),
-                RequestPath = "/StaticFiles"
-            });
 
             app.UseStaticFiles(new StaticFileOptions
             {
@@ -171,15 +146,16 @@ namespace UI
                         UserName = email,
                         Email = email,
                         EmailConfirmed = true,
+                        DateRegistration = DateTime.Now,
                     };
 
                     IdentityResult result = await userManager.CreateAsync(adminUser, userPassword);
 
                     if (result.Succeeded)
                     {
-                        await userManager.AddClaimAsync(adminUser, new Claim(ClaimTypes.Role, "Buyer"));
+                        await userManager.AddClaimAsync(adminUser, new Claim(ClaimTypes.Role, "Admin"));
                         await userManager.AddClaimAsync(adminUser, new Claim(ClaimTypes.Name, adminUser.UserName));
-                        await userManager.AddToRoleAsync(adminUser, "Buyer");
+                        await userManager.AddToRoleAsync(adminUser, "Admin");
                     }
                 }
                 dbContext.SaveChanges();

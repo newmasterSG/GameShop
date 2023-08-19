@@ -61,5 +61,19 @@ namespace UI.Controllers
 
             return RedirectToAction("Index", "Home");
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Purchases()
+        {
+            string userName = User.Identity.Name;
+
+            if(userName !=  null)
+            {
+                await _orderServices.GetOrderPurchases(userName);
+            }
+            
+
+            return View();
+        }
     }
 }

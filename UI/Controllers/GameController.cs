@@ -1,5 +1,6 @@
 ﻿using Application.DTO;
 using Application.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PagedList;
 using UI.Models.Search;
@@ -24,6 +25,13 @@ namespace UI.Controllers
         public IActionResult GameDetails(int id)
         {
             ViewBag.GameId = id;
+            return View();
+        }
+
+        [Authorize(Policy = "DateRegistrationPolicy")]
+        public IActionResult Sales()
+        {
+
             return View();
         }
 

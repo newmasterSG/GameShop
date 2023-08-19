@@ -15,19 +15,16 @@ namespace UI.Controllers
     public class AccountController : Controller
     {
         private ILogger<AccountController> _logger;
-        private AccountServices _accountServices;
         private readonly EmailSender _emailSender;
         private readonly UserManager<UserModel> _userManager;
         private readonly SignInManager<UserModel> _signInManager;
         private readonly IWebHostEnvironment _webHostEnvironment;
         public AccountController(ILogger<AccountController> logger,
-            AccountServices accountServices, 
             UserManager<UserModel> userManager, 
             SignInManager<UserModel> signInManager,
             EmailSender emailSender,
             IWebHostEnvironment webHostEnvironment)
         {
-            _accountServices = accountServices;
             _logger = logger;
             _userManager = userManager;
             _signInManager = signInManager;
@@ -55,7 +52,7 @@ namespace UI.Controllers
             {
                 if(await _userManager.FindByEmailAsync(model.Email) is null)
                 {
-                    var user = new UserModel { UserName = model.Email, Email = model.Email, };
+                    var user = new UserModel { UserName = model.Email, Email = model.Email, DateRegistration = DateTime.Now };
                     var result = await _userManager.CreateAsync(user, model.Password);
 
                     if (result.Succeeded)

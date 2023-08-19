@@ -37,8 +37,6 @@
     <ProjectReference Include="..\ParsingData\ParsingData.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="ServiceProvider\" />
-    <Folder Include="Styles\" />
      <Folder Include="Contents" />
   </ItemGroup>
   <ItemGroup>

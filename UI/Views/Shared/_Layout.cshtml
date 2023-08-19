@@ -1,4 +1,10 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http
+@using System.Globalization;
+@{
+    var currentLang = CultureInfo.CurrentCulture.Name;
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -38,11 +44,18 @@
                         }
                     </div>
 
-                        <button>My office</button>
+                    <button><a href="~/MyOffice/Purchases">My Purchases</a></button>
 
                     <a class="cart-icon" href="~/MyOffice/Card">
                         <img src="cart-icon.png" alt="Корзина">
                     </a>
+
+                    <form asp-controller="Home" asp-action="ChangeLanguage" asp-route-returnUrl="@Context.Request.Path" method="post" class="language-selector-form">
+                        <select name="lang" onchange="this.form.submit()">
+                            <option value="en" selected="@(currentLang == "en")">English</option>
+                            <option value="uk" selected="@(currentLang == "uk")">Українська</option>
+                        </select>
+                    </form>
                     @await Component.InvokeAsync("LoginRegister")
                 </div>
             </div>
