@@ -15,19 +15,16 @@ namespace UI.Controllers
     public class AccountController : Controller
     {
         private ILogger<AccountController> _logger;
-        private AccountServices _accountServices;
         private readonly EmailSender _emailSender;
         private readonly UserManager<UserModel> _userManager;
         private readonly SignInManager<UserModel> _signInManager;
         private readonly IWebHostEnvironment _webHostEnvironment;
         public AccountController(ILogger<AccountController> logger,
-            AccountServices accountServices, 
             UserManager<UserModel> userManager, 
             SignInManager<UserModel> signInManager,
             EmailSender emailSender,
             IWebHostEnvironment webHostEnvironment)
         {
-            _accountServices = accountServices;
             _logger = logger;
             _userManager = userManager;
             _signInManager = signInManager;

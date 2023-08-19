@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
 using Infrastructure.Email.Options;
+using UI.ServiceProvider;
 
 namespace UI
 {
@@ -28,48 +29,16 @@ namespace UI
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
-            builder.Services.AddDistributedMemoryCache();
             builder.Services.AddControllersWithViews();
 
             var connectionString = builder.Configuration["ConnectionString"];
             builder.Services.AddDbContext<GameShopContext>(options =>
                 options.UseSqlServer(connectionString).EnableSensitiveDataLogging());
 
-            builder.Services.Configure<SmtpOptions>(builder.Configuration.GetSection("Smtp"));
+            builder.Services
+                .AddConfig(builder.Configuration)
+                .AddMyDependencyGroup();
 
-            builder.Services.AddIdentityCore<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<GameShopContext>();
-
-            builder.Services.AddScoped<IUnitOfWork, UnitOfWork<GameShopContext>>();
-            builder.Services.AddScoped<IHomeService, HomeService>();
-            builder.Services.AddScoped<AccountServices>();
-            builder.Services.AddScoped<GameService>();
-            builder.Services.AddTransient<EmailSender, SmtpEmailSender>();
-            builder.Services.AddScoped<IUserService, UserService>();
-            builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-            builder.Services.AddScoped<OrderServices>();
-            builder.Services.Configure<IdentityOptions>(options =>
-            {
-                // Password settings.
-                options.Password.RequireDigit = true;
-                options.Password.RequireLowercase = true;
-                options.Password.RequireNonAlphanumeric = true;
-                options.Password.RequireUppercase = true;
-                options.Password.RequiredLength = 6;
-                options.Password.RequiredUniqueChars = 1;
-
-                // Lockout settings.
-                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
-                options.Lockout.MaxFailedAccessAttempts = 5;
-                options.Lockout.AllowedForNewUsers = true;
-
-                // User settings.
-                options.User.AllowedUserNameCharacters =
-                "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
-                options.User.RequireUniqueEmail = true;
-                options.SignIn.RequireConfirmedEmail = true;
-            });
             builder.Services.AddAuthentication(option =>
             {
                 option.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -97,7 +66,6 @@ namespace UI
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
                 };
             });
-
 
             builder.Services.AddIdentity<UserModel, IdentityRole>()
                 .AddEntityFrameworkStores<GameShopContext>()
