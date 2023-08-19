@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using Microsoft.AspNetCore.Localization;
+using System.Globalization;
 
 namespace UI.Middlewares
 {
@@ -13,17 +14,15 @@ namespace UI.Middlewares
 
         public async Task Invoke(HttpContext context)
         {
-            var lang = context.Request.Query["lang"].ToString();
+            var lang = context.Request.Query["lang"];
             if (!string.IsNullOrEmpty(lang))
             {
-                try
-                {
-                    CultureInfo.CurrentCulture = new CultureInfo(lang);
-                    CultureInfo.CurrentUICulture = new CultureInfo(lang);
-                }
-                catch (CultureNotFoundException) { }
+                var cultureInfo = new CultureInfo(lang);
+                CultureInfo.CurrentCulture = cultureInfo;
+                CultureInfo.CurrentUICulture = cultureInfo;
             }
-            await _next.Invoke(context);
+
+            await _next(context);
         }
     }
 

@@ -4,6 +4,7 @@ using Domain.Entities.Games;
 using Infrastructure.UnitOfWork.Interface;
 using Infrastructure.UnitOfWork.UnitOfWork;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using UI.Models;
@@ -52,6 +53,26 @@ namespace UI.Controllers
             var games = await _unitOfWork.GetAllGames();
 
             return Json(games);
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public IActionResult ChangeLanguage(string lang, string returnUrl)
+        {
+            Response.Cookies.Append(
+                            CookieRequestCultureProvider.DefaultCookieName,
+                            CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(lang)),
+                            new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1) }
+                            );
+
+            if (!string.IsNullOrEmpty(returnUrl))
+            {
+                return LocalRedirect(returnUrl);
+            }
+
+            // Если returnUrl пустой, выполните действие по умолчанию.
+            // Например:
+            return RedirectToAction("Index", "Home");
         }
     }
 }
