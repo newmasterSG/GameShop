@@ -6,6 +6,7 @@ using Infrastructure.UnitOfWork.UnitOfWork;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Localization;
 using System.Diagnostics;
 using UI.Models;
 
@@ -16,11 +17,15 @@ namespace UI.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IHomeService _unitOfWork;
+        private readonly IHtmlLocalizer<HomeController> _localizer;
+
         public HomeController(ILogger<HomeController> logger, 
-            IHomeService unitOfWork)
+            IHomeService unitOfWork,
+            IHtmlLocalizer<HomeController> localizer)
         {
             _logger = logger;
             _unitOfWork = unitOfWork;
+            _localizer = localizer;
         }
 
         public IActionResult Index()
@@ -71,7 +76,6 @@ namespace UI.Controllers
             }
 
             // Если returnUrl пустой, выполните действие по умолчанию.
-            // Например:
             return RedirectToAction("Index", "Home");
         }
     }

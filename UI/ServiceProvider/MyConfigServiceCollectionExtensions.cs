@@ -11,6 +11,8 @@ using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Extensions.DependencyModel;
 using Microsoft.AspNetCore.Localization;
 using System.Globalization;
+using Microsoft.AspNetCore.Authorization;
+using UI.Policies;
 
 namespace UI.ServiceProvider
 {
@@ -55,6 +57,7 @@ namespace UI.ServiceProvider
             services.AddMemoryCache();
             services.AddDistributedMemoryCache();
 
+            //Localizations
             services.AddLocalization(opt => { opt.ResourcesPath = "Resources"; });
             services.AddControllersWithViews().AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
                 .AddDataAnnotationsLocalization();
@@ -67,6 +70,14 @@ namespace UI.ServiceProvider
             services.AddScoped<IUserService, UserService>();
             services.AddDatabaseDeveloperPageExceptionFilter();
             services.AddScoped<OrderServices>();
+
+            //Settings Policies
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("DateRegistrationPolicy", policy =>
+                    policy.Requirements.Add(new DateRegistrationRequirement()));
+            });
+            services.AddScoped<IAuthorizationHandler, DateRegistrationHandler>();
 
             return services;
         }

@@ -146,15 +146,16 @@ namespace UI
                         UserName = email,
                         Email = email,
                         EmailConfirmed = true,
+                        DateRegistration = DateTime.Now,
                     };
 
                     IdentityResult result = await userManager.CreateAsync(adminUser, userPassword);
 
                     if (result.Succeeded)
                     {
-                        await userManager.AddClaimAsync(adminUser, new Claim(ClaimTypes.Role, "Buyer"));
+                        await userManager.AddClaimAsync(adminUser, new Claim(ClaimTypes.Role, "Admin"));
                         await userManager.AddClaimAsync(adminUser, new Claim(ClaimTypes.Name, adminUser.UserName));
-                        await userManager.AddToRoleAsync(adminUser, "Buyer");
+                        await userManager.AddToRoleAsync(adminUser, "Admin");
                     }
                 }
                 dbContext.SaveChanges();

@@ -52,7 +52,7 @@ namespace UI.Controllers
             {
                 if(await _userManager.FindByEmailAsync(model.Email) is null)
                 {
-                    var user = new UserModel { UserName = model.Email, Email = model.Email, };
+                    var user = new UserModel { UserName = model.Email, Email = model.Email, DateRegistration = DateTime.Now };
                     var result = await _userManager.CreateAsync(user, model.Password);
 
                     if (result.Succeeded)
