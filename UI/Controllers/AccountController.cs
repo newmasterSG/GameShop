@@ -1,6 +1,5 @@
 ﻿using Application.Services;
 using Domain.Interfaces;
-using Infrastructure.UnitOfWork.Interface;
 using Infrastructure.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;

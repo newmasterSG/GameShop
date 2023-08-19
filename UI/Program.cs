@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using Infrastructure.User;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
-using Infrastructure.UnitOfWork.Interface;
 using Infrastructure.UnitOfWork.UnitOfWork;
 using Application.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;

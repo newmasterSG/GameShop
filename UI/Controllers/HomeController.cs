@@ -94,7 +94,6 @@ namespace UI.Controllers
         }
 
         [HttpPost]
-        [AllowAnonymous]
         public IActionResult ChangeLanguage(string lang, string returnUrl)
         {
             Response.Cookies.Append(

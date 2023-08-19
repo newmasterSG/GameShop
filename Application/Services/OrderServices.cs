@@ -1,6 +1,6 @@
 ﻿using Application.DTO;
 using Domain.Entities;
-using Infrastructure.UnitOfWork.Interface;
+using Domain.Interfaces;
 using Infrastructure.User;
 using Microsoft.EntityFrameworkCore;
 using System;

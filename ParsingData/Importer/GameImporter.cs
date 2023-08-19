@@ -39,7 +39,7 @@ namespace ParsingData.Importer
                 if ((game1.GamesToDevelopers.Count == 0 || game1.GamesToDevelopers.Count > 0 ) && existDevAtGame == null)
                 {
 
-                    game1.GamesToDevelopers.Add(new Domain.Entities.GamesToDeveloper.GamesToDeveloperEntity()
+                    game1.GamesToDevelopers.Add(new Domain.Entities.GamesToDeveloperEntity()
                     {
                         DeveloperId = (int)developer.Id,
                         GameId = (int)game1.Id,
@@ -83,7 +83,7 @@ namespace ParsingData.Importer
 
             var newGame = new GamesEntity()
             {
-                Added_By_Status = game.Added_By_Status ?? new Domain.Entities.AddedByStatus.AddedByStatusEntity(),
+                Added_By_Status = game.Added_By_Status ?? new Domain.Entities.AddedByStatusEntity(),
                 Name = game.Name,
                 Background_Image = game.Background_Image,
                 ESRB_Rating = game.ESRB_Rating ?? eSRBRating,
@@ -107,7 +107,7 @@ namespace ParsingData.Importer
                 Stores = game.Stores ?? new List<StoreEntity>(),
                 GamesToDevelopers = new List<GamesToDeveloperEntity>()
                 {
-                    new Domain.Entities.GamesToDeveloper.GamesToDeveloperEntity()
+                    new Domain.Entities.GamesToDeveloperEntity()
                     {
                         DeveloperId = (int)developer.Id,
                     }
@@ -147,7 +147,7 @@ namespace ParsingData.Importer
                 else
                 {
                     platform.GamesToPlatfrorms = platform.GamesToPlatfrorms;
-                    platform.Platform = new Domain.Entities.PlatformInfo.PlatformInfoEntity()
+                    platform.Platform = new Domain.Entities.PlatformInfoEntity()
                     {
                         Name = platform.Platform.Name,
                         Slug = platform.Platform.Slug,
@@ -236,7 +236,7 @@ namespace ParsingData.Importer
                 {
                     noteExistingStores.Add(new StoreEntity()
                     {
-                        Store = new Domain.Entities.StoreInfo.StoreInfoEntity()
+                        Store = new Domain.Entities.StoreInfoEntity()
                         {
                             Name = store.Store.Name,
                             Slug = store.Store.Slug,

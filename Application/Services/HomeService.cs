@@ -68,7 +68,7 @@ namespace Application.Services
                     Id = (int)item.Id,
                     Name = item.Name,
                     Image = item.Background_Image,
-                    Price = (decimal)new Random().NextDouble(),
+                    Price = item.Price,
                 });
             }
 

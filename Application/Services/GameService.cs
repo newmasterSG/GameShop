@@ -1,7 +1,6 @@
 ﻿using Application.DTO;
 using Domain.Entities;
-using Domain.Entities.GamesToStore;
-using Infrastructure.UnitOfWork.Interface;
+using Domain.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,7 +40,7 @@ namespace Application.Services
             GamesViewDTO gamesView = new GamesViewDTO()
             {
                 Name = game.Name,
-                Price = (decimal)new Random().NextDouble(),
+                Price = game.Price,
                 Developers = developers.Select(x => x.Name).ToList(),
                 ScrenShoots = screenShoots.Select(x => x.Image).ToList(),
                 Tags = tags.Select(x => x.Name).ToList(),
@@ -64,7 +63,7 @@ namespace Application.Services
                     Name = game.Name,
                     Image = game.Background_Image,
                     Owned = game.Added_By_Status?.Owned ?? 4000,
-                    Price = (decimal)new Random().NextDouble(),
+                    Price = game.Price,
                 });
             }
 

@@ -1,5 +1,5 @@
 ﻿using Infrastructure.Context;
-using Domain.Entities.Developer;
+using Domain.Interfaces;
 using Infrastructure.Repository.Repositories;
 using ParsingData.Requests;
 using Microsoft.EntityFrameworkCore;

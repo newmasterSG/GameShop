@@ -1,5 +1,5 @@
 ﻿using Domain.Entities;
-using Domain.Entities.Games;
+using Domain.Interfaces;
 
 namespace ParsingData
 {
