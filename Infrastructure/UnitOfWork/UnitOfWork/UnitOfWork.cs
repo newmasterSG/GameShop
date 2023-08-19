@@ -1,9 +1,8 @@
-﻿using Infrastructure.Repository.Interfaces;
-using Infrastructure.UnitOfWork.Interface;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Infrastructure.Repository.Repositories;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Domain.Interfaces;
 
 namespace Infrastructure.UnitOfWork.UnitOfWork
 {

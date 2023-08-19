@@ -1,13 +1,8 @@
 ﻿using Application.DTO;
 using Application.InterfaceServices;
 using Domain.Entities;
-using Domain.Entities.Developer;
-using Domain.Entities.GamesToDeveloper;
-using Domain.Entities.GamesToStore;
-using Domain.Entities.ShortScreenshot;
 using Infrastructure.Context;
-using Infrastructure.Repository.Interfaces;
-using Infrastructure.UnitOfWork.Interface;
+using Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Services
@@ -35,7 +30,7 @@ namespace Application.Services
                     Name = game.Name,
                     Image = game.Background_Image,
                     Owned = game.Added_By_Status?.Owned ?? 4000,
-                    Price = (decimal)new Random().NextDouble(),
+                    Price = game.Price,
                 });
             }
 
@@ -54,7 +49,7 @@ namespace Application.Services
                     Name = game.Name,
                     Image = game.Background_Image,
                     Owned = game.Added_By_Status?.Owned ?? 4000,
-                    Price = (decimal)new Random().NextDouble(),
+                    Price = game.Price,
                 });
             }
             return gameDTOs;

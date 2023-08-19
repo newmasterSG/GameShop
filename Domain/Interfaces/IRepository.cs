@@ -1,8 +1,7 @@
 ﻿using Domain.Entities;
-using IdentityModel;
 using System.Linq.Expressions;
 
-namespace Infrastructure.Repository.Interfaces
+namespace Domain.Interfaces
 {
     public interface IRepository<T> where T : class
     {

@@ -1,10 +1,4 @@
 ﻿using Domain.Entities;
-using Infrastructure.User;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ParsingData
 {
@@ -50,7 +44,7 @@ namespace ParsingData
             {
                 new PlatformEntity
                 {
-                    Platform = new Domain.Entities.PlatformInfo.PlatformInfoEntity
+                    Platform = new Domain.Entities.PlatformInfoEntity
                     {
                         Name = "PC",
                         Slug = "pc",
@@ -60,7 +54,7 @@ namespace ParsingData
 
                 new PlatformEntity
                 {
-                    Platform = new Domain.Entities.PlatformInfo.PlatformInfoEntity
+                    Platform = new Domain.Entities.PlatformInfoEntity
                     {
                         Name = "PlayStation 4",
                         Slug = "playstation4",
@@ -119,7 +113,7 @@ namespace ParsingData
             {
                 new StoreEntity
                 {
-                    Store = new Domain.Entities.StoreInfo.StoreInfoEntity
+                    Store = new Domain.Entities.StoreInfoEntity
                     {
                         Name = "Steam",
                         Slug = "steam",
@@ -128,7 +122,7 @@ namespace ParsingData
 
                 new StoreEntity
                 {
-                    Store = new Domain.Entities.StoreInfo.StoreInfoEntity
+                    Store = new Domain.Entities.StoreInfoEntity
                     {
                         Slug = "playstation-store",
                         Name = "PlayStation Store",
@@ -188,49 +182,49 @@ namespace ParsingData
                 Developer = new List<DevelopersEntity>() { SeedDev() },
                 GamesToDevelopers = new List<GamesToDeveloperEntity>()
                 {
-                    new Domain.Entities.GamesToDeveloper.GamesToDeveloperEntity()
+                    new Domain.Entities.GamesToDeveloperEntity()
                     {
                         Developer = SeedDev(),
                     }
                 },
                 GamesToGenres = new List<GamesToGenresEntity>()
                 {
-                    new Domain.Entities.GamesToGenres.GamesToGenresEntity()
+                    new Domain.Entities.GamesToGenresEntity()
                     {
                         Genre = genreModels[0],
                     }
                 },
                 GamesToPlatfrorms = new List<GamesToPlatfrormEntity>()
                 {
-                    new Domain.Entities.GamesToPlatform.GamesToPlatfrormEntity()
+                    new Domain.Entities.GamesToPlatfrormEntity()
                     {
                         Platform = platforms[0],
                     }
                 },
                 GamesToRatings = new List<GamesToRatingEntity>()
                 {
-                    new Domain.Entities.GamesToRating.GamesToRatingEntity()
+                    new Domain.Entities.GamesToRatingEntity()
                     {
                         Rating = ratings[0],
                     }
                 },
                 GamesToStores = new List<GamesToStoresEntity>()
                 {
-                    new Domain.Entities.GamesToStore.GamesToStoresEntity()
+                    new Domain.Entities.GamesToStoresEntity()
                     {
                         Store = stores[0],
                     }
                 },
                 GamesToTags = new List<GamesToTagsEntity>()
                 {
-                    new Domain.Entities.GamesToTags.GamesToTagsEntity()
+                    new Domain.Entities.GamesToTagsEntity()
                     {
                         Tag = tags[0],
                     }
                 },
                 GameToShortScreenshots = new List<GamesToScreenshotsEntity>()
                 {
-                    new Domain.Entities.GamesToScreenshots.GamesToScreenshotsEntity()
+                    new Domain.Entities.GamesToScreenshotsEntity()
                     {
                         ShortScreenshot = shortScreenshots[0],
                     }

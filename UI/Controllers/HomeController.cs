@@ -1,7 +1,7 @@
 ﻿using Application.DTO;
 using Application.InterfaceServices;
-using Domain.Entities.Games;
-using Infrastructure.UnitOfWork.Interface;
+using Domain.Entities;
+using Domain.Interfaces;
 using Infrastructure.UnitOfWork.UnitOfWork;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Localization;

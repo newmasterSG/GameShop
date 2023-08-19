@@ -4,7 +4,6 @@ using Domain.Interfaces;
 using Infrastructure.Context;
 using Infrastructure.Email;
 using Infrastructure.Email.Options;
-using Infrastructure.UnitOfWork.Interface;
 using Infrastructure.UnitOfWork.UnitOfWork;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Razor;
