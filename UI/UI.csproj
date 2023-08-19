@@ -37,7 +37,7 @@
     <ProjectReference Include="..\ParsingData\ParsingData.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Styles\" />
+    <Folder Include="Resources\Views\Home\" />
      <Folder Include="Contents" />
   </ItemGroup>
   <ItemGroup>

@@ -67,7 +67,7 @@ namespace UI
                 };
             });
 
-            builder.Services.AddIdentity<UserModel, IdentityRole>()
+            builder.Services.AddIdentity<UserModel, IdentityRole>(option => option.SignIn.RequireConfirmedEmail = true)
                 .AddEntityFrameworkStores<GameShopContext>()
                 .AddDefaultTokenProviders();
 
@@ -84,12 +84,6 @@ namespace UI
             app.UseHttpsRedirection();
             app.UseDefaultFiles();
             app.UseStaticFiles();
-            app.UseStaticFiles(new StaticFileOptions
-            {
-                FileProvider = new PhysicalFileProvider(
-                Path.Combine(builder.Environment.ContentRootPath, "Styles")),
-                RequestPath = "/StaticFiles"
-            });
 
             app.UseStaticFiles(new StaticFileOptions
             {
