@@ -1,12 +1,12 @@
-﻿using Domain.Entities.Store;
+﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Context.Config
 {
-    public class StoreConfig : IEntityTypeConfiguration<StoreModel>
+    public class StoreConfig : IEntityTypeConfiguration<StoreEntity>
     {
-        public void Configure(EntityTypeBuilder<StoreModel> builder)
+        public void Configure(EntityTypeBuilder<StoreEntity> builder)
         {
             builder.ToTable("Store");
 

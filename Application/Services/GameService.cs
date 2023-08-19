@@ -1,10 +1,6 @@
 ﻿using Application.DTO;
-using Domain.Entities.Developer;
-using Domain.Entities.Games;
+using Domain.Entities;
 using Domain.Entities.GamesToStore;
-using Domain.Entities.ShortScreenshot;
-using Domain.Entities.Store;
-using Domain.Entities.Tags;
 using Infrastructure.UnitOfWork.Interface;
 using System;
 using System.Collections.Generic;
@@ -29,17 +25,17 @@ namespace Application.Services
                 return null;
             }
 
-            var game = await _unitOfWork.GetRepository<GamesModel>().GetByIdAsync(id);
+            var game = await _unitOfWork.GetRepository<GamesEntity>().GetByIdAsync(id);
 
-            var screenShoots = await _unitOfWork.GetRepository<ShortScreenshotModel>().ListAsync(x => x.Game.Id == game.Id);
+            var screenShoots = await _unitOfWork.GetRepository<ShortScreenshotEntity>().ListAsync(x => x.Game.Id == game.Id);
 
-            var developers = await _unitOfWork.GetRepository<DevelopersModel>()
+            var developers = await _unitOfWork.GetRepository<DevelopersEntity>()
                 .ListAsync(x => x.GamesToDevelopers.Any(gtd => gtd.GameId == game.Id));
 
-            var tags = await _unitOfWork.GetRepository<TagModel>()
+            var tags = await _unitOfWork.GetRepository<TagEntity>()
                 .ListAsync(x => x.ToTagsModels.Any(gtd => gtd.GamesId == game.Id));
 
-            var store = await _unitOfWork.GetRepository<StoreModel>()
+            var store = await _unitOfWork.GetRepository<StoreEntity>()
                 .ListAsync(x => x.GamesToStores.Any(gtd => gtd.GameId == game.Id));
 
             GamesViewDTO gamesView = new GamesViewDTO()
@@ -58,7 +54,7 @@ namespace Application.Services
 
         public async Task<List<GameDTO>> SearchGame(string name)
         {
-            var dbGames =  await _unitOfWork.GetRepository<GamesModel>().ListAsync(g => g.Name == name);
+            var dbGames =  await _unitOfWork.GetRepository<GamesEntity>().ListAsync(g => g.Name == name);
             var games = new List<GameDTO>();
             foreach(var game in dbGames)
             {

@@ -1,23 +1,21 @@
-﻿using Domain.Entities.Games;
-using Domain.Entities.Orders;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Entities.GameKeys
+namespace Domain.Entities
 {
-    public class GameKey
+    public class GameKeyEntity
     {
         public int Id { get; set; }
         public Guid Key { get; set; }
         public int GameId { get; set; }
 
-        public GamesModel Game { get; set; }
+        public GamesEntity Game { get; set; }
         public bool IsBuy { get; set; }
 
-        public Order? Order { get; set; }
+        public OrderEntity? Order { get; set; }
 
         public int? OrderId { get; set; }
     }

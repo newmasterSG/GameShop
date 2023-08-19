@@ -2,7 +2,7 @@
 
 namespace Domain.Entities.PlatformInfo
 {
-    public class PlatformInfoModel : EntityBase
+    public class PlatformInfoEntity : EntityBase
     {
         public new int? Id { get; set; }
         public string? Name { get; set; }

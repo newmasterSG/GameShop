@@ -2,7 +2,7 @@
 
 namespace Domain.Entities.StoreInfo
 {
-    public class StoreInfoModel : EntityBase
+    public class StoreInfoEntity : EntityBase
     {
         public new int? Id { get; set; }
         public string? Name { get; set; }

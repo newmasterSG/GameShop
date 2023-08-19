@@ -1,13 +1,13 @@
-﻿using Domain.Entities.GamesToRating;
+﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System.Reflection.Emit;
 
 namespace Infrastructure.Context.Config
 {
-    public class GamesToRatingConfig : IEntityTypeConfiguration<GamesToRatingModel>
+    public class GamesToRatingConfig : IEntityTypeConfiguration<GamesToRatingEntity>
     {
-        public void Configure(EntityTypeBuilder<GamesToRatingModel> builder)
+        public void Configure(EntityTypeBuilder<GamesToRatingEntity> builder)
         {
             builder.ToTable("GamesToRating");
 

@@ -54,7 +54,10 @@ namespace UI.ServiceProvider
              this IServiceCollection services)
         {
             //Caching
-            services.AddMemoryCache();
+            services.AddMemoryCache(option =>
+            {
+                option.SizeLimit = 1024;
+            });
             services.AddDistributedMemoryCache();
 
             //Localizations

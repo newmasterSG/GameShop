@@ -1,5 +1,4 @@
 ﻿using Domain.Entities;
-using Domain.Entities.GameKeys;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
@@ -10,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Context.Config
 {
-    public class GameKeyConfig : IEntityTypeConfiguration<GameKey>
+    public class GameKeyConfig : IEntityTypeConfiguration<GameKeyEntity>
     {
-        public void Configure(EntityTypeBuilder<GameKey> builder)
+        public void Configure(EntityTypeBuilder<GameKeyEntity> builder)
         {
             builder
                  .ToTable("GameKeys");

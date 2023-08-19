@@ -1,13 +1,13 @@
-﻿using Domain.Entities.GamesToTags;
+﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System.Reflection.Emit;
 
 namespace Infrastructure.Context.Config
 {
-    public class GamesToTagsConfig : IEntityTypeConfiguration<GamesToTagsModel>
+    public class GamesToTagsConfig : IEntityTypeConfiguration<GamesToTagsEntity>
     {
-        public void Configure(EntityTypeBuilder<GamesToTagsModel> builder)
+        public void Configure(EntityTypeBuilder<GamesToTagsEntity> builder)
         {
             builder.ToTable("GamesToTags");
 

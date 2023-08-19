@@ -1,15 +1,13 @@
-﻿using Domain.Entities.Games;
-using Domain.Entities.GamesToTags;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Entities.Tags
+namespace Domain.Entities
 {
-    public class TagModel : EntityBase
+    public class TagEntity : EntityBase
     {
         public new int? Id { get; set; }
         public string? Name { get; set; }
@@ -18,7 +16,7 @@ namespace Domain.Entities.Tags
         public int? Games_Count { get; set; }
         public string? Image_Background { get; set; }
 
-        public List<GamesModel> Games { get; set; }
-        public List<GamesToTagsModel> ToTagsModels { get; set; }
+        public List<GamesEntity> Games { get; set; }
+        public List<GamesToTagsEntity> ToTagsModels { get; set; }
     }
 }

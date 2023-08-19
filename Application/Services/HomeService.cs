@@ -2,7 +2,6 @@
 using Application.InterfaceServices;
 using Domain.Entities;
 using Domain.Entities.Developer;
-using Domain.Entities.Games;
 using Domain.Entities.GamesToDeveloper;
 using Domain.Entities.GamesToStore;
 using Domain.Entities.ShortScreenshot;
@@ -25,7 +24,7 @@ namespace Application.Services
         {
             List<GameDTO> gameDTOsForCarousel = new List<GameDTO>();
 
-            var games = await _unitOfWork.GetRepository<GamesModel>()
+            var games = await _unitOfWork.GetRepository<GamesEntity>()
         .ListAsync(x => x.Added_By_Status.Owned > 4000);
 
             foreach (var game in games)
@@ -46,7 +45,7 @@ namespace Application.Services
         public async Task<List<GameDTO>> GetAllGames()
         {
             List<GameDTO> gameDTOs = new List<GameDTO>();
-            var games = await _unitOfWork.GetRepository<GamesModel>().TakeAsync(0, 12);
+            var games = await _unitOfWork.GetRepository<GamesEntity>().TakeAsync(0, 12);
             foreach (var game in games)
             {
                 gameDTOs.Add(new GameDTO()
@@ -65,7 +64,7 @@ namespace Application.Services
         {
             List<GameDTO> gameDTOs = new List<GameDTO>();
 
-            var games = await _unitOfWork.GetRepository<GamesModel>().GetAllAsync();
+            var games = await _unitOfWork.GetRepository<GamesEntity>().GetAllAsync();
 
             foreach (var item in games)
             {

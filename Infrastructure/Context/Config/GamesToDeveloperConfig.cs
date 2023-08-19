@@ -1,4 +1,4 @@
-﻿using Domain.Entities.GamesToDeveloper;
+﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Context.Config
 {
-    public class GamesToDeveloperConfig : IEntityTypeConfiguration<GamesToDeveloperModel>
+    public class GamesToDeveloperConfig : IEntityTypeConfiguration<GamesToDeveloperEntity>
     {
-        public void Configure(EntityTypeBuilder<GamesToDeveloperModel> builder)
+        public void Configure(EntityTypeBuilder<GamesToDeveloperEntity> builder)
         {
             builder.ToTable("GamesToDevelopers");
 

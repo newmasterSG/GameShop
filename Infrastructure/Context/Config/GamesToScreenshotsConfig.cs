@@ -1,12 +1,12 @@
-﻿using Domain.Entities.GamesToScreenshots;
+﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Context.Config
 {
-    public class GamesToScreenshotsConfig : IEntityTypeConfiguration<GamesToScreenshotsModel>
+    public class GamesToScreenshotsConfig : IEntityTypeConfiguration<GamesToScreenshotsEntity>
     {
-        public void Configure(EntityTypeBuilder<GamesToScreenshotsModel> builder)
+        public void Configure(EntityTypeBuilder<GamesToScreenshotsEntity> builder)
         {
             builder.ToTable("GamesToScreenshots");
 
@@ -22,7 +22,7 @@ namespace Infrastructure.Context.Config
             builder
                .HasOne(gtg => gtg.ShortScreenshot)
                .WithOne(g => g.GamesToScreenshots)
-               .HasForeignKey<GamesToScreenshotsModel>(gtg => gtg.ScreenshotId)
+               .HasForeignKey<GamesToScreenshotsEntity>(gtg => gtg.ScreenshotId)
                .OnDelete(DeleteBehavior.Restrict);
         }
     }

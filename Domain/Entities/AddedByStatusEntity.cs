@@ -1,9 +1,8 @@
-﻿using Domain.Entities.Games;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Domain.Entities.AddedByStatus
+namespace Domain.Entities
 {
-    public class AddedByStatusModel: EntityBase
+    public class AddedByStatusEntity : EntityBase
     {
         public new int? Id { get; set; }
         public int? Yet { get; set; }
@@ -12,6 +11,6 @@ namespace Domain.Entities.AddedByStatus
         public int? Toplay { get; set; }
         public int? Dropped { get; set; }
         public int? Playing { get; set; }
-        public List<GamesModel> Games { get; set; }
+        public List<GamesEntity> Games { get; set; }
     }
 }
