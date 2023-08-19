@@ -20,6 +20,9 @@ using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
 using Infrastructure.Email.Options;
 using UI.ServiceProvider;
+using UI.Middlewares;
+using Microsoft.AspNetCore.Localization;
+using System.Globalization;
 
 namespace UI
 {
@@ -28,8 +31,6 @@ namespace UI
         public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-
-            builder.Services.AddControllersWithViews();
 
             var connectionString = builder.Configuration["ConnectionString"];
             builder.Services.AddDbContext<GameShopContext>(options =>
@@ -73,6 +74,20 @@ namespace UI
 
             var app = builder.Build();
 
+            var supportedCultures = new[]
+            {
+                new CultureInfo("en"),
+                new CultureInfo("uk"),
+            };
+
+            app.UseRequestLocalization(new RequestLocalizationOptions
+            {
+                DefaultRequestCulture = new RequestCulture("en"),
+                SupportedCultures = supportedCultures,
+                SupportedUICultures = supportedCultures,
+            });
+
+            app.UseCulture();
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
             {

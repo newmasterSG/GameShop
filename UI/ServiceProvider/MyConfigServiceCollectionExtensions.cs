@@ -7,7 +7,10 @@ using Infrastructure.Email.Options;
 using Infrastructure.UnitOfWork.Interface;
 using Infrastructure.UnitOfWork.UnitOfWork;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Extensions.DependencyModel;
+using Microsoft.AspNetCore.Localization;
+using System.Globalization;
 
 namespace UI.ServiceProvider
 {
@@ -16,6 +19,7 @@ namespace UI.ServiceProvider
         public static IServiceCollection AddConfig(
              this IServiceCollection services, IConfiguration config)
         {
+
             services.Configure<SmtpOptions>(config.GetSection("Smtp"));
 
             services.Configure<IdentityOptions>(options =>
@@ -47,8 +51,15 @@ namespace UI.ServiceProvider
         public static IServiceCollection AddMyDependencyGroup(
              this IServiceCollection services)
         {
+            //Caching
             services.AddMemoryCache();
             services.AddDistributedMemoryCache();
+
+            services.AddLocalization(opt => { opt.ResourcesPath = "Resources"; });
+            services.AddControllersWithViews().AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
+                .AddDataAnnotationsLocalization();
+
+            //My own services
             services.AddScoped<IUnitOfWork, UnitOfWork<GameShopContext>>();
             services.AddScoped<IHomeService, HomeService>();
             services.AddScoped<GameService>();
