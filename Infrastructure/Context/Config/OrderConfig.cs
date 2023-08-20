@@ -14,7 +14,7 @@ namespace Infrastructure.Context.Config
         public void Configure(EntityTypeBuilder<OrderEntity> builder)
         {
             builder
-                .ToTable("OrderEntity");
+                .ToTable("Order");
 
             builder
                 .Property(f => f.Id)

@@ -25,9 +25,9 @@ namespace Application.Services
         /// <param name="userId"></param>
         /// <param name="gameIds"></param>
         /// <exception cref="Exception"></exception>
-        public void CreateOrder(string userId, Dictionary<int,int> gameIds, decimal price)
+        public void CreateOrder(UserModel user, Dictionary<int,int> gameIds, decimal price)
         {
-            Guid guid = new Guid(userId);
+            Guid guid = new Guid(user.Id);
 
             var order = new OrderEntity
             {
@@ -63,7 +63,9 @@ namespace Application.Services
                     }
                 }
             }
+            user.GameOwning += order.GameKeys.Count;
 
+            _context.GetRepository<UserModel>().Update(user);
             _context.GetRepository<OrderEntity>().Insert(order);
             _context.Save();
         }

@@ -39,17 +39,16 @@ namespace UI.Controllers
         [HttpPost]
         public async Task<IActionResult> BuyGames(OrderDTO orderDTO, string name, string price)
         {
-            // Get the user ID, for example, through ASP.NET Identity
+            // Get the user, for example, through ASP.NET Identity
             var user = await _userManager.FindByNameAsync(name);
 
-            var userId = user.Id;
             decimal prices;
             CultureInfo culture = CultureInfo.InvariantCulture;
             if (Decimal.TryParse(price, NumberStyles.Any, culture, out prices))
             {
                 try
                 {
-                    _orderServices.CreateOrder(userId, orderDTO.GameIds, prices);
+                    _orderServices.CreateOrder(user, orderDTO.GameIds, prices);
                 }
                 catch(Exception ex) 
                 {
