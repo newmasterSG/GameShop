@@ -53,7 +53,7 @@ namespace Application.Services
 
         public async Task<List<GameDTO>> SearchGame(string name)
         {
-            var dbGames =  await _unitOfWork.GetRepository<GamesEntity>().ListAsync(g => g.Name == name);
+            var dbGames =  await _unitOfWork.GetRepository<GamesEntity>().ListAsync(g => g.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
             var games = new List<GameDTO>();
             foreach(var game in dbGames)
             {
