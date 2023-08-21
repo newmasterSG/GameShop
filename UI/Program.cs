@@ -22,6 +22,7 @@ using UI.ServiceProvider;
 using UI.Middlewares;
 using Microsoft.AspNetCore.Localization;
 using System.Globalization;
+using Domain.Entities;
 
 namespace UI
 {
@@ -121,11 +122,13 @@ namespace UI
                 var roles = new[] { "Admin", "Manager", "Buyer" };
 
                 var gameEntity = Seeding.Seed();
-                
-                if(await dbContext.Games.FirstOrDefaultAsync(g => g.Name == gameEntity.Name) == null)
+
+                if (await dbContext.Games.FirstOrDefaultAsync(g => g.Name == gameEntity.Name) == null)
                 {
                     dbContext.Games.Add(gameEntity);
                 }
+
+                //dbContext.Games.Add(gameEntity);
 
                 string email = "testing.project.ts@gmail.com";
                 string userPassword = "Eg.1234";

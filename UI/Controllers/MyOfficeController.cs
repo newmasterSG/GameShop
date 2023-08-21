@@ -62,17 +62,19 @@ namespace UI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Purchases()
+        public async Task<ActionResult<List<OrderPurchaseDto>>> Purchases()
         {
             string userName = User.Identity.Name;
 
+            List<OrderPurchaseDto> purchase = new List<OrderPurchaseDto>();
+
             if(userName !=  null)
             {
-                await _orderServices.GetOrderPurchases(userName);
+                purchase = await _orderServices.GetOrderPurchases(userName);
             }
             
 
-            return View();
+            return View(purchase);
         }
     }
 }
