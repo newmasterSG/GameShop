@@ -93,6 +93,14 @@ namespace UI.Controllers
             return Json(games);
         }
 
+        [HttpGet]
+        public async Task<ActionResult<List<TagDTO>>> GetAllTags()
+        {
+            var tags = await _unitOfWork.GetAllTags();
+
+            return Json(tags);
+        }
+
         [HttpPost]
         public IActionResult ChangeLanguage(string lang, string returnUrl)
         {

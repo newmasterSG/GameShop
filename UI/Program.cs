@@ -128,8 +128,6 @@ namespace UI
                     dbContext.Games.Add(gameEntity);
                 }
 
-                //dbContext.Games.Add(gameEntity);
-
                 string email = "testing.project.ts@gmail.com";
                 string userPassword = "Eg.1234";
 

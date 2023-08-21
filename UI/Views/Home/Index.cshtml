@@ -4,37 +4,48 @@
 }
 <style>
     .custom-card {
-        height: 100%; /* Фиксированная высота для карточек */
+        height: 100%;
+    }
+
+    #card-row{
+        align-content:center;
+        justify-content: center;
+        margin-left: 10%;
+    }
+
+    #topGamesCarousel{
+        margin-bottom: 20px;
     }
 </style>
 
-<div class="container mt-5">
-    <aside>
-        edefefefef
-    </aside>
+    <div class="row">
+        <aside class="col-md-1" id="asideTag">
+            
+        </aside>
 
-    <h2 class="mb-4 text-center">@localizer["topGame"]</h2>
-    <div class="text-end mt-3">
-        <a href="#" class="btn btn-primary">Показать все</a>
-    </div>
-    <div id="topGamesCarousel" class="carousel slide w-25 mx-auto" data-ride="carousel">
-        <div class="carousel-inner" id="carouselInner">
-           
+        <div class="container col-md-11">
+        <h2 class="mb-4 text-center">@localizer["topGame"]</h2>
+
+        <div id="topGamesCarousel" class="carousel slide w-25 mx-auto" data-ride="carousel">
+            <div class="carousel-inner" id="carouselInner">
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#topGamesCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#topGamesCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
         </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#topGamesCarousel" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#topGamesCarousel" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-        </button>
-    </div>
+        <div class="text-end">
+            <a href="#" class="btn btn-primary">Показать все</a>
+        </div>
 
-    <div class="row" id="card-row">
-        
+        <div class="row" id="card-row">
+        </div>
     </div>
-</div>
+    </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
@@ -106,5 +117,36 @@
                     console.error('Ошибка при получении списка игр.');
                 }
             });
+
+    $.get('/Home/GetAllTags', function (data) {
+        var ulList = $('<ul></ul>');
+
+        data.forEach(function (tag) {
+            console.log(tag);
+
+            var li = $('<li></li>').text(tag.name);
+
+            li.on('mouseenter', function () {
+                var img = $('<img>').attr('src', tag.imageBackground).css({
+                    'max-width': '100px',
+                    'max-height': '100px',
+                    'z-index': '100',
+                });
+                li.append(img);
+            });
+
+            li.on('mouseleave', function () {
+                li.find('img').remove();
+            });
+
+            li.on('click', function () {
+                window.location.href = '/GamesPage?tag=' + encodeURIComponent(tag.Name);
+            });
+
+            ulList.append(li);
+        });
+
+        $('#asideTag').append(ulList);
+    });
     
 </script>

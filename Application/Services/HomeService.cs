@@ -74,5 +74,23 @@ namespace Application.Services
 
             return gameDTOs;
         }
+
+        public async Task<List<TagDTO>> GetAllTags()
+        {
+            List<TagDTO> tags = new List<TagDTO>();
+
+            var dbTags = await _unitOfWork.GetRepository<TagEntity>().GetAllAsync();
+
+            foreach (var tag in dbTags)
+            {
+                tags.Add(new TagDTO()
+                {
+                    Name = tag.Name,
+                    ImageBackground = tag.Image_Background,
+                });
+            }
+
+            return tags;
+        }
     }
 }
