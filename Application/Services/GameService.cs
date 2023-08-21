@@ -69,5 +69,39 @@ namespace Application.Services
 
             return games;
         }
+
+        public async Task<List<GameDTO>> GamesByTags(string tag)
+        {
+            var games = new List<GameDTO>();
+
+            // Find the tag entity in the database
+            var dbTag = _unitOfWork.GetRepository<TagEntity>().List(t => t.Name == tag).FirstOrDefault();
+
+            if (dbTag != null)
+            {
+                // Get the games associated with the tag
+                var gamesToTagsRepo = _unitOfWork.GetRepository<GamesToTagsEntity>();
+                var dbGamesToTags = await gamesToTagsRepo.ListAsync(gt => gt.Tag.Name == dbTag.Name);
+
+                // Extract the Game entities from GamesToTagsEntity
+                var dbGamesId = dbGamesToTags.Select(gt => gt.GamesId);
+                var gameRepo = _unitOfWork.GetRepository<GamesEntity>();
+
+                foreach(var game in dbGamesId)
+                {
+                    var g = await gameRepo.GetByIdAsync(game.Value);
+                    games.Add(new GameDTO
+                    {
+                        Id = (int)g.Id,
+                        Image = g.Background_Image,
+                        Name = g.Name,
+                        Owned = g.Added_By_Status?.Owned ?? 4000,
+                        Price = g.Price,
+                    });
+                }
+            }
+
+            return games;
+        }
     }
 }

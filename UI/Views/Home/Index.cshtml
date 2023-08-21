@@ -39,7 +39,7 @@
             </button>
         </div>
         <div class="text-end">
-            <a href="#" class="btn btn-primary">Показать все</a>
+            <a href="#" class="btn btn-primary">@localizer["showall_text"]</a>
         </div>
 
         <div class="row" id="card-row">
@@ -120,12 +120,11 @@
 
     $.get('/Home/GetAllTags', function (data) {
         var ulList = $('<ul></ul>');
-
+        let text = '@localizer["showall_text"]';
+        let i;
         data.forEach(function (tag) {
-            console.log(tag);
-
             var li = $('<li></li>').text(tag.name);
-
+            i++;
             li.on('mouseenter', function () {
                 var img = $('<img>').attr('src', tag.imageBackground).css({
                     'max-width': '100px',
@@ -140,10 +139,16 @@
             });
 
             li.on('click', function () {
-                window.location.href = '/GamesPage?tag=' + encodeURIComponent(tag.Name);
+                window.location.href = '@Url.Action("GamesByTag","Game")?tag=' + encodeURIComponent(tag.name);
             });
 
             ulList.append(li);
+
+            if (i === 29) {
+                var linkText = $('<a>').attr('href', '/Game/ListTags').text(text);
+                var listItem = $('<li>').append(linkText);
+                ulList.append(listItem);
+            }
         });
 
         $('#asideTag').append(ulList);
