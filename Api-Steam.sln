@@ -13,7 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UI", "UI\UI.csproj", "{C145
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "Application\Application.csproj", "{370443A9-AE55-43EB-AE2B-B2C8ADDF84BA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoqTest", "MoqTest\MoqTest.csproj", "{346ED100-BCB2-4BD2-984E-D7E50EFF7E0F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoqTest", "MoqTest\MoqTest.csproj", "{346ED100-BCB2-4BD2-984E-D7E50EFF7E0F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{F24823AA-1704-4CDB-AC70-6AAC677FD9A2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -48,6 +50,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{346ED100-BCB2-4BD2-984E-D7E50EFF7E0F} = {F24823AA-1704-4CDB-AC70-6AAC677FD9A2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B61E431F-6FDD-484E-B587-9E9B149F305C}

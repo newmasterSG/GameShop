@@ -12,6 +12,9 @@ using Microsoft.AspNetCore.Localization;
 using System.Globalization;
 using Microsoft.AspNetCore.Authorization;
 using UI.Policies;
+using UI.Config;
+using Microsoft.Extensions.DependencyInjection;
+using IdentityServer4.Test;
 
 namespace UI.ServiceProvider
 {
@@ -55,6 +58,14 @@ namespace UI.ServiceProvider
             //Caching
             services.AddMemoryCache();
             services.AddDistributedMemoryCache();
+
+            //IdentityServer
+            services.AddIdentityServer()
+                .AddInMemoryApiScopes(MyConfigIdentityServer.ApiScopes)
+                .AddInMemoryClients(MyConfigIdentityServer.Clients)
+                .AddTestUsers(MyConfigIdentityServer.TestUsers)
+                .AddJwtBearerClientAuthentication()
+                .AddDeveloperSigningCredential();
 
             //Localizations
             services.AddLocalization(opt => { opt.ResourcesPath = "Resources"; });

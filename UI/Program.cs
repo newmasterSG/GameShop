@@ -23,6 +23,10 @@ using UI.Middlewares;
 using Microsoft.AspNetCore.Localization;
 using System.Globalization;
 using Domain.Entities;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+using IdentityServer4;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace UI
 {
@@ -46,27 +50,40 @@ namespace UI
                 option.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 option.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
-           .AddCookie(options =>
+           .AddOpenIdConnect("oidc", "Demo IdentityServer", option =>
            {
-               options.Cookie.HttpOnly = true;
-               options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
-               options.SlidingExpiration = true;
-               options.LoginPath = "/Account/Login";
+               option.Authority = "https://localhost:5002/signin-oidc";
+               option.CallbackPath = "/signin-oidc";
+               option.SignedOutCallbackPath = "/signout-callback-oidc";
+
+               option.ClientId = "mvc";
+               option.ClientSecret = "secret";
+               option.ResponseType = OpenIdConnectResponseType.Code;
+
+               option.UsePkce = true;
+               option.SaveTokens = true;
+
+               option.Scope.Add(OpenIdConnectScope.OpenId);
+               option.Scope.Add(OpenIdConnectScope.OfflineAccess);
+               option.Scope.Add(IdentityServerConstants.StandardScopes.OpenId);
+               option.Scope.Add(IdentityServerConstants.StandardScopes.Profile);
+               option.Scope.Add("api1");
+
            })
            .AddJwtBearer(options =>
-            {
-                options.SaveToken = true;
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
-                    ValidIssuer = builder.Configuration["Jwt:Issuer"],
-                    ValidAudience = builder.Configuration["Jwt:Audience"],
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
-                };
-            });
+             {
+                 options.SaveToken = true;
+                 options.TokenValidationParameters = new TokenValidationParameters
+                 {
+                     ValidateIssuer = true,
+                     ValidateAudience = true,
+                     ValidateLifetime = true,
+                     ValidateIssuerSigningKey = true,
+                     ValidIssuer = builder.Configuration["Jwt:Issuer"],
+                     ValidAudience = builder.Configuration["Jwt:Audience"],
+                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+                 };
+             });
 
             builder.Services.AddIdentity<UserModel, IdentityRole>(option => option.SignIn.RequireConfirmedEmail = true)
                 .AddEntityFrameworkStores<GameShopContext>()
@@ -155,6 +172,7 @@ namespace UI
                     {
                         await userManager.AddClaimAsync(adminUser, new Claim(ClaimTypes.Role, "Admin"));
                         await userManager.AddClaimAsync(adminUser, new Claim(ClaimTypes.Name, adminUser.UserName));
+                        await userManager.AddClaimAsync(adminUser, new Claim(JwtRegisteredClaimNames.Sub, adminUser.UserName));
                         await userManager.AddToRoleAsync(adminUser, "Admin");
                     }
                 }
@@ -163,7 +181,7 @@ namespace UI
 
             app.UseRouting();
 
-            app.UseAuthentication();
+            app.UseIdentityServer();
 
             app.Use(async (context, next) =>
             {
