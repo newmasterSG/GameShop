@@ -36,11 +36,13 @@
                         </li>
                         <!-- Add more pages here as needed -->
                     </ul>
-                    <div class="container">
-                        @using (Html.BeginForm("Search", "Game", FormMethod.Post))
+                    <div class="">
+                        @using (Html.BeginForm("Search", "Game", FormMethod.Post ))
                         {
-                            <input class="form-control mr-sm-2" type="search" placeholder="Search" name="GameName" aria-label="Search">
-                            <button class="btn btn-outline-light" type="submit">Search</button>
+                            <div class="input-group">
+                                <input class="form-control mr-sm-2" type="search" placeholder="Search" name="GameName" aria-label="Search">
+                                <button class="input-group-text btn btn-outline-light" type="submit">Search</button>
+                            </div>
                         }
                     </div>
 

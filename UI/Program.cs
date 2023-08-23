@@ -51,21 +51,18 @@ namespace UI
                 googleOptions.SaveTokens = true;
                 googleOptions.ClientId = builder.Configuration["GoogleProviderLogin:client_iD"];
                 googleOptions.ClientSecret = builder.Configuration["GoogleProviderLogin:client_secret"];
-                googleOptions.Events.OnTicketReceived = (context) =>
-                {
-                    Console.WriteLine(context.HttpContext.User);
-                    return Task.CompletedTask;
-                };
-                googleOptions.Events.OnCreatingTicket = (context) =>
-                {
-                    Console.WriteLine(context.Identity);
-                    return Task.CompletedTask;
-                };
+                googleOptions.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
             });
 
             builder.Services.AddIdentity<UserModel, IdentityRole>(option => option.SignIn.RequireConfirmedEmail = true)
                 .AddEntityFrameworkStores<GameShopContext>()
                 .AddDefaultTokenProviders();
+
+            builder.Services.ConfigureApplicationCookie(confing =>
+            {
+                confing.Cookie.Name = "IdentityServer.Cookie";
+                confing.LoginPath = "/Account/Login";
+            });
 
 
             var app = builder.Build();

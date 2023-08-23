@@ -9,7 +9,6 @@
 
   <ItemGroup>
     <Content Remove="Views\Account\ForgotPassword.cshtml" />
-    <Content Remove="Views\Game\GamesByTag.cshtml" />
   </ItemGroup>
   
   <ItemGroup>
@@ -44,7 +43,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Views\Account\ForgotPassword.cshtml" />
-    <None Include="Views\Game\GamesByTag.cshtml" />
     <None Include="wwwroot\css\standart.css" />
   </ItemGroup>
   <ItemGroup>

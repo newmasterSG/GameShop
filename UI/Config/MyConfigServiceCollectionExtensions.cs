@@ -118,6 +118,7 @@ namespace UI.ServiceProvider
                option.Scope.Add(OpenIdConnectScope.OfflineAccess);
                option.Scope.Add(IdentityServerConstants.StandardScopes.OpenId);
                option.Scope.Add(IdentityServerConstants.StandardScopes.Profile);
+               option.Scope.Add(IdentityServerConstants.StandardScopes.Email);
                option.Scope.Add("ApiSteam");
 
            });
