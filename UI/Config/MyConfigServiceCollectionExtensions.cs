@@ -14,11 +14,11 @@ using Microsoft.AspNetCore.Authorization;
 using UI.Policies;
 using UI.Config;
 using Microsoft.Extensions.DependencyInjection;
-using IdentityServer4.Test;
-using IdentityServer4;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Duende.IdentityServer;
+using Infrastructure.User;
 
 namespace UI.ServiceProvider
 {
@@ -65,6 +65,7 @@ namespace UI.ServiceProvider
 
             //IdentityServer
             services.AddIdentityServer()
+                .AddAspNetIdentity<UserModel>()
                 .AddInMemoryApiScopes(MyConfigIdentityServer.ApiScopes)
                 .AddInMemoryClients(MyConfigIdentityServer.Clients)
                 .AddTestUsers(MyConfigIdentityServer.TestUsers)

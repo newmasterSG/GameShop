@@ -1,8 +1,6 @@
-﻿using IdentityServer4.Models;
-using IdentityServer4;
-using IdentityServer4.Test;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
+using Duende.IdentityServer.Models;
 
 namespace UI.Config
 {
