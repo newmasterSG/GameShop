@@ -1,12 +1,12 @@
-﻿using Domain.Entities.AddedByStatus;
+﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Context.Config
 {
-    public class AddedByStatusConfig : IEntityTypeConfiguration<AddedByStatusModel>
+    public class AddedByStatusConfig : IEntityTypeConfiguration<AddedByStatusEntity>
     {
-        public void Configure(EntityTypeBuilder<AddedByStatusModel> builder)
+        public void Configure(EntityTypeBuilder<AddedByStatusEntity> builder)
         {
             builder.ToTable("AddedByStatus");
 

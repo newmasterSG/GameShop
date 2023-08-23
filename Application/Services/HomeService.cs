@@ -1,14 +1,8 @@
 ﻿using Application.DTO;
 using Application.InterfaceServices;
 using Domain.Entities;
-using Domain.Entities.Developer;
-using Domain.Entities.Games;
-using Domain.Entities.GamesToDeveloper;
-using Domain.Entities.GamesToStore;
-using Domain.Entities.ShortScreenshot;
 using Infrastructure.Context;
-using Infrastructure.Repository.Interfaces;
-using Infrastructure.UnitOfWork.Interface;
+using Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Services
@@ -25,7 +19,7 @@ namespace Application.Services
         {
             List<GameDTO> gameDTOsForCarousel = new List<GameDTO>();
 
-            var games = await _unitOfWork.GetRepository<GamesModel>()
+            var games = await _unitOfWork.GetRepository<GamesEntity>()
         .ListAsync(x => x.Added_By_Status.Owned > 4000);
 
             foreach (var game in games)
@@ -36,7 +30,7 @@ namespace Application.Services
                     Name = game.Name,
                     Image = game.Background_Image,
                     Owned = game.Added_By_Status?.Owned ?? 4000,
-                    Price = (decimal)new Random().NextDouble(),
+                    Price = game.Price,
                 });
             }
 
@@ -46,7 +40,7 @@ namespace Application.Services
         public async Task<List<GameDTO>> GetAllGames()
         {
             List<GameDTO> gameDTOs = new List<GameDTO>();
-            var games = await _unitOfWork.GetRepository<GamesModel>().TakeAsync(0, 12);
+            var games = await _unitOfWork.GetRepository<GamesEntity>().TakeAsync(0, 12);
             foreach (var game in games)
             {
                 gameDTOs.Add(new GameDTO()
@@ -55,7 +49,7 @@ namespace Application.Services
                     Name = game.Name,
                     Image = game.Background_Image,
                     Owned = game.Added_By_Status?.Owned ?? 4000,
-                    Price = (decimal)new Random().NextDouble(),
+                    Price = game.Price,
                 });
             }
             return gameDTOs;
@@ -65,7 +59,7 @@ namespace Application.Services
         {
             List<GameDTO> gameDTOs = new List<GameDTO>();
 
-            var games = await _unitOfWork.GetRepository<GamesModel>().GetAllAsync();
+            var games = await _unitOfWork.GetRepository<GamesEntity>().GetAllAsync();
 
             foreach (var item in games)
             {
@@ -74,11 +68,29 @@ namespace Application.Services
                     Id = (int)item.Id,
                     Name = item.Name,
                     Image = item.Background_Image,
-                    Price = (decimal)new Random().NextDouble(),
+                    Price = item.Price,
                 });
             }
 
             return gameDTOs;
+        }
+
+        public async Task<List<TagDTO>> GetAllTags()
+        {
+            List<TagDTO> tags = new List<TagDTO>();
+
+            var dbTags = await _unitOfWork.GetRepository<TagEntity>().GetAllAsync();
+
+            foreach (var tag in dbTags)
+            {
+                tags.Add(new TagDTO()
+                {
+                    Name = tag.Name,
+                    ImageBackground = tag.Image_Background,
+                });
+            }
+
+            return tags;
         }
     }
 }

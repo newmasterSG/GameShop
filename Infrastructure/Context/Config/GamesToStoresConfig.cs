@@ -1,13 +1,13 @@
-﻿using Domain.Entities.GamesToStore;
+﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System.Reflection.Emit;
 
 namespace Infrastructure.Context.Config
 {
-    public class GamesToStoresConfig : IEntityTypeConfiguration<GamesToStoresModel>
+    public class GamesToStoresConfig : IEntityTypeConfiguration<GamesToStoresEntity>
     {
-        public void Configure(EntityTypeBuilder<GamesToStoresModel> builder)
+        public void Configure(EntityTypeBuilder<GamesToStoresEntity> builder)
         {
             builder.ToTable("GamesToStores");
 

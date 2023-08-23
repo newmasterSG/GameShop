@@ -1,12 +1,14 @@
 ﻿using Application.DTO;
 using Application.InterfaceServices;
-using Domain.Entities.Games;
-using Infrastructure.UnitOfWork.Interface;
+using Domain.Entities;
+using Domain.Interfaces;
 using Infrastructure.UnitOfWork.UnitOfWork;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Localization;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Primitives;
 using System.Diagnostics;
 using UI.Models;
 
@@ -18,14 +20,17 @@ namespace UI.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly IHomeService _unitOfWork;
         private readonly IHtmlLocalizer<HomeController> _localizer;
+        private readonly IMemoryCache _cache;
 
         public HomeController(ILogger<HomeController> logger, 
             IHomeService unitOfWork,
-            IHtmlLocalizer<HomeController> localizer)
+            IHtmlLocalizer<HomeController> localizer,
+            IMemoryCache cache)
         {
             _logger = logger;
             _unitOfWork = unitOfWork;
             _localizer = localizer;
+            _cache = cache;
         }
 
         public IActionResult Index()
@@ -47,21 +52,56 @@ namespace UI.Controllers
         [HttpGet]
         public async Task<ActionResult<List<GameDTO>>> GetCarouselGames()
         {
-            var games = await _unitOfWork.GetCarouselGames();
+            string cacheKey = "CarouselGames";
 
-            return Json(games);
+            if (_cache.TryGetValue(cacheKey, out List<GameDTO> cachedCarouselGames))
+            {
+                return Json(cachedCarouselGames);
+            }
+
+            var cancellationTokenSource = new CancellationTokenSource();
+            var cacheEntryOptions = new MemoryCacheEntryOptions
+            {
+                AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(30),
+            };
+
+            try
+            {
+                var games = await _unitOfWork.GetCarouselGames();
+                _cache.Set(cacheKey, games, cacheEntryOptions);
+
+                return Json(games);
+            }
+            catch (Exception)
+            {
+                cancellationTokenSource.Cancel();
+                throw;
+            }
         }
 
         [HttpGet]
         public async Task<ActionResult<List<GameDTO>>> GetAllGames()
         {
+            if (_cache.TryGetValue("AllGames", out List<GameDTO> cachedAllGames))
+            {
+                return Json(cachedAllGames);
+            }
+
             var games = await _unitOfWork.GetAllGames();
+            _cache.Set("AllGames", games, TimeSpan.FromMinutes(30));
 
             return Json(games);
         }
 
+        [HttpGet]
+        public async Task<ActionResult<List<TagDTO>>> GetAllTags()
+        {
+            var tags = await _unitOfWork.GetAllTags();
+
+            return Json(tags);
+        }
+
         [HttpPost]
-        [AllowAnonymous]
         public IActionResult ChangeLanguage(string lang, string returnUrl)
         {
             Response.Cookies.Append(

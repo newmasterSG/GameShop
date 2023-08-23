@@ -1,15 +1,7 @@
 ﻿using Infrastructure.Context;
-using Domain.Entities.Developer;
-using Domain.Entities.ESRBRating;
-using Domain.Entities.Games;
-using Domain.Entities.Genres;
-using Domain.Entities.Platform;
-using Domain.Entities.Rating;
-using Domain.Entities.ShortScreenshot;
-using Domain.Entities.Store;
-using Domain.Entities.Tags;
 using Microsoft.EntityFrameworkCore;
 using System;
+using Domain.Entities;
 
 namespace ParsingData.Importer
 {
@@ -22,7 +14,7 @@ namespace ParsingData.Importer
             _shopContext = shopContext;
         }
 
-        public async Task<GamesModel> CreateGame(GamesModel game, DevelopersModel developer)
+        public async Task<GamesEntity> CreateGame(GamesEntity game, DevelopersEntity developer)
         {
             if (game == null)
             {
@@ -36,7 +28,7 @@ namespace ParsingData.Importer
 
                 if (game1.GamesToDevelopers is null)
                 {
-                    game1.GamesToDevelopers = new List<Domain.Entities.GamesToDeveloper.GamesToDeveloperModel>();
+                    game1.GamesToDevelopers = new List<GamesToDeveloperEntity>();
                 }
 
                 if (existDevAtGame != null)
@@ -47,7 +39,7 @@ namespace ParsingData.Importer
                 if ((game1.GamesToDevelopers.Count == 0 || game1.GamesToDevelopers.Count > 0 ) && existDevAtGame == null)
                 {
 
-                    game1.GamesToDevelopers.Add(new Domain.Entities.GamesToDeveloper.GamesToDeveloperModel()
+                    game1.GamesToDevelopers.Add(new Domain.Entities.GamesToDeveloperEntity()
                     {
                         DeveloperId = (int)developer.Id,
                         GameId = (int)game1.Id,
@@ -60,7 +52,7 @@ namespace ParsingData.Importer
             
             game.ESRB_Rating = await GetAndUpdateExistingEsrbRatingAsync(game.ESRB_Rating);
 
-            ESRBRatingModel eSRBRating = new ESRBRatingModel();
+            ESRBRatingEntity eSRBRating = new ESRBRatingEntity();
 
             if (game.ESRB_Rating == null)
             {
@@ -78,28 +70,28 @@ namespace ParsingData.Importer
 
             game.Tags = await GetAndUpdateExistingTagsAsync(game.Tags);
 
-            List<ShortScreenshotModel> shortScreenshots = game.Short_Screenshots?.Select(g => new ShortScreenshotModel()
+            List<ShortScreenshotEntity> shortScreenshots = game.Short_Screenshots?.Select(g => new ShortScreenshotEntity()
             {
                 Game = g.Game,
                 Image = g.Image,
-            }).ToList() ?? new List<ShortScreenshotModel>();
+            }).ToList() ?? new List<ShortScreenshotEntity>();
 
             if (game.Metacritic is null)
             {
                 game.Metacritic = 0;
             }
 
-            var newGame = new GamesModel()
+            var newGame = new GamesEntity()
             {
-                Added_By_Status = game.Added_By_Status ?? new Domain.Entities.AddedByStatus.AddedByStatusModel(),
+                Added_By_Status = game.Added_By_Status ?? new Domain.Entities.AddedByStatusEntity(),
                 Name = game.Name,
                 Background_Image = game.Background_Image,
                 ESRB_Rating = game.ESRB_Rating ?? eSRBRating,
                 Short_Screenshots = shortScreenshots,
-                Genres = game.Genres ?? new List<GenreModel>(),
-                Platforms = game.Platforms ?? new List<PlatformModel>(),
-                Ratings = game.Ratings ?? new List<RatingModel>(),
-                Tags = game.Tags ?? new List<TagModel>(),
+                Genres = game.Genres ?? new List<GenreEntity>(),
+                Platforms = game.Platforms ?? new List<PlatformEntity>(),
+                Ratings = game.Ratings ?? new List<RatingEntity>(),
+                Tags = game.Tags ?? new List<TagEntity>(),
                 Metacritic = game.Metacritic,
                 Playtime = game.Playtime,
                 Rating = game.Rating,
@@ -112,33 +104,33 @@ namespace ParsingData.Importer
                 Suggestions_Count = game.Suggestions_Count,
                 Tba = game.Tba,
                 Updated = game.Updated,
-                Stores = game.Stores ?? new List<StoreModel>(),
-                GamesToDevelopers = new List<Domain.Entities.GamesToDeveloper.GamesToDeveloperModel>()
+                Stores = game.Stores ?? new List<StoreEntity>(),
+                GamesToDevelopers = new List<GamesToDeveloperEntity>()
                 {
-                    new Domain.Entities.GamesToDeveloper.GamesToDeveloperModel()
+                    new Domain.Entities.GamesToDeveloperEntity()
                     {
                         DeveloperId = (int)developer.Id,
                     }
                 },
-                GamesToGenres = new List<Domain.Entities.GamesToGenres.GamesToGenresModel>(),
-                GamesToRatings = new List<Domain.Entities.GamesToRating.GamesToRatingModel>(),
-                GamesToPlatfrorms = new List<Domain.Entities.GamesToPlatform.GamesToPlatfrormModel>(),
-                GamesToStores = new List<Domain.Entities.GamesToStore.GamesToStoresModel>(),
-                GamesToTags = new List<Domain.Entities.GamesToTags.GamesToTagsModel>(),
-                GameToShortScreenshots = new List<Domain.Entities.GamesToScreenshots.GamesToScreenshotsModel>(),
+                GamesToGenres = new List<GamesToGenresEntity>(),
+                GamesToRatings = new List<GamesToRatingEntity>(),
+                GamesToPlatfrorms = new List<GamesToPlatfrormEntity>(),
+                GamesToStores = new List<GamesToStoresEntity>(),
+                GamesToTags = new List<GamesToTagsEntity>(),
+                GameToShortScreenshots = new List<GamesToScreenshotsEntity>(),
             };
 
             return newGame;
         }
 
-        private async Task<List<PlatformModel>> GetAndUpdateExistingPlatformsAsync(List<PlatformModel> platforms)
+        private async Task<List<PlatformEntity>> GetAndUpdateExistingPlatformsAsync(List<PlatformEntity> platforms)
         {
             if(platforms is null)
             {
-                platforms = new List<PlatformModel>();
+                platforms = new List<PlatformEntity>();
             }
 
-            var existingPlatforms = new List<PlatformModel>();
+            var existingPlatforms = new List<PlatformEntity>();
             foreach (var platform in platforms)
             {
                 var existingPlatform = await _shopContext.PlatformModels
@@ -155,7 +147,7 @@ namespace ParsingData.Importer
                 else
                 {
                     platform.GamesToPlatfrorms = platform.GamesToPlatfrorms;
-                    platform.Platform = new Domain.Entities.PlatformInfo.PlatformInfoModel()
+                    platform.Platform = new Domain.Entities.PlatformInfoEntity()
                     {
                         Name = platform.Platform.Name,
                         Slug = platform.Platform.Slug,
@@ -176,15 +168,15 @@ namespace ParsingData.Importer
             return existingPlatforms;
         }
 
-        private async Task<List<GenreModel>> GetAndUpdateExistingGenresAsync(List<GenreModel> genres)
+        private async Task<List<GenreEntity>> GetAndUpdateExistingGenresAsync(List<GenreEntity> genres)
         {
             if(genres is null)
             {
-                genres = new List<GenreModel>();
+                genres = new List<GenreEntity>();
             }
 
-            var notExistGenres = new List<GenreModel>();
-            var existingPlatforms = new List<GenreModel>();
+            var notExistGenres = new List<GenreEntity>();
+            var existingPlatforms = new List<GenreEntity>();
             foreach (var genre in genres)
             {
                 var existingGenre = await _shopContext.Genres
@@ -196,7 +188,7 @@ namespace ParsingData.Importer
                 }
                 else
                 {
-                    var newGenre = new GenreModel()
+                    var newGenre = new GenreEntity()
                     {
                         Name = genre.Name,
                         Slug = genre.Slug,
@@ -215,14 +207,14 @@ namespace ParsingData.Importer
             return existingPlatforms;
         }
 
-        private async Task<List<StoreModel>> GetAndUpdateExistingStoresAsync(List<StoreModel> stores)
+        private async Task<List<StoreEntity>> GetAndUpdateExistingStoresAsync(List<StoreEntity> stores)
         {
             if(stores is null)
             {
-                stores = new List<StoreModel>();
+                stores = new List<StoreEntity>();
             }
-            var existingStores = new List<StoreModel>();
-            var noteExistingStores = new List<StoreModel>();
+            var existingStores = new List<StoreEntity>();
+            var noteExistingStores = new List<StoreEntity>();
             foreach (var store in stores)
             {
                 var existingStore = await _shopContext.StoreModels
@@ -242,9 +234,9 @@ namespace ParsingData.Importer
                 }
                 else
                 {
-                    noteExistingStores.Add(new StoreModel()
+                    noteExistingStores.Add(new StoreEntity()
                     {
-                        Store = new Domain.Entities.StoreInfo.StoreInfoModel()
+                        Store = new Domain.Entities.StoreInfoEntity()
                         {
                             Name = store.Store.Name,
                             Slug = store.Store.Slug,
@@ -264,15 +256,15 @@ namespace ParsingData.Importer
             return existingStores;
         }
 
-        private async Task<List<RatingModel>> GetAndUpdateExistingRatingsAsync(List<RatingModel> ratings)
+        private async Task<List<RatingEntity>> GetAndUpdateExistingRatingsAsync(List<RatingEntity> ratings)
         {
             if(ratings is null)
             {
-                ratings = new List<RatingModel>();
+                ratings = new List<RatingEntity>();
             }
 
-            var notExistRatings = new List<RatingModel>();
-            var existingRatings = new List<RatingModel>();
+            var notExistRatings = new List<RatingEntity>();
+            var existingRatings = new List<RatingEntity>();
             foreach (var store in ratings)
             {
                 var existingRating = await _shopContext.RatingModels
@@ -284,7 +276,7 @@ namespace ParsingData.Importer
                 }
                 else
                 {
-                    var rating = new RatingModel()
+                    var rating = new RatingEntity()
                     {
                         Title = store.Title,
                         Percent = store.Percent,
@@ -303,15 +295,15 @@ namespace ParsingData.Importer
             return existingRatings;
         }
 
-        private async Task<List<TagModel>> GetAndUpdateExistingTagsAsync(List<TagModel> tags)
+        private async Task<List<TagEntity>> GetAndUpdateExistingTagsAsync(List<TagEntity> tags)
         {
             if(tags is null)
             {
-                tags = new List<TagModel>();
+                tags = new List<TagEntity>();
             }
 
-            var notExistTags = new List<TagModel>();
-            var existingTags = new List<TagModel>();
+            var notExistTags = new List<TagEntity>();
+            var existingTags = new List<TagEntity>();
             foreach (var tag in tags)
             {
                 var existingTag = await _shopContext.Tags
@@ -323,7 +315,7 @@ namespace ParsingData.Importer
                 }
                 else
                 {
-                    var tag1 = new TagModel()
+                    var tag1 = new TagEntity()
                     {
                         Name = tag.Name,
                         Slug = tag.Slug,
@@ -344,17 +336,17 @@ namespace ParsingData.Importer
             return existingTags;
         }
 
-        private async Task<ESRBRatingModel> GetAndUpdateExistingEsrbRatingAsync(ESRBRatingModel eSRBRating)
+        private async Task<ESRBRatingEntity> GetAndUpdateExistingEsrbRatingAsync(ESRBRatingEntity eSRBRating)
         {
             if(eSRBRating is null)
             {
-                eSRBRating = new ESRBRatingModel()
+                eSRBRating = new ESRBRatingEntity()
                 {
                     Name = "Non defined",
                     Slug = "non_def",
                 };
             }
-            var existingeSRBRating = new ESRBRatingModel();
+            var existingeSRBRating = new ESRBRatingEntity();
 
             existingeSRBRating = await _shopContext.ESRBRatings
                      .FirstOrDefaultAsync(p => p.Name == eSRBRating.Name);
@@ -363,7 +355,7 @@ namespace ParsingData.Importer
             {
                 if(eSRBRating != null)
                 {
-                    eSRBRating = new ESRBRatingModel()
+                    eSRBRating = new ESRBRatingEntity()
                     {
                         Name = eSRBRating.Name,
                         Slug = eSRBRating.Slug,

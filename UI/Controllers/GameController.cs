@@ -3,6 +3,7 @@ using Application.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PagedList;
+using System.Drawing.Printing;
 using UI.Models.Search;
 
 namespace UI.Controllers
@@ -71,6 +72,22 @@ namespace UI.Controllers
             }
 
             return View(viewModel);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GamesByTag(string tag, int? page)
+        {
+            int pageNumber = page ?? 1;
+            int pageSize = 12;
+
+            var games = await _gameService.GamesByTags(tag);
+
+            if (games == null || games.Count == 0)
+            {
+                ModelState.AddModelError("", "No such games");
+            }
+
+            return View(games);
         }
     }
 }

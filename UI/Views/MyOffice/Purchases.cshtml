@@ -1,5 +1,62 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@using Application.DTO;
+@model List<OrderPurchaseDto> 
 @{
+    ViewData["Title"] = "Order Details";
 }
+
+<style>
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    th, td {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+</style>
+
+<div class="container">
+    <div class="container">
+        <h1>Order Details</h1>
+        <table>
+            <tr>
+                <th>Order ID</th>
+                <th>Total Items</th>
+                <th>Total Price</th>
+                <th>Games</th>
+                <th>Keys</th>
+            </tr>
+            @foreach (var order in Model)
+            {
+                <tr>
+                    <td>@order.Id</td>
+                    <td>@order.Count</td>
+                    <td>@order.TotalPrice.ToString("C")</td>
+                    <td>
+                        <ul>
+                            @foreach (var game in order.Games)
+                            {
+                                <li>@game</li>
+                            }
+                        </ul>
+                    </td>
+                    <td>
+                        <ul>
+                            @foreach (var key in order.Keys)
+                            {
+                                <li>@key</li>
+                            }
+                        </ul>
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+    </div>
+</div>

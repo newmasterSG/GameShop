@@ -1,13 +1,13 @@
-﻿using Domain.Entities.OrderToGame;
+﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System.Reflection.Emit;
 
 namespace Infrastructure.Context.Config
 {
-    public class OrderGameConfig : IEntityTypeConfiguration<OrderGame>
+    public class OrderGameConfig : IEntityTypeConfiguration<OrderGameEntity>
     {
-        public void Configure(EntityTypeBuilder<OrderGame> builder)
+        public void Configure(EntityTypeBuilder<OrderGameEntity> builder)
         {
             builder
                 .ToTable("OrderToGame");

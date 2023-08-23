@@ -1,19 +1,12 @@
-﻿using Domain.Entities.Games;
-using Domain.Entities.GamesToDeveloper;
-using Domain.Entities.GamesToGenres;
-using Domain.Entities.GamesToPlatform;
-using Domain.Entities.GamesToRating;
-using Domain.Entities.GamesToStore;
-using Domain.Entities.GamesToTags;
-using Domain.Entities.OrderToGame;
+﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Context.Config
 {
-    public class GameConfig : IEntityTypeConfiguration<GamesModel>
+    public class GameConfig : IEntityTypeConfiguration<GamesEntity>
     {
-        public void Configure(EntityTypeBuilder<GamesModel> builder)
+        public void Configure(EntityTypeBuilder<GamesEntity> builder)
         {
             builder.ToTable("Game");
 
@@ -24,34 +17,34 @@ namespace Infrastructure.Context.Config
 
             builder.HasMany(g => g.Tags)
                 .WithMany(t => t.Games)
-                .UsingEntity<GamesToTagsModel>();
+                .UsingEntity<GamesToTagsEntity>();
 
             builder.HasMany(g => g.Developer)
                 .WithMany(t => t.Games)
-                .UsingEntity<GamesToDeveloperModel>();
+                .UsingEntity<GamesToDeveloperEntity>();
 
             builder.HasMany(g => g.Genres)
                .WithMany(t => t.Games)
-               .UsingEntity<GamesToGenresModel>();
+               .UsingEntity<GamesToGenresEntity>();
 
             builder.HasMany(g => g.Stores)
                .WithMany(t => t.Games)
-               .UsingEntity<GamesToStoresModel>();
+               .UsingEntity<GamesToStoresEntity>();
 
             builder.HasMany(g => g.Platforms)
                .WithMany(t => t.Games)
-               .UsingEntity<GamesToPlatfrormModel>();
+               .UsingEntity<GamesToPlatfrormEntity>();
 
             builder.HasMany(g => g.Ratings)
               .WithMany(t => t.Games)
-              .UsingEntity<GamesToRatingModel>();
+              .UsingEntity<GamesToRatingEntity>();
 
             builder.HasMany(g => g.GameKeys)
               .WithOne(t => t.Game);
 
             builder.HasMany(g => g.Orders)
                .WithMany(t => t.Games)
-               .UsingEntity<OrderGame>();
+               .UsingEntity<OrderGameEntity>();
         }
     }
 }

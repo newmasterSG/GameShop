@@ -36,11 +36,13 @@
                         </li>
                         <!-- Add more pages here as needed -->
                     </ul>
-                    <div class="container">
-                        @using (Html.BeginForm("Search", "Game", FormMethod.Post))
+                    <div class="">
+                        @using (Html.BeginForm("Search", "Game", FormMethod.Post ))
                         {
-                            <input class="form-control mr-sm-2" type="search" placeholder="Search" name="GameName" aria-label="Search">
-                            <button class="btn btn-outline-light" type="submit">Search</button>
+                            <div class="input-group">
+                                <input class="form-control mr-sm-2" type="search" placeholder="Search" name="GameName" aria-label="Search">
+                                <button class="input-group-text btn btn-outline-light" type="submit">Search</button>
+                            </div>
                         }
                     </div>
 
@@ -62,12 +64,12 @@
         </nav>
     </header>
     <div id="main" class="container-fluid">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+            <main role="main">
+                @RenderBody()
+            </main>
     </div>
 
-    <footer class="border-top footer text-muted bg-dark">
+    <footer class="border-top text-muted bg-dark">
         <div class="container">
             &copy; 2023 - UI - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>

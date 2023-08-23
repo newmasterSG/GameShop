@@ -1,13 +1,13 @@
-﻿using Domain.Entities.GamesToGenres;
+﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System.Reflection.Emit;
 
 namespace Infrastructure.Context.Config
 {
-    public class GamesToGenresConfig : IEntityTypeConfiguration<GamesToGenresModel>
+    public class GamesToGenresConfig : IEntityTypeConfiguration<GamesToGenresEntity>
     {
-        public void Configure(EntityTypeBuilder<GamesToGenresModel> builder)
+        public void Configure(EntityTypeBuilder<GamesToGenresEntity> builder)
         {
             builder.ToTable("GamesToGenres");
 

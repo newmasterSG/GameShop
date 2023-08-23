@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using Infrastructure.User;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
-using Infrastructure.UnitOfWork.Interface;
 using Infrastructure.UnitOfWork.UnitOfWork;
 using Application.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -23,6 +22,12 @@ using UI.ServiceProvider;
 using UI.Middlewares;
 using Microsoft.AspNetCore.Localization;
 using System.Globalization;
+using Domain.Entities;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+using IdentityServer4;
+using System.IdentityModel.Tokens.Jwt;
+using static Org.BouncyCastle.Math.EC.ECCurve;
 
 namespace UI
 {
@@ -40,37 +45,25 @@ namespace UI
                 .AddConfig(builder.Configuration)
                 .AddMyDependencyGroup();
 
-            builder.Services.AddAuthentication(option =>
+            builder.Services.AddAuthentication()
+                .AddGoogle(googleOptions =>
             {
-                option.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                option.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                option.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-           .AddCookie(options =>
-           {
-               options.Cookie.HttpOnly = true;
-               options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
-               options.SlidingExpiration = true;
-               options.LoginPath = "/Account/Login";
-           })
-           .AddJwtBearer(options =>
-            {
-                options.SaveToken = true;
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
-                    ValidIssuer = builder.Configuration["Jwt:Issuer"],
-                    ValidAudience = builder.Configuration["Jwt:Audience"],
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
-                };
+                googleOptions.SaveTokens = true;
+                googleOptions.ClientId = builder.Configuration["GoogleProviderLogin:client_iD"];
+                googleOptions.ClientSecret = builder.Configuration["GoogleProviderLogin:client_secret"];
+                googleOptions.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
             });
 
             builder.Services.AddIdentity<UserModel, IdentityRole>(option => option.SignIn.RequireConfirmedEmail = true)
                 .AddEntityFrameworkStores<GameShopContext>()
                 .AddDefaultTokenProviders();
+
+            builder.Services.ConfigureApplicationCookie(confing =>
+            {
+                confing.Cookie.Name = "IdentityServer.Cookie";
+                confing.LoginPath = "/Account/Login";
+            });
+
 
             var app = builder.Build();
 
@@ -122,8 +115,8 @@ namespace UI
                 var roles = new[] { "Admin", "Manager", "Buyer" };
 
                 var gameEntity = Seeding.Seed();
-                
-                if(await dbContext.Games.FirstOrDefaultAsync(g => g.Name == gameEntity.Name) == null)
+
+                if (await dbContext.Games.FirstOrDefaultAsync(g => g.Name == gameEntity.Name) == null)
                 {
                     dbContext.Games.Add(gameEntity);
                 }
@@ -155,6 +148,7 @@ namespace UI
                     {
                         await userManager.AddClaimAsync(adminUser, new Claim(ClaimTypes.Role, "Admin"));
                         await userManager.AddClaimAsync(adminUser, new Claim(ClaimTypes.Name, adminUser.UserName));
+                        await userManager.AddClaimAsync(adminUser, new Claim(JwtRegisteredClaimNames.Sub, adminUser.UserName));
                         await userManager.AddToRoleAsync(adminUser, "Admin");
                     }
                 }
@@ -163,7 +157,7 @@ namespace UI
 
             app.UseRouting();
 
-            app.UseAuthentication();
+            app.UseIdentityServer();
 
             app.Use(async (context, next) =>
             {

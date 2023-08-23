@@ -1,5 +1,4 @@
-﻿using Domain.Entities.Orders;
-using Domain.Entities.OrderToGame;
+﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
@@ -10,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Context.Config
 {
-    public class OrderConfig : IEntityTypeConfiguration<Order>
+    public class OrderConfig : IEntityTypeConfiguration<OrderEntity>
     {
-        public void Configure(EntityTypeBuilder<Order> builder)
+        public void Configure(EntityTypeBuilder<OrderEntity> builder)
         {
             builder
                 .ToTable("Order");
@@ -24,7 +23,7 @@ namespace Infrastructure.Context.Config
 
             builder.HasMany(g => g.Games)
                .WithMany(t => t.Orders)
-               .UsingEntity<OrderGame>();
+               .UsingEntity<OrderGameEntity>();
 
             builder.HasMany(g => g.GameKeys)
               .WithOne(t => t.Order);

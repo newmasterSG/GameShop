@@ -1,28 +1,12 @@
-﻿using Domain.Entities.AddedByStatus;
-using Domain.Entities.Developer;
-using Domain.Entities.ESRBRating;
-using Domain.Entities.GameKeys;
-using Domain.Entities.Games;
-using Domain.Entities.Genres;
-using Domain.Entities.Platform;
-using Domain.Entities.Rating;
-using Domain.Entities.ShortScreenshot;
-using Domain.Entities.Store;
-using Domain.Entities.Tags;
-using Infrastructure.User;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Domain.Entities;
 
 namespace ParsingData
 {
     public class Seeding
     {
-        public static GamesModel Seed()
+        public static GamesEntity Seed()
         {
-            AddedByStatusModel addedByStatusModel = new AddedByStatusModel()
+            AddedByStatusEntity addedByStatusModel = new AddedByStatusEntity()
             {
                 Beaten = 3020,
                 Yet = 595,
@@ -34,20 +18,20 @@ namespace ParsingData
 
             string backImg = "https://media.rawg.io/media/games/f87/f87457e8347484033cb34cde6101d08d.jpg";
 
-            ESRBRatingModel eSRBRating = new ESRBRatingModel
+            ESRBRatingEntity eSRBRating = new ESRBRatingEntity
             {
                 Name = "Adults Only",
                 Slug = "adults-only",
             };
 
-            List<GenreModel> genreModels = new List<GenreModel>()
+            List<GenreEntity> genreModels = new List<GenreEntity>()
             {
-                new GenreModel()
+                new GenreEntity()
                 {
                     Name = "Shooter",
                     Slug = "shooter",
                 },
-                new GenreModel()
+                new GenreEntity()
                 {
                     Name = "Action",
                     Slug = "action",
@@ -56,11 +40,11 @@ namespace ParsingData
 
             int metacritic = 90;
 
-            List<PlatformModel> platforms = new List<PlatformModel>()
+            List<PlatformEntity> platforms = new List<PlatformEntity>()
             {
-                new PlatformModel
+                new PlatformEntity
                 {
-                    Platform = new Domain.Entities.PlatformInfo.PlatformInfoModel
+                    Platform = new Domain.Entities.PlatformInfoEntity
                     {
                         Name = "PC",
                         Slug = "pc",
@@ -68,9 +52,9 @@ namespace ParsingData
                     Released_At = "",
                 },
 
-                new PlatformModel
+                new PlatformEntity
                 {
-                    Platform = new Domain.Entities.PlatformInfo.PlatformInfoModel
+                    Platform = new Domain.Entities.PlatformInfoEntity
                     {
                         Name = "PlayStation 4",
                         Slug = "playstation4",
@@ -85,16 +69,16 @@ namespace ParsingData
 
             int ratingTop = 4;
 
-            List<RatingModel> ratings = new List<RatingModel>()
+            List<RatingEntity> ratings = new List<RatingEntity>()
             {
-                new RatingModel
+                new RatingEntity
                 {
                     Title = "exceptional",
                     Percent = 52.99,
                     Count = 1677,
                 },
 
-                new RatingModel
+                new RatingEntity
                 {
                     Title = "recommended",
                     Percent = 36.43,
@@ -110,14 +94,14 @@ namespace ParsingData
 
             int reviewTextCount = 8;
 
-            List<ShortScreenshotModel> shortScreenshots = new List<ShortScreenshotModel>()
+            List<ShortScreenshotEntity> shortScreenshots = new List<ShortScreenshotEntity>()
             {
-                new ShortScreenshotModel
+                new ShortScreenshotEntity
                 {
                     Image = "https://media.rawg.io/media/games/bc0/bc06a29ceac58652b684deefe7d56099.jpg",
                 },
 
-                new ShortScreenshotModel
+                new ShortScreenshotEntity
                 {
                     Image = "https://media.rawg.io/media/screenshots/01f/01f62d7064838a5c3202acfc61503487.jpg",
                 },
@@ -125,20 +109,20 @@ namespace ParsingData
 
             string Slug = "the-darkness-ii";
 
-            List<StoreModel> stores = new List<StoreModel>()
+            List<StoreEntity> stores = new List<StoreEntity>()
             {
-                new StoreModel
+                new StoreEntity
                 {
-                    Store = new Domain.Entities.StoreInfo.StoreInfoModel
+                    Store = new Domain.Entities.StoreInfoEntity
                     {
                         Name = "Steam",
                         Slug = "steam",
                     },
                 },
 
-                new StoreModel
+                new StoreEntity
                 {
-                    Store = new Domain.Entities.StoreInfo.StoreInfoModel
+                    Store = new Domain.Entities.StoreInfoEntity
                     {
                         Slug = "playstation-store",
                         Name = "PlayStation Store",
@@ -150,9 +134,9 @@ namespace ParsingData
 
             string Updated = "2023-07-29T19:12:58";
 
-            List<TagModel> tags = new List<TagModel>()
+            List<TagEntity> tags = new List<TagEntity>()
             {
-                new TagModel
+                new TagEntity
                 {
                     Name = "Singleplayer",
                     Slug = "singleplayer",
@@ -161,7 +145,7 @@ namespace ParsingData
                     Image_Background = "https://media.rawg.io/media/games/021/021c4e21a1824d2526f925eff6324653.jpg",
                 },
 
-                new TagModel
+                new TagEntity
                 {
                     Name = "Для одного игрока",
                     Slug = "dlia-odnogo-igroka",
@@ -171,7 +155,7 @@ namespace ParsingData
                 },
             };
 
-            return new GamesModel()
+            return new GamesEntity()
             {
                 Background_Image = backImg,
                 Added_By_Status = addedByStatusModel,
@@ -195,90 +179,91 @@ namespace ParsingData
                 Tba = false,
                 Updated = Updated,
                 Tags = tags,
-                Developer = new List<DevelopersModel>() { SeedDev() },
-                GamesToDevelopers = new List<Domain.Entities.GamesToDeveloper.GamesToDeveloperModel>()
+                Developer = new List<DevelopersEntity>() { SeedDev() },
+                GamesToDevelopers = new List<GamesToDeveloperEntity>()
                 {
-                    new Domain.Entities.GamesToDeveloper.GamesToDeveloperModel()
+                    new Domain.Entities.GamesToDeveloperEntity()
                     {
                         Developer = SeedDev(),
                     }
                 },
-                GamesToGenres = new List<Domain.Entities.GamesToGenres.GamesToGenresModel>()
+                GamesToGenres = new List<GamesToGenresEntity>()
                 {
-                    new Domain.Entities.GamesToGenres.GamesToGenresModel()
+                    new Domain.Entities.GamesToGenresEntity()
                     {
                         Genre = genreModels[0],
                     }
                 },
-                GamesToPlatfrorms = new List<Domain.Entities.GamesToPlatform.GamesToPlatfrormModel>()
+                GamesToPlatfrorms = new List<GamesToPlatfrormEntity>()
                 {
-                    new Domain.Entities.GamesToPlatform.GamesToPlatfrormModel()
+                    new Domain.Entities.GamesToPlatfrormEntity()
                     {
                         Platform = platforms[0],
                     }
                 },
-                GamesToRatings = new List<Domain.Entities.GamesToRating.GamesToRatingModel>()
+                GamesToRatings = new List<GamesToRatingEntity>()
                 {
-                    new Domain.Entities.GamesToRating.GamesToRatingModel()
+                    new Domain.Entities.GamesToRatingEntity()
                     {
                         Rating = ratings[0],
                     }
                 },
-                GamesToStores = new List<Domain.Entities.GamesToStore.GamesToStoresModel>()
+                GamesToStores = new List<GamesToStoresEntity>()
                 {
-                    new Domain.Entities.GamesToStore.GamesToStoresModel()
+                    new Domain.Entities.GamesToStoresEntity()
                     {
                         Store = stores[0],
                     }
                 },
-                GamesToTags = new List<Domain.Entities.GamesToTags.GamesToTagsModel>()
+                GamesToTags = new List<GamesToTagsEntity>()
                 {
-                    new Domain.Entities.GamesToTags.GamesToTagsModel()
+                    new Domain.Entities.GamesToTagsEntity()
                     {
                         Tag = tags[0],
                     }
                 },
-                GameToShortScreenshots = new List<Domain.Entities.GamesToScreenshots.GamesToScreenshotsModel>()
+                GameToShortScreenshots = new List<GamesToScreenshotsEntity>()
                 {
-                    new Domain.Entities.GamesToScreenshots.GamesToScreenshotsModel()
+                    new Domain.Entities.GamesToScreenshotsEntity()
                     {
                         ShortScreenshot = shortScreenshots[0],
                     }
                 },
                 GameKeys = SeedGameKeys(),
+                Price = 60.00m,
             };
         }
 
-        public static DevelopersModel SeedDev()
+        public static DevelopersEntity SeedDev()
         {
-            return new DevelopersModel()
+            return new DevelopersEntity()
             {
                 Name = "Ubisoft",
                 Slug = "ubisoft",
             };
         }
 
-        public static List<GameKey> SeedGameKeys()
+        public static List<GameKeyEntity> SeedGameKeys()
         {
-            return new List<GameKey>
+            return new List<GameKeyEntity>
             {
-                new GameKey()
+                new GameKeyEntity()
                 {
                     Key = Guid.NewGuid(),
                 },
-                new GameKey()
+                new GameKeyEntity()
                 {
                     Key = Guid.NewGuid(),
                 },
-                new GameKey()
+                new GameKeyEntity()
                 {
                     Key = Guid.NewGuid(),
                 },
-                new GameKey()
+                new GameKeyEntity()
                 {
                     Key = Guid.NewGuid(),
                 },
-                new GameKey()
+                new GameKeyEntity()
                 {
                     Key = Guid.NewGuid(),
                 },

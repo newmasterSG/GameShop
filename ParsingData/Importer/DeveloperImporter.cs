@@ -1,4 +1,4 @@
-﻿using Domain.Entities.Developer;
+﻿using Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +9,9 @@ namespace ParsingData.Importer
 {
     public class DeveloperImporter
     {
-        public static async Task<DevelopersModel> CreateDeveloper(DevelopersModel developer)
+        public static async Task<DevelopersEntity> CreateDeveloper(DevelopersEntity developer)
         {
-            DevelopersModel developersModel = new DevelopersModel()
+            DevelopersEntity developersModel = new DevelopersEntity()
             {
                 Slug = developer.Slug,
                 Name = developer.Name,

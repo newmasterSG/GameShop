@@ -1,12 +1,12 @@
-﻿using Domain.Entities.Rating;
+﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Context.Config
 {
-    public class RatingConfig : IEntityTypeConfiguration<RatingModel>
+    public class RatingConfig : IEntityTypeConfiguration<RatingEntity>
     {
-        public void Configure(EntityTypeBuilder<RatingModel> builder)
+        public void Configure(EntityTypeBuilder<RatingEntity> builder)
         {
             builder.ToTable("Rating");
 

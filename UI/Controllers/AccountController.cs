@@ -1,12 +1,13 @@
 ﻿using Application.Services;
 using Domain.Interfaces;
-using Infrastructure.UnitOfWork.Interface;
 using Infrastructure.User;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.IdentityModel.JsonWebTokens;
 using System.Security.Claims;
 using UI.Models.User;
 
@@ -59,6 +60,7 @@ namespace UI.Controllers
                     {
                         await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Role, "Buyer"));
                         await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Name, user.UserName));
+                        await _userManager.AddClaimAsync(user, new Claim(JwtRegisteredClaimNames.Sub, user.UserName));
                         await _userManager.AddToRoleAsync(user, "Buyer");
 
                         await _signInManager.SignInAsync(user, isPersistent: false);
@@ -132,6 +134,52 @@ namespace UI.Controllers
             }
 
             return View(model);
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        public IActionResult ExternalLogin(string provider, string returnUrl = null)
+        {
+            string authenticationScheme = string.Empty;
+
+            if (provider.Equals("google"))
+            {
+                authenticationScheme = GoogleDefaults.AuthenticationScheme;
+            }
+
+            var redirectUrl = Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl });
+            var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
+            return new ChallengeResult(authenticationScheme, properties);
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        public async Task<IActionResult> ExternalLoginCallback(string returnUrl = null, string remoteError = null)
+        {
+            if (remoteError != null)
+            {
+                // Обработка ошибки
+                return RedirectToAction("Login");
+            }
+
+            var info = await _signInManager.GetExternalLoginInfoAsync();
+            if (info == null)
+            {
+                // Обработка ошибки
+                return RedirectToAction("Login");
+            }
+
+            // Если пользователь уже зарегистрирован на вашем сайте, можно автоматически войти
+            var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
+            if (result.Succeeded)
+            {
+                return LocalRedirect(returnUrl);
+            }
+
+            // Если пользователь еще не зарегистрирован, перенаправьте на страницу регистрации или другую обработку
+            ViewBag.ReturnUrl = returnUrl;
+            ViewBag.LoginProvider = info.LoginProvider;
+            return View("ExternalLoginConfirmation");
         }
 
         [AllowAnonymous]

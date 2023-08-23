@@ -1,12 +1,12 @@
-﻿using Domain.Entities.Genres;
+﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Context.Config
 {
-    public class GenreConfig : IEntityTypeConfiguration<GenreModel>
+    public class GenreConfig : IEntityTypeConfiguration<GenreEntity>
     {
-        public void Configure(EntityTypeBuilder<GenreModel> builder)
+        public void Configure(EntityTypeBuilder<GenreEntity> builder)
         {
             builder.ToTable("Genre");
 

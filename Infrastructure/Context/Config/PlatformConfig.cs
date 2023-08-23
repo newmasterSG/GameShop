@@ -1,12 +1,12 @@
-﻿using Domain.Entities.Platform;
+﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Context.Config
 {
-    public class PlatformConfig : IEntityTypeConfiguration<PlatformModel>
+    public class PlatformConfig : IEntityTypeConfiguration<PlatformEntity>
     {
-        public void Configure(EntityTypeBuilder<PlatformModel> builder)
+        public void Configure(EntityTypeBuilder<PlatformEntity> builder)
         {
             builder.ToTable("Platform");
 

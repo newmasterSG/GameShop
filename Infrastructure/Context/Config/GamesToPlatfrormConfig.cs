@@ -1,13 +1,13 @@
-﻿using Domain.Entities.GamesToPlatform;
+﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System.Reflection.Emit;
 
 namespace Infrastructure.Context.Config
 {
-    public class GamesToPlatfrormConfig : IEntityTypeConfiguration<GamesToPlatfrormModel>
+    public class GamesToPlatfrormConfig : IEntityTypeConfiguration<GamesToPlatfrormEntity>
     {
-        public void Configure(EntityTypeBuilder<GamesToPlatfrormModel> builder)
+        public void Configure(EntityTypeBuilder<GamesToPlatfrormEntity> builder)
         {
             builder.ToTable("GamesToPlatfrorm");
 

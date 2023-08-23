@@ -1,12 +1,12 @@
-﻿using Domain.Entities.ShortScreenshot;
+﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Context.Config
 {
-    public class ShortScreenshotConfig : IEntityTypeConfiguration<ShortScreenshotModel>
+    public class ShortScreenshotConfig : IEntityTypeConfiguration<ShortScreenshotEntity>
     {
-        public void Configure(EntityTypeBuilder<ShortScreenshotModel> builder)
+        public void Configure(EntityTypeBuilder<ShortScreenshotEntity> builder)
         {
             builder.ToTable("ShortScreenshot");
 

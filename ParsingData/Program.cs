@@ -1,12 +1,12 @@
 ﻿using Infrastructure.Context;
-using Domain.Entities.Developer;
-using Domain.Entities.Games;
+using Domain.Interfaces;
 using Infrastructure.Repository.Repositories;
 using ParsingData.Requests;
 using Microsoft.EntityFrameworkCore;
 using Infrastructure.UnitOfWork.UnitOfWork;
 using Microsoft.Extensions.Options;
 using ParsingData.Importer;
+using Domain.Entities;
 
 namespace ParsingData
 {
@@ -15,7 +15,7 @@ namespace ParsingData
         static async Task Main(string[] args)
         {
             var client = new HttpClient();
-            List<Task<RootObject<GamesModel>>> task = new List<Task<RootObject<GamesModel>>>();
+            List<Task<RootObject<GamesEntity>>> task = new List<Task<RootObject<GamesEntity>>>();
 
             string apiKey = "e5be80adcd7348d9bfe0c55a970b5215";
 
@@ -28,7 +28,7 @@ namespace ParsingData
             using (GameShopContext gameShopContext = new GameShopContext(optionsBuilder.Options))
             {
                 UnitOfWork<GameShopContext> unitOf = new UnitOfWork<GameShopContext>(gameShopContext);
-                GamesModel gam = new GamesModel();
+                GamesEntity gam = new GamesEntity();
                 GameImporter gameImporter = new GameImporter(gameShopContext);
                 gam = await gameImporter.CreateGame(Seeding.Seed(), Seeding.SeedDev());
             }

@@ -1,12 +1,12 @@
-﻿using Domain.Entities.Tags;
+﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Context.Config
 {
-    public class TagConfig : IEntityTypeConfiguration<TagModel>
+    public class TagConfig : IEntityTypeConfiguration<TagEntity>
     {
-        public void Configure(EntityTypeBuilder<TagModel> builder)
+        public void Configure(EntityTypeBuilder<TagEntity> builder)
         {
             builder.ToTable("Tag");
 
