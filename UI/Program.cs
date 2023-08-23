@@ -27,6 +27,7 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using IdentityServer4;
 using System.IdentityModel.Tokens.Jwt;
+using static Org.BouncyCastle.Math.EC.ECCurve;
 
 namespace UI
 {
@@ -44,9 +45,28 @@ namespace UI
                 .AddConfig(builder.Configuration)
                 .AddMyDependencyGroup();
 
+            builder.Services.AddAuthentication()
+                .AddGoogle(googleOptions =>
+            {
+                googleOptions.SaveTokens = true;
+                googleOptions.ClientId = builder.Configuration["GoogleProviderLogin:client_iD"];
+                googleOptions.ClientSecret = builder.Configuration["GoogleProviderLogin:client_secret"];
+                googleOptions.Events.OnTicketReceived = (context) =>
+                {
+                    Console.WriteLine(context.HttpContext.User);
+                    return Task.CompletedTask;
+                };
+                googleOptions.Events.OnCreatingTicket = (context) =>
+                {
+                    Console.WriteLine(context.Identity);
+                    return Task.CompletedTask;
+                };
+            });
+
             builder.Services.AddIdentity<UserModel, IdentityRole>(option => option.SignIn.RequireConfirmedEmail = true)
                 .AddEntityFrameworkStores<GameShopContext>()
                 .AddDefaultTokenProviders();
+
 
             var app = builder.Build();
 

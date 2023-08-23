@@ -100,7 +100,7 @@ namespace UI.ServiceProvider
                 option.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 option.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
             })
-           .AddOpenIdConnect(option =>
+           .AddOpenIdConnect("oidc", "Demo IdentityServer", option =>
            {
                option.Authority = "http://localhost:5094/signin-oidc";
                option.CallbackPath = "/signin-oidc";
@@ -112,6 +112,7 @@ namespace UI.ServiceProvider
 
                option.UsePkce = true;
                option.SaveTokens = true;
+               option.RequireHttpsMetadata = false;
 
                option.Scope.Add(OpenIdConnectScope.OpenId);
                option.Scope.Add(OpenIdConnectScope.OfflineAccess);
