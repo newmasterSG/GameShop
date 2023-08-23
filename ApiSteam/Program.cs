@@ -15,7 +15,7 @@ namespace ApiSteam
             builder.Services.AddAuthentication()
                 .AddJwtBearer(config =>
                 {
-                    config.Authority = "http://localhost:5094";
+                    config.Authority = "https://localhost:7094";
                     config.Audience = "ApiSteam";
                 });
             var app = builder.Build();

@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Duende.IdentityServer;
 using Infrastructure.User;
+using Duende.IdentityServer.Models;
 
 namespace UI.ServiceProvider
 {
@@ -65,7 +66,6 @@ namespace UI.ServiceProvider
 
             //IdentityServer
             services.AddIdentityServer()
-                .AddAspNetIdentity<UserModel>()
                 .AddInMemoryApiScopes(MyConfigIdentityServer.ApiScopes)
                 .AddInMemoryClients(MyConfigIdentityServer.Clients)
                 .AddTestUsers(MyConfigIdentityServer.TestUsers)
@@ -103,12 +103,13 @@ namespace UI.ServiceProvider
             })
            .AddOpenIdConnect("oidc", "Demo IdentityServer", option =>
            {
-               option.Authority = "http://localhost:5094/signin-oidc";
+               option.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
+               option.Authority = "https://localhost:7094";
                option.CallbackPath = "/signin-oidc";
                option.SignedOutCallbackPath = "/signout-callback-oidc";
 
                option.ClientId = "mvc";
-               option.ClientSecret = "secret";
+               option.ClientSecret = "secret".Sha256();
                option.ResponseType = OpenIdConnectResponseType.Code;
 
                option.UsePkce = true;

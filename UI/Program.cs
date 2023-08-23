@@ -27,6 +27,7 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using System.IdentityModel.Tokens.Jwt;
 using static Org.BouncyCastle.Math.EC.ECCurve;
+using Duende.IdentityServer;
 
 namespace UI
 {
@@ -45,9 +46,8 @@ namespace UI
                 .AddMyDependencyGroup();
 
             builder.Services.AddAuthentication()
-                .AddGoogle(googleOptions =>
+            .AddGoogle(googleOptions =>
             {
-                googleOptions.SaveTokens = true;
                 googleOptions.ClientId = builder.Configuration["GoogleProviderLogin:client_iD"];
                 googleOptions.ClientSecret = builder.Configuration["GoogleProviderLogin:client_secret"];
                 googleOptions.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
@@ -83,6 +83,13 @@ namespace UI
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
             {
+                builder.Services
+                    .AddAuthentication()
+                    .AddOpenIdConnect(options =>
+                    {
+                        options.RequireHttpsMetadata = true;
+                    });
+
                 app.UseExceptionHandler("/Home/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
