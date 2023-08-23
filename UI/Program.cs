@@ -44,47 +44,6 @@ namespace UI
                 .AddConfig(builder.Configuration)
                 .AddMyDependencyGroup();
 
-            builder.Services.AddAuthentication(option =>
-            {
-                option.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                option.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                option.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-           .AddOpenIdConnect("oidc", "Demo IdentityServer", option =>
-           {
-               option.Authority = "https://localhost:5002/signin-oidc";
-               option.CallbackPath = "/signin-oidc";
-               option.SignedOutCallbackPath = "/signout-callback-oidc";
-
-               option.ClientId = "mvc";
-               option.ClientSecret = "secret";
-               option.ResponseType = OpenIdConnectResponseType.Code;
-
-               option.UsePkce = true;
-               option.SaveTokens = true;
-
-               option.Scope.Add(OpenIdConnectScope.OpenId);
-               option.Scope.Add(OpenIdConnectScope.OfflineAccess);
-               option.Scope.Add(IdentityServerConstants.StandardScopes.OpenId);
-               option.Scope.Add(IdentityServerConstants.StandardScopes.Profile);
-               option.Scope.Add("api1");
-
-           })
-           .AddJwtBearer(options =>
-             {
-                 options.SaveToken = true;
-                 options.TokenValidationParameters = new TokenValidationParameters
-                 {
-                     ValidateIssuer = true,
-                     ValidateAudience = true,
-                     ValidateLifetime = true,
-                     ValidateIssuerSigningKey = true,
-                     ValidIssuer = builder.Configuration["Jwt:Issuer"],
-                     ValidAudience = builder.Configuration["Jwt:Audience"],
-                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
-                 };
-             });
-
             builder.Services.AddIdentity<UserModel, IdentityRole>(option => option.SignIn.RequireConfirmedEmail = true)
                 .AddEntityFrameworkStores<GameShopContext>()
                 .AddDefaultTokenProviders();

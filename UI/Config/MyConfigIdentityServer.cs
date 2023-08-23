@@ -18,7 +18,7 @@ namespace UI.Config
         public static IEnumerable<ApiScope> ApiScopes =>
             new List<ApiScope>
             {
-            new ApiScope("api1", "My API")
+            new ApiScope("ApiSteam", "My API")
             };
 
         public static IEnumerable<Client> Clients =>
@@ -32,7 +32,7 @@ namespace UI.Config
 
                 AllowedGrantTypes = GrantTypes.ClientCredentials,
                 // scopes that client has access to
-                AllowedScopes = { "api1" }
+                AllowedScopes = { "ApiSteam" }
             },
 
             // interactive ASP.NET Core MVC client
@@ -44,16 +44,16 @@ namespace UI.Config
                 AllowedGrantTypes = GrantTypes.Code,
 
                 // where to redirect to after login
-                RedirectUris = { "https://localhost:5002/signin-oidc" },
+                RedirectUris = { "http://localhost:5094/signin-oidc" },
 
                 // where to redirect to after logout
-                PostLogoutRedirectUris = { "https://localhost:5002/signout-callback-oidc" },
+                PostLogoutRedirectUris = { "http://localhost:5094/signout-callback-oidc" },
 
                 AllowedScopes = new List<string>
                 {
                     IdentityServerConstants.StandardScopes.OpenId,
                     IdentityServerConstants.StandardScopes.Profile,
-                    "api1"
+                    "ApiSteam"
                 }
             }
             };

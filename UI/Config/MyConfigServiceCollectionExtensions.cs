@@ -15,6 +15,10 @@ using UI.Policies;
 using UI.Config;
 using Microsoft.Extensions.DependencyInjection;
 using IdentityServer4.Test;
+using IdentityServer4;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 
 namespace UI.ServiceProvider
 {
@@ -88,6 +92,34 @@ namespace UI.ServiceProvider
                     policy.Requirements.Add(new DateRegistrationRequirement()));
             });
             services.AddScoped<IAuthorizationHandler, DateRegistrationHandler>();
+
+            //Authentication
+            services.AddAuthentication(option =>
+            {
+                option.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                option.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                option.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+            })
+           .AddOpenIdConnect(option =>
+           {
+               option.Authority = "http://localhost:5094/signin-oidc";
+               option.CallbackPath = "/signin-oidc";
+               option.SignedOutCallbackPath = "/signout-callback-oidc";
+
+               option.ClientId = "mvc";
+               option.ClientSecret = "secret";
+               option.ResponseType = OpenIdConnectResponseType.Code;
+
+               option.UsePkce = true;
+               option.SaveTokens = true;
+
+               option.Scope.Add(OpenIdConnectScope.OpenId);
+               option.Scope.Add(OpenIdConnectScope.OfflineAccess);
+               option.Scope.Add(IdentityServerConstants.StandardScopes.OpenId);
+               option.Scope.Add(IdentityServerConstants.StandardScopes.Profile);
+               option.Scope.Add("ApiSteam");
+
+           });
 
             return services;
         }

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.IdentityModel.JsonWebTokens;
 using System.Security.Claims;
 using UI.Models.User;
 
@@ -58,6 +59,7 @@ namespace UI.Controllers
                     {
                         await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Role, "Buyer"));
                         await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Name, user.UserName));
+                        await _userManager.AddClaimAsync(user, new Claim(JwtRegisteredClaimNames.Sub, user.UserName));
                         await _userManager.AddToRoleAsync(user, "Buyer");
 
                         await _signInManager.SignInAsync(user, isPersistent: false);
