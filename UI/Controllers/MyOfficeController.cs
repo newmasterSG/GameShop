@@ -1,6 +1,6 @@
 ﻿using Application.DTO;
 using Application.Services;
-using Infrastructure.User;
+using Domain.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -13,12 +13,12 @@ namespace UI.Controllers
     {
         private readonly ILogger<MyOfficeController> _logger;
         private readonly OrderServices _orderServices;
-        private readonly UserManager<UserModel> _userManager;
-        private readonly SignInManager<UserModel> _signInManager;
+        private readonly UserManager<UserEntity> _userManager;
+        private readonly SignInManager<UserEntity> _signInManager;
         public MyOfficeController(OrderServices orderServices, 
             ILogger<MyOfficeController> logger, 
-            UserManager<UserModel> userManager, 
-            SignInManager<UserModel> signInManager)
+            UserManager<UserEntity> userManager, 
+            SignInManager<UserEntity> signInManager)
         {
             _orderServices = orderServices;
             _logger = logger;

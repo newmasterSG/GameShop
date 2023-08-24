@@ -55,6 +55,44 @@
         </div>
     </div>
 </div>
+<div class="container">
+    @if (User.Identity.IsAuthenticated)
+    {
+        <div class="row">
+            <div class="col-md-12">
+                <h3 class="text-center">Leave a Review</h3>
+                <form id="reviewForm">
+                    <textarea id="reviewText" class="form-control" rows="4" placeholder="Write your review"></textarea>
+
+                    <label for="rating">Rating:</label>
+                    <select id="rating" class="form-control">
+                        <option value="1">1 Star</option>
+                        <option value="2">2 Stars</option>
+                        <option value="3">3 Stars</option>
+                        <option value="4">4 Stars</option>
+                        <option value="5">5 Stars</option>
+                    </select>
+
+                    <button type="submit" class="btn btn-primary mt-2">Submit Review</button>
+                </form>
+            </div>
+        </div>
+    }
+    <div class="row">
+        <div class="col-md-12">
+            <h3 class="text-center">Game Reviews</h3>
+            <div id="reviews">
+                <!-- Here you can loop through reviews and display them -->
+                <!-- Example review: -->
+                <!-- <div class="review">
+                     <p>Username:</p>
+                     <p>Review content</p>
+                   </div> -->
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <style>
     /* Add your custom dark mode styles here */
@@ -119,6 +157,56 @@
         error: function () {
             console.error('Ошибка при получении данных об игре');
         }
+    });
+
+    $(document).ready(function () {
+
+        function loadReviews() {
+            $.ajax({
+                url: '/Game/GetAllReviews',
+                type: 'GET',
+                success: function (reviews) {
+                    $('#reviews').empty();
+
+                    reviews.forEach(function (review) {
+                        var reviewHtml = '<div class="review"><p>' + review.userName + ':</p><p>' + review.content + '</p></div>';
+                        $('#reviews').append(reviewHtml);
+                    });
+                },
+                error: function () {
+                    alert('An error occurred while loading reviews.');
+                }
+            });
+        }
+
+        loadReviews();
+
+        $('#reviewForm').submit(function (e) {
+            e.preventDefault();
+
+            var reviewText = $('#reviewText').val();
+            var gameId = @ViewBag.GameId;
+            var rating = $('#rating').val();
+
+            $.ajax({
+                url: '/Game/AddReview',
+                type: 'POST',
+                data: { gameId: gameId, reviewText: reviewText, rating: rating },
+                success: function (response) {
+                    if (response.success) {
+                        // Clear the textarea and add the new review to the list
+                        $('#reviewText').val('');
+                        $('#reviews').append('<div class="review"><p>YourUsername:</p><p>' + reviewText + '</p></div>');
+                    } else {
+                        // Display an error message if not authenticated
+                        alert(response.message);
+                    }
+                },
+                error: function () {
+                    alert('An error occurred while submitting the review.');
+                }
+            });
+        });
     });
 </script>
 

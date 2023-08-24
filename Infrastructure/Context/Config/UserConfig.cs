@@ -1,11 +1,11 @@
-﻿using Infrastructure.User;
+﻿using Domain.User;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 namespace Infrastructure.Context.Config
 {
-    public class UserConfig : IEntityTypeConfiguration<UserModel>
+    public class UserConfig : IEntityTypeConfiguration<UserEntity>
     {
-        public void Configure(EntityTypeBuilder<UserModel> builder)
+        public void Configure(EntityTypeBuilder<UserEntity> builder)
         {
             // Indexes for "normalized" username and email, to allow efficient lookups
             builder.HasIndex(u => u.NormalizedUserName).HasName("UserNameIndex").IsUnique();

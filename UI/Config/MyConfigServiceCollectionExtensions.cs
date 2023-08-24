@@ -18,7 +18,7 @@ using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Duende.IdentityServer;
-using Infrastructure.User;
+using Domain.User;
 using Duende.IdentityServer.Models;
 
 namespace UI.ServiceProvider
@@ -85,6 +85,7 @@ namespace UI.ServiceProvider
             services.AddScoped<IUserService, UserService>();
             services.AddDatabaseDeveloperPageExceptionFilter();
             services.AddScoped<OrderServices>();
+            services.AddScoped<ReviewsService>();
 
             //Settings Policies
             services.AddAuthorization(options =>

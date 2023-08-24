@@ -1,7 +1,7 @@
 ﻿using Application.InterfaceServices;
 using Infrastructure.Context;
 using Infrastructure.UnitOfWork.UnitOfWork;
-using Infrastructure.User;
+using Domain.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,6 +1,6 @@
 ﻿using Application.Services;
 using Domain.Interfaces;
-using Infrastructure.User;
+using Domain.User;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -17,12 +17,12 @@ namespace UI.Controllers
     {
         private ILogger<AccountController> _logger;
         private readonly EmailSender _emailSender;
-        private readonly UserManager<UserModel> _userManager;
-        private readonly SignInManager<UserModel> _signInManager;
+        private readonly UserManager<UserEntity> _userManager;
+        private readonly SignInManager<UserEntity> _signInManager;
         private readonly IWebHostEnvironment _webHostEnvironment;
         public AccountController(ILogger<AccountController> logger,
-            UserManager<UserModel> userManager, 
-            SignInManager<UserModel> signInManager,
+            UserManager<UserEntity> userManager, 
+            SignInManager<UserEntity> signInManager,
             EmailSender emailSender,
             IWebHostEnvironment webHostEnvironment)
         {
@@ -53,7 +53,7 @@ namespace UI.Controllers
             {
                 if(await _userManager.FindByEmailAsync(model.Email) is null)
                 {
-                    var user = new UserModel { UserName = model.Email, Email = model.Email, DateRegistration = DateTime.Now };
+                    var user = new UserEntity { UserName = model.Email, Email = model.Email, DateRegistration = DateTime.Now };
                     var result = await _userManager.CreateAsync(user, model.Password);
 
                     if (result.Succeeded)

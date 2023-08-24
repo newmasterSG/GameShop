@@ -1,7 +1,7 @@
 ﻿using Application.DTO;
 using Domain.Entities;
 using Domain.Interfaces;
-using Infrastructure.User;
+using Domain.User;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -25,7 +25,7 @@ namespace Application.Services
         /// <param name="userId"></param>
         /// <param name="gameIds"></param>
         /// <exception cref="Exception"></exception>
-        public void CreateOrder(UserModel user, Dictionary<int,int> gameIds, decimal price)
+        public void CreateOrder(UserEntity user, Dictionary<int,int> gameIds, decimal price)
         {
             Guid guid = new Guid(user.Id);
 
@@ -65,7 +65,7 @@ namespace Application.Services
             }
             user.GameOwning += order.GameKeys.Count;
 
-            _context.GetRepository<UserModel>().Update(user);
+            _context.GetRepository<UserEntity>().Update(user);
             _context.GetRepository<OrderEntity>().Insert(order);
             _context.Save();
         }
@@ -74,7 +74,7 @@ namespace Application.Services
         {
             var orders = new List<OrderPurchaseDto>();
 
-            var user = _context.GetRepository<UserModel>().Find(u => u.UserName == userName);
+            var user = _context.GetRepository<UserEntity>().Find(u => u.UserName == userName);
 
             var dbOrders = await _context.GetRepository<OrderEntity>().ListAsync(o => o.UserId.ToString() == user.Id);
             

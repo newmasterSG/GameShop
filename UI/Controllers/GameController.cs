@@ -1,9 +1,12 @@
 ﻿using Application.DTO;
 using Application.Services;
+using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using PagedList;
 using System.Drawing.Printing;
+using System.Security.Claims;
 using UI.Models.Search;
 
 namespace UI.Controllers
@@ -12,11 +15,14 @@ namespace UI.Controllers
     {
         private readonly ILogger<GameController> _logger;
         private readonly GameService _gameService;
+        private readonly ReviewsService _reviewService;
         public GameController(GameService gameService, 
-            ILogger<GameController> logger)
+            ILogger<GameController> logger,
+            ReviewsService reviewService)
         {
             _logger = logger;
             _gameService = gameService;
+            _reviewService = reviewService;
         }
         public IActionResult Index()
         {
@@ -72,6 +78,36 @@ namespace UI.Controllers
             }
 
             return View(viewModel);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllReviews()
+        {
+            var reviews = await _reviewService.GetAllReviews();
+            return Ok(reviews);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> AddReview(int gameId, string reviewText, int rating)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                return BadRequest(new { success = false, message = "You must be logged in to add a review." });
+            }
+
+            var success = await _reviewService.AddReview(gameId, userId, reviewText, rating);
+
+            if (success)
+            {
+                return Ok(new { success = true, message = "Review added successfully." });
+            }
+            else
+            {
+                return NotFound(new { success = false, message = "Game not found." });
+            }
         }
 
         [HttpGet]

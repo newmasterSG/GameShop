@@ -1,7 +1,6 @@
 using Infrastructure.Context;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Infrastructure.User;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Infrastructure.UnitOfWork.UnitOfWork;
@@ -28,6 +27,7 @@ using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using System.IdentityModel.Tokens.Jwt;
 using static Org.BouncyCastle.Math.EC.ECCurve;
 using Duende.IdentityServer;
+using Domain.User;
 
 namespace UI
 {
@@ -53,7 +53,7 @@ namespace UI
                 googleOptions.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
             });
 
-            builder.Services.AddIdentity<UserModel, IdentityRole>(option => option.SignIn.RequireConfirmedEmail = true)
+            builder.Services.AddIdentity<UserEntity, IdentityRole>(option => option.SignIn.RequireConfirmedEmail = true)
                 .AddEntityFrameworkStores<GameShopContext>()
                 .AddDefaultTokenProviders();
 
@@ -116,7 +116,7 @@ namespace UI
 
                 var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-                var userManager = scope.ServiceProvider.GetRequiredService<UserManager<UserModel>>();
+                var userManager = scope.ServiceProvider.GetRequiredService<UserManager<UserEntity>>();
 
                 var roles = new[] { "Admin", "Manager", "Buyer" };
 
@@ -140,7 +140,7 @@ namespace UI
 
                 if (await userManager.FindByEmailAsync(email) == null)
                 {
-                    UserModel adminUser = new UserModel
+                    UserEntity adminUser = new UserEntity
                     {
                         UserName = email,
                         Email = email,

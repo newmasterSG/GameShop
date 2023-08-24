@@ -46,5 +46,7 @@ namespace Domain.Entities
         public List<GameKeyEntity> GameKeys { get; set; }
         public List<OrderGameEntity> OrderedGames { get; set; }
         public List<OrderEntity> Orders { get; set; }
+
+        public ICollection<ReviewEntity> Reviews { get; set; }
     }
 }
