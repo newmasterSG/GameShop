@@ -44,12 +44,15 @@ namespace Application.Services
             return true;
         }
 
-        public async Task<List<ReviewDto>> GetAllReviews()
+        public async Task<List<ReviewDto>> GetAllReviews(int page, int pageSize)
         {
             var reviewDtos = new List<ReviewDto>();
             var reviews = await _unitOfWork.GetRepository<ReviewEntity>().GetAllAsync();
+            reviews = reviews.Skip((page - 1) * pageSize)
+                             .Take(pageSize)
+                             .ToList();
 
-            foreach(var review in reviews)
+            foreach (var review in reviews)
             {
                 var user = _unitOfWork.GetRepository<UserEntity>().Find(u => u.Id == review.UserId);
 

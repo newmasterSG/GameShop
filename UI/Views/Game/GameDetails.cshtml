@@ -82,6 +82,7 @@
         <div class="col-md-12">
             <h3 class="text-center">Game Reviews</h3>
             <div id="reviews">
+                <div id="pagination" class="text-center"></div>
             </div>
         </div>
     </div>
@@ -154,11 +155,14 @@
     });
 
     $(document).ready(function () {
-
+        var currentPage = 1;
+        var pageSize = 12;
+        var totalPages = 0;
         function loadReviews() {
             $.ajax({
                 url: '/Game/GetAllReviews',
                 type: 'GET',
+                data: { page: currentPage, pageSize: pageSize },
                 success: function (reviews) {
                     $('#reviews').empty();
 
@@ -166,12 +170,55 @@
                         var reviewHtml = '<div class="review"><p>' + review.userName + ':</p><p>' + review.content + '</p></div>';
                         $('#reviews').append(reviewHtml);
                     });
+
+                    updatePagination();
                 },
                 error: function () {
                     alert('An error occurred while loading reviews.');
                 }
             });
         }
+
+            function updatePagination() {
+                $('#pagination').empty();
+
+                if (totalPages <= 1) {
+                    return; // No need for pagination
+                }
+
+                var prevButton = '<button id="prevPageBtn" class="page-btn" ' + (currentPage === 1 ? 'disabled' : '') + '>Previous</button>';
+                var nextButton = '<button id="nextPageBtn" class="page-btn" ' + (currentPage === totalPages ? 'disabled' : '') + '>Next</button>';
+
+                $('#pagination').append(prevButton);
+
+                for (var i = 1; i <= totalPages; i++) {
+                    var pageButton = '<button class="page-btn page-number ' + (i === currentPage ? 'active' : '') + '">' + i + '</button>';
+                    $('#pagination').append(pageButton);
+                }
+
+                $('#pagination').append(nextButton);
+
+                // Attach click handlers to page number buttons
+                $('.page-number').click(function () {
+                    currentPage = parseInt($(this).text());
+                    loadReviews();
+                });
+
+                // Attach click handlers to prev/next buttons
+                $('#prevPageBtn').click(function () {
+                    if (currentPage > 1) {
+                        currentPage--;
+                        loadReviews();
+                    }
+                });
+
+                $('#nextPageBtn').click(function () {
+                    if (currentPage < totalPages) {
+                        currentPage++;
+                        loadReviews();
+                    }
+                });
+            }
 
         loadReviews();
 

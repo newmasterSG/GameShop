@@ -81,9 +81,9 @@ namespace UI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllReviews()
+        public async Task<IActionResult> GetAllReviews(int page = 1, int pageSize = 12)
         {
-            var reviews = await _reviewService.GetAllReviews();
+            var reviews = await _reviewService.GetAllReviews(page,pageSize);
             return Ok(reviews);
         }
 
