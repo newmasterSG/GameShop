@@ -1,11 +1,13 @@
 ﻿using Application.DTO;
 using Application.Services;
 using Domain.Entities;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PagedList;
 using System.Drawing.Printing;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using UI.Models.Search;
 
@@ -24,8 +26,17 @@ namespace UI.Controllers
             _gameService = gameService;
             _reviewService = reviewService;
         }
-        public IActionResult Index()
+
+        public async Task<IActionResult> Index()
         {
+            var accessToken =  HttpContext.GetTokenAsync("access_token").GetAwaiter().GetResult();
+            var idToken = await HttpContext.GetTokenAsync("id_token");
+
+            if(accessToken == null)
+            {
+                Console.WriteLine("Null");
+            }
+
             return View();
         }
 

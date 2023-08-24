@@ -20,6 +20,7 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Duende.IdentityServer;
 using Domain.User;
 using Duende.IdentityServer.Models;
+using UI.Claims;
 
 namespace UI.ServiceProvider
 {
@@ -64,19 +65,6 @@ namespace UI.ServiceProvider
             services.AddMemoryCache();
             services.AddDistributedMemoryCache();
 
-            //IdentityServer
-            services.AddIdentityServer()
-                .AddInMemoryApiScopes(MyConfigIdentityServer.ApiScopes)
-                .AddInMemoryClients(MyConfigIdentityServer.Clients)
-                .AddTestUsers(MyConfigIdentityServer.TestUsers)
-                .AddJwtBearerClientAuthentication()
-                .AddDeveloperSigningCredential();
-
-            //Localizations
-            services.AddLocalization(opt => { opt.ResourcesPath = "Resources"; });
-            services.AddControllersWithViews().AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
-                .AddDataAnnotationsLocalization();
-
             //My own services
             services.AddScoped<IUnitOfWork, UnitOfWork<GameShopContext>>();
             services.AddScoped<IHomeService, HomeService>();
@@ -86,6 +74,20 @@ namespace UI.ServiceProvider
             services.AddDatabaseDeveloperPageExceptionFilter();
             services.AddScoped<OrderServices>();
             services.AddScoped<ReviewsService>();
+            services.AddScoped<IUserClaimsPrincipalFactory<UserEntity>, MyUserClaimsPrincipalFactory>();
+
+            //IdentityServer
+            services.AddIdentityServer()
+                .AddAspNetIdentity<UserEntity>()
+                .AddInMemoryApiScopes(MyConfigIdentityServer.ApiScopes)
+                .AddInMemoryClients(MyConfigIdentityServer.Clients)
+                .AddTestUsers(MyConfigIdentityServer.TestUsers)
+                .AddDeveloperSigningCredential();
+
+            //Localizations
+            services.AddLocalization(opt => { opt.ResourcesPath = "Resources"; });
+            services.AddControllersWithViews().AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
+                .AddDataAnnotationsLocalization();
 
             //Settings Policies
             services.AddAuthorization(options =>
@@ -99,6 +101,7 @@ namespace UI.ServiceProvider
             services.AddAuthentication(option =>
             {
                 option.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                option.DefaultScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
                 option.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 option.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
             })
@@ -112,7 +115,7 @@ namespace UI.ServiceProvider
                option.ClientId = "mvc";
                option.ClientSecret = "secret".Sha256();
                option.ResponseType = OpenIdConnectResponseType.Code;
-
+               option.GetClaimsFromUserInfoEndpoint = true;
                option.UsePkce = true;
                option.SaveTokens = true;
                option.RequireHttpsMetadata = false;

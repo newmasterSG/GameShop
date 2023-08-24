@@ -53,7 +53,10 @@ namespace UI
                 googleOptions.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
             });
 
-            builder.Services.AddIdentity<UserEntity, IdentityRole>(option => option.SignIn.RequireConfirmedEmail = true)
+            builder.Services.AddIdentity<UserEntity, IdentityRole>(option => 
+            { 
+                option.SignIn.RequireConfirmedEmail = true;
+            })
                 .AddEntityFrameworkStores<GameShopContext>()
                 .AddDefaultTokenProviders();
 
