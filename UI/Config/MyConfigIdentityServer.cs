@@ -55,8 +55,8 @@ namespace UI.Config
                     IdentityServerConstants.StandardScopes.Profile,
                     IdentityServerConstants.StandardScopes.Email,
                     "ApiSteam"
-                }
-            }
+                },
+              }
             };
 
         public static List<TestUser> TestUsers =>

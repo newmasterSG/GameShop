@@ -41,12 +41,14 @@ namespace UI
             builder.Services.AddDbContext<GameShopContext>(options =>
                 options.UseSqlServer(connectionString).EnableSensitiveDataLogging());
 
+            JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
+
             builder.Services
                 .AddConfig(builder.Configuration)
                 .AddMyDependencyGroup();
 
             builder.Services.AddAuthentication()
-            .AddGoogle(googleOptions =>
+            .AddGoogle("Google", googleOptions =>
             {
                 googleOptions.ClientId = builder.Configuration["GoogleProviderLogin:client_iD"];
                 googleOptions.ClientSecret = builder.Configuration["GoogleProviderLogin:client_secret"];

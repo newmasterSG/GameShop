@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
      <Folder Include="Contents" />
+     <Folder Include="Service\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Views\Account\ForgotPassword.cshtml" />

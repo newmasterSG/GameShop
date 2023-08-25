@@ -77,7 +77,16 @@ namespace UI.ServiceProvider
             services.AddScoped<IUserClaimsPrincipalFactory<UserEntity>, MyUserClaimsPrincipalFactory>();
 
             //IdentityServer
-            services.AddIdentityServer()
+            services.AddIdentityServer(options =>
+            {
+                options.Events.RaiseErrorEvents = true;
+                options.Events.RaiseInformationEvents = true;
+                options.Events.RaiseFailureEvents = true;
+                options.Events.RaiseSuccessEvents = true;
+
+                // see https://docs.duendesoftware.com/identityserver/v6/fundamentals/resources/
+                options.EmitStaticAudienceClaim = true;
+            })
                 .AddAspNetIdentity<UserEntity>()
                 .AddInMemoryApiScopes(MyConfigIdentityServer.ApiScopes)
                 .AddInMemoryClients(MyConfigIdentityServer.Clients)
@@ -98,27 +107,28 @@ namespace UI.ServiceProvider
             services.AddScoped<IAuthorizationHandler, DateRegistrationHandler>();
 
             //Authentication
+
             services.AddAuthentication(option =>
             {
-                option.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                option.DefaultScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
-                option.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                option.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+                option.DefaultAuthenticateScheme = "Cookies";
+                option.DefaultSignInScheme = "Cookies";
+                option.DefaultChallengeScheme = "oidc";
             })
+            .AddCookie("Cookies")
            .AddOpenIdConnect("oidc", "Demo IdentityServer", option =>
            {
                option.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
+               option.SignOutScheme = IdentityServerConstants.SignoutScheme;
                option.Authority = "https://localhost:7094";
                option.CallbackPath = "/signin-oidc";
                option.SignedOutCallbackPath = "/signout-callback-oidc";
 
                option.ClientId = "mvc";
-               option.ClientSecret = "secret".Sha256();
+               option.ClientSecret = "secret";
                option.ResponseType = OpenIdConnectResponseType.Code;
-               option.GetClaimsFromUserInfoEndpoint = true;
                option.UsePkce = true;
-               option.SaveTokens = true;
                option.RequireHttpsMetadata = false;
+               option.Scope.Clear();
 
                option.Scope.Add(OpenIdConnectScope.OpenId);
                option.Scope.Add(OpenIdConnectScope.OfflineAccess);
@@ -126,6 +136,8 @@ namespace UI.ServiceProvider
                option.Scope.Add(IdentityServerConstants.StandardScopes.Profile);
                option.Scope.Add(IdentityServerConstants.StandardScopes.Email);
                option.Scope.Add("ApiSteam");
+               option.GetClaimsFromUserInfoEndpoint = true;
+               option.SaveTokens = true;
 
            });
 
