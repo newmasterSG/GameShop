@@ -117,7 +117,50 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ChangeButton" xml:space="preserve">
+    <value>Змінити пароль</value>
+  </data>
+  <data name="ConfirmationLinkSuccess" xml:space="preserve">
+    <value>Ми надіслали електронний лист із посиланням для підтвердження на вашу електронну адресу. Будь ласка, перевірте свою поштову скриньку та дотримуйтесь інструкцій, щоб підтвердити свою електронну адресу.</value>
+  </data>
+  <data name="ConfirmationProcessHasFailed" xml:space="preserve">
+    <value>Вибачте, але процес підтвердження електронної пошти не вдався. Спробуйте ще раз або зверніться по допомогу до нашої служби підтримки.</value>
+  </data>
+  <data name="ConfirmMessage" xml:space="preserve">
+    <value>Вашу електронну адресу успішно підтверджено. Тепер ви можете увійти, використовуючи свої облікові дані.</value>
+  </data>
+  <data name="EmailConfirmationFailed" xml:space="preserve">
+    <value>Помилка підтвердження електронною поштою</value>
+  </data>
+  <data name="EmailConfirmationSent" xml:space="preserve">
+    <value>Підтвердження електронною поштою надіслано</value>
+  </data>
+  <data name="EmailConfirmed" xml:space="preserve">
+    <value>Електронна адреса підтверджена</value>
+  </data>
+  <data name="ForgotPasswordTitle" xml:space="preserve">
+    <value>Забули пароль?</value>
+  </data>
   <data name="LoginText" xml:space="preserve">
     <value>Авторизуватися</value>
+  </data>
+  <data name="PasswordChangeSuccess" xml:space="preserve">
+    <value>Пароль успішно змінено</value>
+  </data>
+  <data name="PasswordRecoveryConfirmationTitle" xml:space="preserve">
+    <value>Підтвердження відновлення пароля</value>
+  </data>
+  <data name="RecoveryMessage" xml:space="preserve">
+    <value>&lt;p&gt;Інструкції з відновлення пароля були надіслані на ваш email.&lt;/p&gt;
+&lt;p&gt;Будь ласка, перевірте свою пошту та дотримуйтесь інструкцій для зміни пароля.&lt;/p&gt;</value>
+  </data>
+  <data name="RememberMeText" xml:space="preserve">
+    <value>Запам'ятати мене</value>
+  </data>
+  <data name="RestoreButton" xml:space="preserve">
+    <value>Відновити пароль</value>
+  </data>
+  <data name="SuccessfullyChangedMessage" xml:space="preserve">
+    <value>Ваш пароль успішно змінено. Тепер ви можете увійти за допомогою нового пароля.</value>
   </data>
 </root>

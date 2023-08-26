@@ -21,6 +21,7 @@ using Duende.IdentityServer;
 using Domain.User;
 using Duende.IdentityServer.Models;
 using UI.Claims;
+using UI.Validate;
 
 namespace UI.ServiceProvider
 {
@@ -95,8 +96,12 @@ namespace UI.ServiceProvider
 
             //Localizations
             services.AddLocalization(opt => { opt.ResourcesPath = "Resources"; });
-            services.AddControllersWithViews().AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
-                .AddDataAnnotationsLocalization();
+            services.AddControllersWithViews()
+                .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
+                .AddDataAnnotationsLocalization(options => {
+                    options.DataAnnotationLocalizerProvider = (type, factory) =>
+                        factory.Create(typeof(ValidationResources));
+                });
 
             //Settings Policies
             services.AddAuthorization(options =>

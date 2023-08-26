@@ -117,7 +117,50 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ChangeButton" xml:space="preserve">
+    <value>Change password</value>
+  </data>
+  <data name="ConfirmationLinkSuccess" xml:space="preserve">
+    <value>We've sent an email with a confirmation link to your email address. Please check your inbox and follow the instructions to confirm your email.</value>
+  </data>
+  <data name="ConfirmationProcessHasFailed" xml:space="preserve">
+    <value>We're sorry, but the email confirmation process has failed. Please try again or contact our support team for assistance.</value>
+  </data>
+  <data name="ConfirmMessage" xml:space="preserve">
+    <value>Your email has been successfully confirmed. You can now log in using your credentials.</value>
+  </data>
+  <data name="EmailConfirmationFailed" xml:space="preserve">
+    <value>Email Confirmation Failed</value>
+  </data>
+  <data name="EmailConfirmationSent" xml:space="preserve">
+    <value>Email Confirmation Sent</value>
+  </data>
+  <data name="EmailConfirmed" xml:space="preserve">
+    <value>Email Confirmed</value>
+  </data>
+  <data name="ForgotPasswordTitle" xml:space="preserve">
+    <value>Forgot your password?</value>
+  </data>
   <data name="LoginText" xml:space="preserve">
     <value>Log in</value>
+  </data>
+  <data name="PasswordChangeSuccess" xml:space="preserve">
+    <value>Password changed successfully</value>
+  </data>
+  <data name="PasswordRecoveryConfirmationTitle" xml:space="preserve">
+    <value>Password recovery confirmation</value>
+  </data>
+  <data name="RecoveryMessage" xml:space="preserve">
+    <value>&lt;p&gt;Password recovery instructions have been sent to your email.&lt;/p&gt;
+&lt;p&gt;Please check your email and follow the instructions to reset your password.&lt;/p&gt;</value>
+  </data>
+  <data name="RememberMeText" xml:space="preserve">
+    <value>Remember me</value>
+  </data>
+  <data name="RestoreButton" xml:space="preserve">
+    <value>Restore password</value>
+  </data>
+  <data name="SuccessfullyChangedMessage" xml:space="preserve">
+    <value>Your password has been successfully changed. Now you can log in with your new password.</value>
   </data>
 </root>

@@ -117,10 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="LogAcc" xml:space="preserve">
-    <value>Увійдіть у свій обліковий запис.</value>
+  <data name="CreateAccount" xml:space="preserve">
+    <value>Створення нового акаунта.</value>
   </data>
-  <data name="Register" xml:space="preserve">
-    <value>&lt;p&gt;Якщо у вас немає облікового запису, &lt;a href="Register"&gt;зареєструватися тут&lt;/a&gt;.&lt;/p&gt;</value>
+  <data name="RegisterButtonText" xml:space="preserve">
+    <value>Зареєструватися</value>
   </data>
 </root>

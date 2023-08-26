@@ -117,10 +117,31 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="LogAcc" xml:space="preserve">
-    <value>Увійдіть у свій обліковий запис.</value>
+  <data name="Confirm password" xml:space="preserve">
+    <value>Confirm password</value>
   </data>
-  <data name="Register" xml:space="preserve">
-    <value>&lt;p&gt;Якщо у вас немає облікового запису, &lt;a href="Register"&gt;зареєструватися тут&lt;/a&gt;.&lt;/p&gt;</value>
+  <data name="ConfirmPasswordRequired" xml:space="preserve">
+    <value>Confirm password field is required</value>
+  </data>
+  <data name="DontMatch" xml:space="preserve">
+    <value>The password and confirmation password do not match.</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="EmailRequired" xml:space="preserve">
+    <value>The email field is required</value>
+  </data>
+  <data name="InvalidEmail" xml:space="preserve">
+    <value>Incorrect email</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="PasswordRequired" xml:space="preserve">
+    <value>The password field is required</value>
+  </data>
+  <data name="UserNameRequired" xml:space="preserve">
+    <value>The username field is required</value>
   </data>
 </root>

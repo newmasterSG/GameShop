@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="LogAcc" xml:space="preserve">
+    <value>Log in to your account.</value>
+  </data>
   <data name="Register" xml:space="preserve">
     <value>&lt;p&gt;If you don't have an account, &lt;a asp-page="/Register"&gt;register here&lt;/a&gt;.&lt;/p&gt;</value>
   </data>

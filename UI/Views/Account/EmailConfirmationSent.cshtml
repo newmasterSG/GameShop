@@ -2,11 +2,11 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
-    ViewData["Title"] = "Email Confirmation Sent";
+    ViewData["Title"] = ViewBag.Title;
 }
 
-<h2>Email Confirmation Sent</h2>
+<h2>@ViewBag.Title</h2>
 
 <p>
-    We've sent an email with a confirmation link to your email address. Please check your inbox and follow the instructions to confirm your email.
+    @ViewBag.Success
 </p>

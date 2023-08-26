@@ -117,10 +117,31 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="LogAcc" xml:space="preserve">
-    <value>Увійдіть у свій обліковий запис.</value>
+  <data name="Confirm password" xml:space="preserve">
+    <value>Пароль підтвердження</value>
   </data>
-  <data name="Register" xml:space="preserve">
-    <value>&lt;p&gt;Якщо у вас немає облікового запису, &lt;a href="Register"&gt;зареєструватися тут&lt;/a&gt;.&lt;/p&gt;</value>
+  <data name="ConfirmPasswordRequired" xml:space="preserve">
+    <value>Поле підтвердження пароля є обов'язковим для заповнення</value>
+  </data>
+  <data name="DontMatch" xml:space="preserve">
+    <value>Пароль і пароль підтвердження не збігаються.</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>Електронна пошта</value>
+  </data>
+  <data name="EmailRequired" xml:space="preserve">
+    <value>Поле електронної пошти є обов'язковим для заповнення</value>
+  </data>
+  <data name="InvalidEmail" xml:space="preserve">
+    <value>Некоректний емайл</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Пароль</value>
+  </data>
+  <data name="PasswordRequired" xml:space="preserve">
+    <value>Поле пароля є обов'язковим для заповнення</value>
+  </data>
+  <data name="UserNameRequired" xml:space="preserve">
+    <value>Поле ім'я користувача обов'язково заповнення</value>
   </data>
 </root>
