@@ -15,6 +15,19 @@ namespace UI.Config
             new IdentityResources.Profile(),
         };
 
+        public static IEnumerable<ApiResource> ApiResources =>
+            new ApiResource[]
+            {
+                new ApiResource
+                {
+                    Name = "ApiSteam",
+                    DisplayName = "MyApi",
+                    ApiSecrets = { new Secret("api_secret".Sha256())},
+                    Scopes = new List<string>(){"api"},
+                    UserClaims = {ClaimTypes.Email},
+                },
+            };
+
         public static IEnumerable<ApiScope> ApiScopes =>
             new List<ApiScope>
             {

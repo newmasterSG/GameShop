@@ -25,7 +25,6 @@ using Domain.Entities;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using System.IdentityModel.Tokens.Jwt;
-using static Org.BouncyCastle.Math.EC.ECCurve;
 using Duende.IdentityServer;
 using Domain.User;
 
