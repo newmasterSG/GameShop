@@ -14,11 +14,14 @@ using Microsoft.AspNetCore.Authorization;
 using UI.Policies;
 using UI.Config;
 using Microsoft.Extensions.DependencyInjection;
-using IdentityServer4.Test;
-using IdentityServer4;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Duende.IdentityServer;
+using Domain.User;
+using Duende.IdentityServer.Models;
+using UI.Claims;
+using UI.Validate;
 
 namespace UI.ServiceProvider
 {
@@ -63,19 +66,6 @@ namespace UI.ServiceProvider
             services.AddMemoryCache();
             services.AddDistributedMemoryCache();
 
-            //IdentityServer
-            services.AddIdentityServer()
-                .AddInMemoryApiScopes(MyConfigIdentityServer.ApiScopes)
-                .AddInMemoryClients(MyConfigIdentityServer.Clients)
-                .AddTestUsers(MyConfigIdentityServer.TestUsers)
-                .AddJwtBearerClientAuthentication()
-                .AddDeveloperSigningCredential();
-
-            //Localizations
-            services.AddLocalization(opt => { opt.ResourcesPath = "Resources"; });
-            services.AddControllersWithViews().AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
-                .AddDataAnnotationsLocalization();
-
             //My own services
             services.AddScoped<IUnitOfWork, UnitOfWork<GameShopContext>>();
             services.AddScoped<IHomeService, HomeService>();
@@ -84,6 +74,34 @@ namespace UI.ServiceProvider
             services.AddScoped<IUserService, UserService>();
             services.AddDatabaseDeveloperPageExceptionFilter();
             services.AddScoped<OrderServices>();
+            services.AddScoped<ReviewsService>();
+            services.AddScoped<IUserClaimsPrincipalFactory<UserEntity>, MyUserClaimsPrincipalFactory>();
+
+            //IdentityServer
+            services.AddIdentityServer(options =>
+            {
+                options.Events.RaiseErrorEvents = true;
+                options.Events.RaiseInformationEvents = true;
+                options.Events.RaiseFailureEvents = true;
+                options.Events.RaiseSuccessEvents = true;
+
+                // see https://docs.duendesoftware.com/identityserver/v6/fundamentals/resources/
+                options.EmitStaticAudienceClaim = true;
+            })
+                .AddAspNetIdentity<UserEntity>()
+                .AddInMemoryApiScopes(MyConfigIdentityServer.ApiScopes)
+                .AddInMemoryClients(MyConfigIdentityServer.Clients)
+                .AddTestUsers(MyConfigIdentityServer.TestUsers)
+                .AddDeveloperSigningCredential();
+
+            //Localizations
+            services.AddLocalization(opt => { opt.ResourcesPath = "Resources"; });
+            services.AddControllersWithViews()
+                .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
+                .AddDataAnnotationsLocalization(options => {
+                    options.DataAnnotationLocalizerProvider = (type, factory) =>
+                        factory.Create(typeof(ValidationResources));
+                });
 
             //Settings Policies
             services.AddAuthorization(options =>
@@ -94,25 +112,28 @@ namespace UI.ServiceProvider
             services.AddScoped<IAuthorizationHandler, DateRegistrationHandler>();
 
             //Authentication
+
             services.AddAuthentication(option =>
             {
-                option.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                option.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                option.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+                option.DefaultAuthenticateScheme = "Cookies";
+                option.DefaultSignInScheme = "Cookies";
+                option.DefaultChallengeScheme = "oidc";
             })
+            .AddCookie("Cookies")
            .AddOpenIdConnect("oidc", "Demo IdentityServer", option =>
            {
-               option.Authority = "http://localhost:5094/signin-oidc";
+               option.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
+               option.SignOutScheme = IdentityServerConstants.SignoutScheme;
+               option.Authority = "https://localhost:7094";
                option.CallbackPath = "/signin-oidc";
                option.SignedOutCallbackPath = "/signout-callback-oidc";
 
                option.ClientId = "mvc";
                option.ClientSecret = "secret";
                option.ResponseType = OpenIdConnectResponseType.Code;
-
                option.UsePkce = true;
-               option.SaveTokens = true;
                option.RequireHttpsMetadata = false;
+               option.Scope.Clear();
 
                option.Scope.Add(OpenIdConnectScope.OpenId);
                option.Scope.Add(OpenIdConnectScope.OfflineAccess);
@@ -120,6 +141,8 @@ namespace UI.ServiceProvider
                option.Scope.Add(IdentityServerConstants.StandardScopes.Profile);
                option.Scope.Add(IdentityServerConstants.StandardScopes.Email);
                option.Scope.Add("ApiSteam");
+               option.GetClaimsFromUserInfoEndpoint = true;
+               option.SaveTokens = true;
 
            });
 

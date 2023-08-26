@@ -1,51 +1,52 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
+using UI.Validate;
 
 namespace UI.Models.User
 {
     public class UserModelValid
     {
-        [Required]
+        [Required(ErrorMessageResourceName = "UserNameRequired", ErrorMessageResourceType = typeof(ValidationResources))]
         [Display(Name = "Имя пользователя")]
         public string Username { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "PasswordRequired", ErrorMessageResourceType = typeof(ValidationResources))]
         [DataType(DataType.Password)]
-        [Display(Name = "Пароль")]
+        [Display(Name = "Password")]
         public string Password { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "EmailRequired", ErrorMessageResourceType = typeof(ValidationResources))]
         [DataType(DataType.EmailAddress)]
-        [Display(Name = "Email")]
+        [Display(Name = "Email", ResourceType = typeof(ValidationResources))]
         public string Email { get; set; }
     }
 
     public class RegisterViewModel
     {
-        [Required]
+        [Required(ErrorMessage = "EmailRequired")]
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "PasswordRequired")]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
         [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [Compare("Password", ErrorMessage = "DontMatch")]
         public string ConfirmPassword { get; set; }
     }
 
     public class LoginViewModel
     {
-        [Required]
+        [Required(ErrorMessage = "EmailRequired")]
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "PasswordRequired")]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }
@@ -57,21 +58,21 @@ namespace UI.Models.User
     public class ForgotPasswordViewModel
     {
         [BindProperty]
-        [Required(ErrorMessage = "Введите email")]
-        [EmailAddress(ErrorMessage = "Введите корректный email")]
+        [Required(ErrorMessage = "EmailRequired")]
+        [EmailAddress(ErrorMessage = "InvalidEmail")]
         public string Email { get; set; }
     }
 
     public class ResetPasswordViewModel
     {
         [BindProperty]
-        [Required(ErrorMessage = "Введите новый пароль")]
+        [Required(ErrorMessage = "PasswordRequired")]
         [DataType(DataType.Password)]
         public string NewPassword { get; set; }
 
         [BindProperty]
-        [Required(ErrorMessage = "Подтвердите новый пароль")]
-        [Compare("NewPassword", ErrorMessage = "Пароли не совпадают")]
+        [Required(ErrorMessage = "ConfirmPasswordRequired")]
+        [Compare("NewPassword", ErrorMessage = "DontMatch")]
         [DataType(DataType.Password)]
         public string ConfirmPassword { get; set; }
 

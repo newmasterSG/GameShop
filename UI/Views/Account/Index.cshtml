@@ -1,12 +1,12 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer localizer
 @{
     ViewData["Title"] = "Вопрос";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome to Your App!</h1>
-    <p>Build something amazing.</p>
-    <p><a href="~/Account/Login">Log in</a> if you have an account, or <a href="~/Account/Register">register</a> for a new account.</p>
+    <h1 class="display-4">
+        @localizer["SignInCreateText"]
+    </h1>
+    <p>@localizer["PlayText"]</p>
+    <p>@localizer["Log"]</p>
 </div>

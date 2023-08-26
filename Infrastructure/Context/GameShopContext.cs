@@ -1,12 +1,12 @@
 ﻿using Domain.Entities;
-using Infrastructure.User;
+using Domain.User;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
 namespace Infrastructure.Context
 {
-    public class GameShopContext : IdentityDbContext<UserModel>
+    public class GameShopContext : IdentityDbContext<UserEntity>
     {
         public DbSet<AddedByStatusEntity> AddedByStatus { get; set; }
         public DbSet<GenreEntity> Genres { get; set; }
@@ -44,13 +44,15 @@ namespace Infrastructure.Context
 
         public DbSet<GamesToDeveloperEntity> GamesToDevelopers { get; set; }
 
-        public override DbSet<UserModel> Users { get; set; }
+        public override DbSet<UserEntity> Users { get; set; }
 
         public DbSet<GameKeyEntity> GameKeys { get; set; }
 
         public DbSet<OrderEntity> Orders { get; set; }
 
         public DbSet<OrderGameEntity> OrderGames { get; set; }
+
+        public DbSet<ReviewEntity> Reviews { get; set; }
 
         public GameShopContext(DbContextOptions<GameShopContext> option) : base(option) { }
 

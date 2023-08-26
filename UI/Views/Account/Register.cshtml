@@ -1,12 +1,13 @@
 ﻿@model UI.Models.User.RegisterViewModel
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer localizer
 @{
     ViewData["Title"] = "Регистрация";
 }
 
-<div class="row">
+<div class="row align-content-center justify-content-center">
     <div class="col-md-4">
         <form asp-controller="Account" asp-action="Register" method="post">
-            <h4>Create a new account.</h4>
+            <h4>@localizer["CreateAccount"]</h4>
             <hr />
             <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group">
@@ -24,7 +25,7 @@
                 <input asp-for="ConfirmPassword" class="form-control" />
                 <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
             </div>
-            <button type="submit" class="btn btn-primary">Register</button>
+            <button type="submit" class="btn btn-primary">@localizer["RegisterButtonText"]</button>
         </form>
     </div>
 </div>

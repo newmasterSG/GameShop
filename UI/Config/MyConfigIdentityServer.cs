@@ -1,8 +1,8 @@
-﻿using IdentityServer4.Models;
-using IdentityServer4;
-using IdentityServer4.Test;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
+using Duende.IdentityServer.Models;
+using Duende.IdentityServer;
+using Duende.IdentityServer.Test;
 
 namespace UI.Config
 {
@@ -44,10 +44,10 @@ namespace UI.Config
                 AllowedGrantTypes = GrantTypes.Code,
 
                 // where to redirect to after login
-                RedirectUris = { "http://localhost:5094/signin-oidc" },
+                RedirectUris = { "https://localhost:7094/signin-oidc" },
 
                 // where to redirect to after logout
-                PostLogoutRedirectUris = { "http://localhost:5094/signout-callback-oidc" },
+                PostLogoutRedirectUris = { "https://localhost:7094/signout-callback-oidc" },
 
                 AllowedScopes = new List<string>
                 {
@@ -55,8 +55,8 @@ namespace UI.Config
                     IdentityServerConstants.StandardScopes.Profile,
                     IdentityServerConstants.StandardScopes.Email,
                     "ApiSteam"
-                }
-            }
+                },
+              }
             };
 
         public static List<TestUser> TestUsers =>

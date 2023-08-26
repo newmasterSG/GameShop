@@ -1,15 +1,18 @@
 ﻿using Application.Services;
 using Domain.Interfaces;
-using Infrastructure.User;
+using Domain.User;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Localization;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.Extensions.Localization;
 using Microsoft.IdentityModel.JsonWebTokens;
 using System.Security.Claims;
 using UI.Models.User;
+using UI.Validate;
 
 namespace UI.Controllers
 {
@@ -17,20 +20,26 @@ namespace UI.Controllers
     {
         private ILogger<AccountController> _logger;
         private readonly EmailSender _emailSender;
-        private readonly UserManager<UserModel> _userManager;
-        private readonly SignInManager<UserModel> _signInManager;
+        private readonly UserManager<UserEntity> _userManager;
+        private readonly SignInManager<UserEntity> _signInManager;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly IHtmlLocalizer<AccountController> _localizer;
+        private readonly IStringLocalizer<ValidationResources> _sharedLocalizer;
         public AccountController(ILogger<AccountController> logger,
-            UserManager<UserModel> userManager, 
-            SignInManager<UserModel> signInManager,
+            UserManager<UserEntity> userManager, 
+            SignInManager<UserEntity> signInManager,
             EmailSender emailSender,
-            IWebHostEnvironment webHostEnvironment)
+            IWebHostEnvironment webHostEnvironment,
+            IHtmlLocalizer<AccountController> localizer,
+            IStringLocalizer<ValidationResources> stringLocalizer)
         {
             _logger = logger;
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _webHostEnvironment = webHostEnvironment;
+            _localizer = localizer;
+            _sharedLocalizer = stringLocalizer;
         }
 
         // GET: AccountController
@@ -53,7 +62,7 @@ namespace UI.Controllers
             {
                 if(await _userManager.FindByEmailAsync(model.Email) is null)
                 {
-                    var user = new UserModel { UserName = model.Email, Email = model.Email, DateRegistration = DateTime.Now };
+                    var user = new UserEntity { UserName = model.Email, Email = model.Email, DateRegistration = DateTime.Now };
                     var result = await _userManager.CreateAsync(user, model.Password);
 
                     if (result.Succeeded)
@@ -103,6 +112,10 @@ namespace UI.Controllers
         [HttpGet]
         public IActionResult Login()
         {
+            var logInText = _localizer["LoginText"];
+            var rememberText = _localizer["RememberMeText"];
+            ViewBag.Login = logInText;
+            ViewBag.Remember = rememberText;
             return View();
         }
 
@@ -186,6 +199,10 @@ namespace UI.Controllers
         [HttpGet]
         public IActionResult ForgotPassword()
         {
+            var title = _localizer["ForgotPasswordTitle"];
+            var resetButton = _localizer["RestoreButton"];
+            ViewBag.Title = title;
+            ViewBag.ResetButton = resetButton;
             return View();
         }
 
@@ -235,6 +252,8 @@ namespace UI.Controllers
         [AllowAnonymous]
         public IActionResult ResetPassword(string email, string token)
         {
+            var resetButton = _localizer["ChangeButton"];
+            ViewBag.ResetButton = resetButton;
             var model = new ResetPasswordViewModel
             {
                 Email = email,
@@ -268,18 +287,47 @@ namespace UI.Controllers
         [HttpGet]
         public IActionResult PasswordResetConfirmation()
         {
+            var title = _localizer["PasswordChangeSuccess"];
+            var message = _localizer["SuccessfullyChangedMessage"];
+
+            ViewBag.Title = title;
+            ViewBag.Message = message;
+
+            return View();
+        }
+
+        public IActionResult PasswordChangedConfirmation()
+        {
+            var title = _localizer["PasswordRecoveryConfirmationTitle"];
+            var message = _localizer["RecoveryMessage"];
+
+            ViewBag.Title = title;
+            ViewBag.Message = message;
+
             return View();
         }
 
         [HttpGet]
         public IActionResult EmailConfirmationFailed()
         {
+            var title = _localizer["EmailConfirmationFailed"];
+            var sorry = _localizer["ConfirmationProcessHasFailed"];
+
+            ViewBag.Title = title;
+            ViewBag.Sorry = sorry;
+
             return View();
         }
 
         [HttpGet]
         public IActionResult EmailConfirmationSent()
         {
+            var title = _localizer["EmailConfirmationSent"];
+            var success = _localizer["ConfirmationLinkSuccess"];
+
+            ViewBag.Title = title;
+            ViewBag.Success = success;
+
             return View();
         }
 
@@ -302,6 +350,12 @@ namespace UI.Controllers
             if (result.Succeeded)
             {
                 // Email confirmed successfully, you can redirect to a page with a success message
+                var title = _localizer["EmailConfirmed"];
+                var success = _localizer["Your email has been successfully confirmed. You can now log in using your credentials."];
+
+                ViewBag.Title = title;
+                ViewBag.Success = success;
+
                 return View("EmailConfirmed");
             }
             else

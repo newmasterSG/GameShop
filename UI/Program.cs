@@ -1,7 +1,6 @@
 using Infrastructure.Context;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Infrastructure.User;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Infrastructure.UnitOfWork.UnitOfWork;
@@ -25,9 +24,10 @@ using System.Globalization;
 using Domain.Entities;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
-using IdentityServer4;
 using System.IdentityModel.Tokens.Jwt;
 using static Org.BouncyCastle.Math.EC.ECCurve;
+using Duende.IdentityServer;
+using Domain.User;
 
 namespace UI
 {
@@ -41,20 +41,24 @@ namespace UI
             builder.Services.AddDbContext<GameShopContext>(options =>
                 options.UseSqlServer(connectionString).EnableSensitiveDataLogging());
 
+            JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
+
             builder.Services
                 .AddConfig(builder.Configuration)
                 .AddMyDependencyGroup();
 
             builder.Services.AddAuthentication()
-                .AddGoogle(googleOptions =>
+            .AddGoogle("Google", googleOptions =>
             {
-                googleOptions.SaveTokens = true;
                 googleOptions.ClientId = builder.Configuration["GoogleProviderLogin:client_iD"];
                 googleOptions.ClientSecret = builder.Configuration["GoogleProviderLogin:client_secret"];
                 googleOptions.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
             });
 
-            builder.Services.AddIdentity<UserModel, IdentityRole>(option => option.SignIn.RequireConfirmedEmail = true)
+            builder.Services.AddIdentity<UserEntity, IdentityRole>(option => 
+            { 
+                option.SignIn.RequireConfirmedEmail = true;
+            })
                 .AddEntityFrameworkStores<GameShopContext>()
                 .AddDefaultTokenProviders();
 
@@ -84,6 +88,13 @@ namespace UI
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
             {
+                builder.Services
+                    .AddAuthentication()
+                    .AddOpenIdConnect(options =>
+                    {
+                        options.RequireHttpsMetadata = true;
+                    });
+
                 app.UseExceptionHandler("/Home/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
@@ -110,7 +121,7 @@ namespace UI
 
                 var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-                var userManager = scope.ServiceProvider.GetRequiredService<UserManager<UserModel>>();
+                var userManager = scope.ServiceProvider.GetRequiredService<UserManager<UserEntity>>();
 
                 var roles = new[] { "Admin", "Manager", "Buyer" };
 
@@ -134,7 +145,7 @@ namespace UI
 
                 if (await userManager.FindByEmailAsync(email) == null)
                 {
-                    UserModel adminUser = new UserModel
+                    UserEntity adminUser = new UserEntity
                     {
                         UserName = email,
                         Email = email,
