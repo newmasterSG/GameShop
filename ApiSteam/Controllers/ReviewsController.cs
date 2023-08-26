@@ -5,10 +5,18 @@ using System.Security.Claims;
 
 namespace ApiSteam.Controllers
 {
+    [Route("api/[controller]")]
     [ApiController]
-    public class ReviewsController : Controller
+    public class ReviewsController : ControllerBase
     {
+        private readonly ReviewsService _reviewService;
+        public ReviewsController(ReviewsService reviewService)
+        {
+            _reviewService = reviewService;
+        }
+
         [HttpGet]
+        [Route("GetAllReviews")]
         public async Task<IActionResult> GetAllReviews(int page = 1, int pageSize = 12)
         {
             var reviews = await _reviewService.GetAllReviews(page, pageSize);
@@ -17,6 +25,7 @@ namespace ApiSteam.Controllers
 
         [HttpPost]
         [Authorize]
+        [Route("AddReview")]
         public async Task<IActionResult> AddReview(int gameId, string reviewText, int rating)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);

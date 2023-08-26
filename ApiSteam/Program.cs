@@ -1,7 +1,10 @@
+using Application.InterfaceServices;
 using Application.Services;
 using Domain.Interfaces;
+using Domain.User;
 using Infrastructure.Context;
 using Infrastructure.UnitOfWork.UnitOfWork;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace ApiSteam
@@ -19,11 +22,19 @@ namespace ApiSteam
             builder.Services.AddDbContext<GameShopContext>(options =>
                 options.UseSqlServer(connectionString).EnableSensitiveDataLogging());
 
+            builder.Services.AddMemoryCache();
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork<GameShopContext>>();
             builder.Services.AddScoped<GameService>();
             builder.Services.AddScoped<OrderServices>();
             builder.Services.AddScoped<ReviewsService>();
+            builder.Services.AddScoped<IHomeService, HomeService>();
 
+            builder.Services.AddIdentity<UserEntity, IdentityRole>(option =>
+            {
+                option.SignIn.RequireConfirmedEmail = true;
+            })
+    .AddEntityFrameworkStores<GameShopContext>()
+    .AddDefaultTokenProviders();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
