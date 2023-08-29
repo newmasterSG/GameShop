@@ -11,12 +11,13 @@ namespace ApiSteam.Registration
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(async options =>
                 {
-                    string authority = "";
-                    string validIssuer = "";
+                    string authority = "https://localhost:5001";
+                    string validIssuer = "https://localhost:5001";
                     string validAudience = "ApiSteam";
 
                     options.Authority = authority;
                     options.Audience = validAudience;
+                    options.RequireHttpsMetadata = false;
 
                     options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
                     {

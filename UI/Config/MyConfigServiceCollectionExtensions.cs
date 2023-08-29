@@ -12,7 +12,6 @@ using Microsoft.AspNetCore.Localization;
 using System.Globalization;
 using Microsoft.AspNetCore.Authorization;
 using UI.Policies;
-using UI.Config;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -22,6 +21,9 @@ using Domain.User;
 using Duende.IdentityServer.Models;
 using UI.Claims;
 using UI.Validate;
+using Microsoft.IdentityModel.Tokens;
+using IdentityModel.AspNetCore.AccessTokenManagement;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace UI.ServiceProvider
 {
@@ -77,23 +79,6 @@ namespace UI.ServiceProvider
             services.AddScoped<ReviewsService>();
             services.AddScoped<IUserClaimsPrincipalFactory<UserEntity>, MyUserClaimsPrincipalFactory>();
 
-            //IdentityServer
-            services.AddIdentityServer(options =>
-            {
-                options.Events.RaiseErrorEvents = true;
-                options.Events.RaiseInformationEvents = true;
-                options.Events.RaiseFailureEvents = true;
-                options.Events.RaiseSuccessEvents = true;
-
-                // see https://docs.duendesoftware.com/identityserver/v6/fundamentals/resources/
-                options.EmitStaticAudienceClaim = true;
-            })
-                .AddAspNetIdentity<UserEntity>()
-                .AddInMemoryApiScopes(MyConfigIdentityServer.ApiScopes)
-                .AddInMemoryClients(MyConfigIdentityServer.Clients)
-                .AddTestUsers(MyConfigIdentityServer.TestUsers)
-                .AddDeveloperSigningCredential();
-
             //Localizations
             services.AddLocalization(opt => { opt.ResourcesPath = "Resources"; });
             services.AddControllersWithViews()
@@ -111,40 +96,40 @@ namespace UI.ServiceProvider
             });
             services.AddScoped<IAuthorizationHandler, DateRegistrationHandler>();
 
+            services.AddHttpClient("apisteam", h =>
+            {
+                h.BaseAddress = new Uri("https://localhost:7242/");
+            });
+
             //Authentication
+            JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
 
             services.AddAuthentication(option =>
             {
-                option.DefaultAuthenticateScheme = "Cookies";
-                option.DefaultSignInScheme = "Cookies";
+                option.DefaultScheme = "Cookies";
                 option.DefaultChallengeScheme = "oidc";
             })
             .AddCookie("Cookies")
-           .AddOpenIdConnect("oidc", "Demo IdentityServer", option =>
+           .AddOpenIdConnect("oidc", option =>
            {
-               option.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
-               option.SignOutScheme = IdentityServerConstants.SignoutScheme;
-               option.Authority = "https://localhost:7094";
-               option.CallbackPath = "/signin-oidc";
-               option.SignedOutCallbackPath = "/signout-callback-oidc";
+               option.Authority = "https://localhost:5001";
 
-               option.ClientId = "mvc";
-               option.ClientSecret = "secret";
+               option.ClientId = "interactive";
+               option.ClientSecret = "49C1A7E1-0C79-4A89-A3D6-A37998FB86B0";
                option.ResponseType = OpenIdConnectResponseType.Code;
-               option.UsePkce = true;
                option.RequireHttpsMetadata = false;
+               option.ResponseMode = "query";
                option.Scope.Clear();
 
-               option.Scope.Add(OpenIdConnectScope.OpenId);
-               option.Scope.Add(OpenIdConnectScope.OfflineAccess);
-               option.Scope.Add(IdentityServerConstants.StandardScopes.OpenId);
-               option.Scope.Add(IdentityServerConstants.StandardScopes.Profile);
-               option.Scope.Add(IdentityServerConstants.StandardScopes.Email);
+               option.Scope.Add("openid");
+               option.Scope.Add("profile");
+               option.Scope.Add("offline_access");
                option.Scope.Add("ApiSteam");
                option.GetClaimsFromUserInfoEndpoint = true;
                option.SaveTokens = true;
 
            });
+
 
             return services;
         }

@@ -23,6 +23,13 @@ namespace ApiSteam.Controllers
             return Ok(reviews);
         }
 
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> SayHello()
+        {
+            return Ok("swswww");
+        }
+
         [HttpPost]
         [Authorize]
         [Route("AddReview")]

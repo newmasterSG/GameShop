@@ -1,6 +1,7 @@
 ﻿using Application.DTO;
 using Application.InterfaceServices;
 using Application.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 
@@ -8,12 +9,12 @@ namespace ApiSteam.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class GameContoller: ControllerBase
+    public class GameController: ControllerBase
     {
         private readonly GameService _gameService;
         private readonly IMemoryCache _cache;
         private readonly IHomeService _unitOfWork;
-        public GameContoller(GameService gameService, IMemoryCache cache, IHomeService homeService)
+        public GameController(GameService gameService, IMemoryCache cache, IHomeService homeService)
         {
             _gameService = gameService;
             _cache = cache;

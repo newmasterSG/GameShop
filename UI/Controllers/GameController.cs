@@ -1,6 +1,7 @@
 ﻿using Application.DTO;
 using Application.Services;
 using Domain.Entities;
+using IdentityModel.Client;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -8,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using PagedList;
 using System.Drawing.Printing;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net.Http.Headers;
 using System.Security.Claims;
 using UI.Models.Search;
 
@@ -18,24 +20,27 @@ namespace UI.Controllers
         private readonly ILogger<GameController> _logger;
         private readonly GameService _gameService;
         private readonly ReviewsService _reviewService;
+        private readonly IHttpClientFactory _httpClientFactory;
         public GameController(GameService gameService, 
             ILogger<GameController> logger,
-            ReviewsService reviewService)
+            ReviewsService reviewService,
+            IHttpClientFactory httpClientFactory)
         {
             _logger = logger;
             _gameService = gameService;
             _reviewService = reviewService;
+            _httpClientFactory = httpClientFactory;
         }
 
+        [Authorize]
         public async Task<IActionResult> Index()
         {
-            var accessToken =  HttpContext.GetTokenAsync("access_token").GetAwaiter().GetResult();
-            var idToken = await HttpContext.GetTokenAsync("id_token");
+            //using var httpClient = new HttpClient();
 
-            if(accessToken == null)
-            {
-                Console.WriteLine("Null");
-            }
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+            //var client = new HttpClient();
+            //client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+            //var content = await httpClient.GetStringAsync("https://localhost:7242/api/Reviews");
 
             return View();
         }

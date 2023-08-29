@@ -40,19 +40,11 @@ namespace UI
             builder.Services.AddDbContext<GameShopContext>(options =>
                 options.UseSqlServer(connectionString).EnableSensitiveDataLogging());
 
-            JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
-
             builder.Services
                 .AddConfig(builder.Configuration)
                 .AddMyDependencyGroup();
 
-            builder.Services.AddAuthentication()
-            .AddGoogle("Google", googleOptions =>
-            {
-                googleOptions.ClientId = builder.Configuration["GoogleProviderLogin:client_iD"];
-                googleOptions.ClientSecret = builder.Configuration["GoogleProviderLogin:client_secret"];
-                googleOptions.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
-            });
+            builder.Services.AddAccessTokenManagement();
 
             builder.Services.AddIdentity<UserEntity, IdentityRole>(option => 
             { 
@@ -61,12 +53,10 @@ namespace UI
                 .AddEntityFrameworkStores<GameShopContext>()
                 .AddDefaultTokenProviders();
 
-            builder.Services.ConfigureApplicationCookie(confing =>
-            {
-                confing.Cookie.Name = "IdentityServer.Cookie";
-                confing.LoginPath = "/Account/Login";
-            });
-
+            //builder.Services.ConfigureApplicationCookie(confing =>
+            //{
+            //    confing.LoginPath = "/https://localhost:5001/Account/Login";
+            //});
 
             var app = builder.Build();
 
@@ -167,27 +157,27 @@ namespace UI
 
             app.UseRouting();
 
-            app.UseIdentityServer();
+            app.UseAuthentication();
 
-            app.Use(async (context, next) =>
-            {
-                var user = context.User;
+            //app.Use(async (context, next) =>
+            //{
+            //    var user = context.User;
 
-                if (user.Identity.IsAuthenticated)
-                {
-                    var userService = context.RequestServices.GetRequiredService<IUserService>();
-                    bool isEmailVerified = userService.IsEmailVerified(user.Identity.Name);
+            //    if (user.Identity.IsAuthenticated)
+            //    {
+            //        var userService = context.RequestServices.GetRequiredService<IUserService>();
+            //        bool isEmailVerified = userService.IsEmailVerified(user.Identity.Name);
 
-                    if (!isEmailVerified)
-                    {
-                        await context.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-                        context.Response.Redirect("/Home/Index");
-                        return;
-                    }
-                }
+            //        if (!isEmailVerified)
+            //        {
+            //            await context.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            //            context.Response.Redirect("/Home/Index");
+            //            return;
+            //        }
+            //    }
 
-                await next();
-            });
+            //    await next();
+            //});
 
             app.UseAuthorization();
 
