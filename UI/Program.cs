@@ -44,19 +44,12 @@ namespace UI
                 .AddConfig(builder.Configuration)
                 .AddMyDependencyGroup();
 
-            builder.Services.AddAccessTokenManagement();
-
             builder.Services.AddIdentity<UserEntity, IdentityRole>(option => 
             { 
                 option.SignIn.RequireConfirmedEmail = true;
             })
                 .AddEntityFrameworkStores<GameShopContext>()
                 .AddDefaultTokenProviders();
-
-            //builder.Services.ConfigureApplicationCookie(confing =>
-            //{
-            //    confing.LoginPath = "/https://localhost:5001/Account/Login";
-            //});
 
             var app = builder.Build();
 

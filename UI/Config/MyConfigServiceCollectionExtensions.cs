@@ -113,7 +113,7 @@ namespace UI.ServiceProvider
            .AddOpenIdConnect("oidc", option =>
            {
                option.Authority = "https://localhost:5001";
-
+               option.CallbackPath = "/signin-oidc";
                option.ClientId = "interactive";
                option.ClientSecret = "49C1A7E1-0C79-4A89-A3D6-A37998FB86B0";
                option.ResponseType = OpenIdConnectResponseType.Code;

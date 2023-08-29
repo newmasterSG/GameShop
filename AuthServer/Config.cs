@@ -19,7 +19,7 @@ namespace AuthServer
                 new ApiResource
                 {
                     Name = "ApiSteam",
-                    DisplayName = "My API",
+                    DisplayName = "MyApi",
                     ApiSecrets = { new Secret("api_secret".Sha256())},
                     Scopes = new List<string>(){"api"},
                     UserClaims = {ClaimTypes.Email},
@@ -55,7 +55,7 @@ namespace AuthServer
 
                 AllowedGrantTypes = GrantTypes.Code,
 
-                 RedirectUris = { "https://localhost:5444/signin-oidc" },
+                RedirectUris = { "https://localhost:5444/signin-oidc" },
                 FrontChannelLogoutUri = "https://localhost:5444/signout-oidc",
                 PostLogoutRedirectUris = { "https://localhost:5444/signout-callback-oidc" },
 
