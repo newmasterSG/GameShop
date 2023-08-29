@@ -1,4 +1,4 @@
-using AuthServer.Models;
+using Domain.User;
 using Duende.IdentityServer.Events;
 using Duende.IdentityServer.Extensions;
 using Duende.IdentityServer.Services;
@@ -15,14 +15,14 @@ namespace AuthServer.Pages.Logout
     [AllowAnonymous]
     public class Index : PageModel
     {
-        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly SignInManager<UserEntity> _signInManager;
         private readonly IIdentityServerInteractionService _interaction;
         private readonly IEventService _events;
 
         [BindProperty]
         public string LogoutId { get; set; }
 
-        public Index(SignInManager<ApplicationUser> signInManager, IIdentityServerInteractionService interaction, IEventService events)
+        public Index(SignInManager<UserEntity> signInManager, IIdentityServerInteractionService interaction, IEventService events)
         {
             _signInManager = signInManager;
             _interaction = interaction;

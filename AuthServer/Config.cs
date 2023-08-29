@@ -67,6 +67,7 @@ namespace AuthServer
                     "ApiSteam"
                 },
                 RequireConsent = true,
+                AlwaysIncludeUserClaimsInIdToken = true,
             },
             };
     }

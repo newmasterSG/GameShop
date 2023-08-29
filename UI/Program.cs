@@ -40,16 +40,15 @@ namespace UI
             builder.Services.AddDbContext<GameShopContext>(options =>
                 options.UseSqlServer(connectionString).EnableSensitiveDataLogging());
 
+            builder.Services.AddIdentity<UserEntity, IdentityRole>(option =>
+            {
+                option.SignIn.RequireConfirmedEmail = true;
+            }).AddEntityFrameworkStores<GameShopContext>()
+                .AddDefaultTokenProviders();
+
             builder.Services
                 .AddConfig(builder.Configuration)
                 .AddMyDependencyGroup();
-
-            builder.Services.AddIdentity<UserEntity, IdentityRole>(option => 
-            { 
-                option.SignIn.RequireConfirmedEmail = true;
-            })
-                .AddEntityFrameworkStores<GameShopContext>()
-                .AddDefaultTokenProviders();
 
             var app = builder.Build();
 
@@ -139,8 +138,8 @@ namespace UI
 
                     if (result.Succeeded)
                     {
-                        await userManager.AddClaimAsync(adminUser, new Claim(ClaimTypes.Role, "Admin"));
-                        await userManager.AddClaimAsync(adminUser, new Claim(ClaimTypes.Name, adminUser.UserName));
+                        await userManager.AddClaimAsync(adminUser, new Claim(JwtClaimTypes.Role, "Admin"));
+                        await userManager.AddClaimAsync(adminUser, new Claim(JwtClaimTypes.Name, adminUser.UserName));
                         await userManager.AddClaimAsync(adminUser, new Claim(JwtRegisteredClaimNames.Sub, adminUser.UserName));
                         await userManager.AddToRoleAsync(adminUser, "Admin");
                     }
