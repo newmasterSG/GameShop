@@ -1,10 +1,24 @@
-﻿namespace UI.ServiceProvider
+﻿using Microsoft.AspNetCore.Localization;
+using System.Globalization;
+
+namespace UI.ServiceProvider
 {
     public static class MyConfigAppExtension
     {
         public static void Configure(this IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.UseIdentityServer();
+            var supportedCultures = new[]
+{
+                new CultureInfo("en"),
+                new CultureInfo("uk"),
+            };
+
+            app.UseRequestLocalization(new RequestLocalizationOptions
+            {
+                DefaultRequestCulture = new RequestCulture("en"),
+                SupportedCultures = supportedCultures,
+                SupportedUICultures = supportedCultures,
+            });
         }
     }
 }

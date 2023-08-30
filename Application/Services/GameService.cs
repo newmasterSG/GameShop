@@ -1,4 +1,5 @@
 ﻿using Application.DTO;
+using Application.InterfaceServices;
 using Domain.Entities;
 using Domain.Interfaces;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Application.Services
 {
-    public class GameService
+    public class GameService : IGameService
     {
         private readonly IUnitOfWork _unitOfWork;
         public GameService(IUnitOfWork unitOfWork)
@@ -44,7 +45,7 @@ namespace Application.Services
                 Developers = developers.Select(x => x.Name).ToList(),
                 ScrenShoots = screenShoots.Select(x => x.Image).ToList(),
                 Tags = tags.Select(x => x.Name).ToList(),
-                Image = game.Background_Image,
+                Image = game.BackgroundImage,
                 Stores = store.Select(x => x.Store?.Name).ToList(),
             };
 
@@ -53,16 +54,16 @@ namespace Application.Services
 
         public async Task<List<GameDTO>> SearchGame(string name)
         {
-            var dbGames =  await _unitOfWork.GetRepository<GamesEntity>().ListAsync(g => g.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+            var dbGames = await _unitOfWork.GetRepository<GamesEntity>().ListAsync(g => g.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
             var games = new List<GameDTO>();
-            foreach(var game in dbGames)
+            foreach (var game in dbGames)
             {
                 games.Add(new GameDTO
                 {
                     Id = (int)game.Id,
                     Name = game.Name,
-                    Image = game.Background_Image,
-                    Owned = game.Added_By_Status?.Owned ?? 4000,
+                    Image = game.BackgroundImage,
+                    Owned = game.AddedByStatus?.Owned ?? 4000,
                     Price = game.Price,
                 });
             }
@@ -87,15 +88,15 @@ namespace Application.Services
                 var dbGamesId = dbGamesToTags.Select(gt => gt.GamesId);
                 var gameRepo = _unitOfWork.GetRepository<GamesEntity>();
 
-                foreach(var game in dbGamesId)
+                foreach (var game in dbGamesId)
                 {
                     var g = await gameRepo.GetByIdAsync(game.Value);
                     games.Add(new GameDTO
                     {
                         Id = (int)g.Id,
-                        Image = g.Background_Image,
+                        Image = g.BackgroundImage,
                         Name = g.Name,
-                        Owned = g.Added_By_Status?.Owned ?? 4000,
+                        Owned = g.AddedByStatus?.Owned ?? 4000,
                         Price = g.Price,
                     });
                 }

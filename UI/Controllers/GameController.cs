@@ -32,19 +32,6 @@ namespace UI.Controllers
             _httpClientFactory = httpClientFactory;
         }
 
-        [Authorize]
-        public async Task<IActionResult> Index()
-        {
-            //using var httpClient = new HttpClient();
-
-            var accessToken = await HttpContext.GetTokenAsync("access_token");
-            //var client = new HttpClient();
-            //client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-            //var content = await httpClient.GetStringAsync("https://localhost:7242/api/Reviews");
-
-            return View();
-        }
-
         public IActionResult GameDetails(int id)
         {
             ViewBag.GameId = id;

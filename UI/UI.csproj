@@ -39,11 +39,9 @@
   <ItemGroup>
     <ProjectReference Include="..\Application\Application.csproj" />
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
-    <ProjectReference Include="..\ParsingData\ParsingData.csproj" />
   </ItemGroup>
   <ItemGroup>
      <Folder Include="Contents" />
-     <Folder Include="Service\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Views\Account\ForgotPassword.cshtml" />

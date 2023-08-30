@@ -13,8 +13,8 @@ namespace Domain.Entities
         public string? Name { get; set; }
         public string? Slug { get; set; }
         public string? Language { get; set; }
-        public int? Games_Count { get; set; }
-        public string? Image_Background { get; set; }
+        public int? GamesCount { get; set; }
+        public string? ImageBackground { get; set; }
 
         public List<GamesEntity> Games { get; set; }
         public List<GamesToTagsEntity> ToTagsModels { get; set; }

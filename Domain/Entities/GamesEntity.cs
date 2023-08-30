@@ -4,10 +4,10 @@ namespace Domain.Entities
 {
     public class GamesEntity : EntityBase
     {
-        public AddedByStatusEntity Added_By_Status { get; set; }
+        public AddedByStatusEntity AddedByStatus { get; set; }
         public decimal Price { get; set; }
-        public string? Background_Image { get; set; }
-        public ESRBRatingEntity ESRB_Rating { get; set; }
+        public string? BackgroundImage { get; set; }
+        public ESRBRatingEntity ESRBRating { get; set; }
         public List<GenreEntity> Genres { get; set; }
         public new int? Id { get; set; }
         public int? Metacritic { get; set; }
@@ -15,16 +15,16 @@ namespace Domain.Entities
         public List<PlatformEntity> Platforms { get; set; }
         public int? Playtime { get; set; }
         public double? Rating { get; set; }
-        public int? Rating_Top { get; set; }
+        public int? RatingTop { get; set; }
         public List<RatingEntity> Ratings { get; set; }
         public int? Ratings_Count { get; set; }
         public string? Released { get; set; }
-        public int? Reviews_Count { get; set; }
-        public int? Reviews_Text_Count { get; set; }
-        public List<ShortScreenshotEntity> Short_Screenshots { get; set; }
+        public int? ReviewsCount { get; set; }
+        public int? ReviewsTextCount { get; set; }
+        public List<ShortScreenshotEntity> ShortScreenshots { get; set; }
         public string? Slug { get; set; }
         public List<StoreEntity> Stores { get; set; }
-        public int? Suggestions_Count { get; set; }
+        public int? SuggestionsCount { get; set; }
         public List<TagEntity> Tags { get; set; }
         public bool? Tba { get; set; }
         public string? Updated { get; set; }

@@ -29,65 +29,9 @@ namespace UI.ServiceProvider
 {
     public static class MyConfigServiceCollectionExtensions
     {
-        public static IServiceCollection AddConfig(
-             this IServiceCollection services, IConfiguration config)
+
+        public static IServiceCollection AddAuth(this IServiceCollection services)
         {
-
-            services.Configure<SmtpOptions>(config.GetSection("Smtp"));
-
-            services.Configure<IdentityOptions>(options =>
-            {
-                // Password settings.
-                options.Password.RequireDigit = true;
-                options.Password.RequireLowercase = true;
-                options.Password.RequireNonAlphanumeric = true;
-                options.Password.RequireUppercase = true;
-                options.Password.RequiredLength = 6;
-                options.Password.RequiredUniqueChars = 1;
-
-                // Lockout settings.
-                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
-                options.Lockout.MaxFailedAccessAttempts = 5;
-                options.Lockout.AllowedForNewUsers = true;
-
-                // User settings.
-                options.User.AllowedUserNameCharacters =
-                "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
-                options.User.RequireUniqueEmail = true;
-                options.SignIn.RequireConfirmedEmail = true;
-            });
-
-            return services;
-        }
-
-
-        public static IServiceCollection AddMyDependencyGroup(
-             this IServiceCollection services)
-        {
-            //Caching
-            services.AddMemoryCache();
-            services.AddDistributedMemoryCache();
-
-            //My own services
-            services.AddScoped<IUnitOfWork, UnitOfWork<GameShopContext>>();
-            services.AddScoped<IHomeService, HomeService>();
-            services.AddScoped<GameService>();
-            services.AddTransient<EmailSender, SmtpEmailSender>();
-            services.AddScoped<IUserService, UserService>();
-            services.AddDatabaseDeveloperPageExceptionFilter();
-            services.AddScoped<OrderServices>();
-            services.AddScoped<ReviewsService>();
-            services.AddScoped<IUserClaimsPrincipalFactory<UserEntity>, MyUserClaimsPrincipalFactory>();
-
-            //Localizations
-            services.AddLocalization(opt => { opt.ResourcesPath = "Resources"; });
-            services.AddControllersWithViews()
-                .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
-                .AddDataAnnotationsLocalization(options => {
-                    options.DataAnnotationLocalizerProvider = (type, factory) =>
-                        factory.Create(typeof(ValidationResources));
-                });
-
             //Settings Policies
             services.AddAuthorization(options =>
             {
@@ -96,12 +40,6 @@ namespace UI.ServiceProvider
             });
             services.AddScoped<IAuthorizationHandler, DateRegistrationHandler>();
 
-            services.AddHttpClient("apisteam", h =>
-            {
-                h.BaseAddress = new Uri("https://localhost:7242/");
-            });
-
-            //Authentication
             JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
 
             services.AddAuthentication(option =>
@@ -132,6 +70,77 @@ namespace UI.ServiceProvider
                option.SaveTokens = true;
 
            });
+
+          return services;
+        }
+
+        public static IServiceCollection AddLoca(this IServiceCollection services)
+        {
+            services.AddLocalization(opt => { opt.ResourcesPath = "Resources"; });
+            services.AddControllersWithViews()
+                .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
+                .AddDataAnnotationsLocalization(options => {
+                    options.DataAnnotationLocalizerProvider = (type, factory) =>
+                        factory.Create(typeof(ValidationResources));
+                });
+
+            return services;
+        }
+
+        public static IServiceCollection AddMyDependencyGroup(
+             this IServiceCollection services,
+             IConfiguration config)
+        {
+
+            services.Configure<SmtpOptions>(config.GetSection("Smtp"));
+
+            services.Configure<IdentityOptions>(options =>
+            {
+                // Password settings.
+                options.Password.RequireDigit = true;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireNonAlphanumeric = true;
+                options.Password.RequireUppercase = true;
+                options.Password.RequiredLength = 6;
+                options.Password.RequiredUniqueChars = 1;
+
+                // Lockout settings.
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+                options.Lockout.MaxFailedAccessAttempts = 5;
+                options.Lockout.AllowedForNewUsers = true;
+
+                // User settings.
+                options.User.AllowedUserNameCharacters =
+                "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+                options.User.RequireUniqueEmail = true;
+                options.SignIn.RequireConfirmedEmail = true;
+            });
+
+            //Caching
+            services.AddMemoryCache();
+            services.AddDistributedMemoryCache();
+
+            //My own services
+            services.AddScoped<IUnitOfWork, UnitOfWork<GameShopContext>>();
+            services.AddScoped<IHomeService, HomeService>();
+            services.AddScoped<IGameService, GameService>();
+            services.AddTransient<EmailSender, SmtpEmailSender>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddDatabaseDeveloperPageExceptionFilter();
+            services.AddScoped<IOrderServices, OrderServices>();
+            services.AddScoped<IReviewsService, ReviewsService>();
+            services.AddScoped<IUserClaimsPrincipalFactory<UserEntity>, MyUserClaimsPrincipalFactory>();
+
+            //Localizations
+            services.AddLoca();
+
+            //Authentication
+            services.AddAuth();
+
+            services.AddHttpClient("apisteam", h =>
+            {
+                h.BaseAddress = new Uri("https://localhost:7242/");
+            });
 
 
             return services;

@@ -350,7 +350,7 @@ namespace UI.Controllers
             {
                 // Email confirmed successfully, you can redirect to a page with a success message
                 var title = _localizer["EmailConfirmed"];
-                var success = _localizer["Your email has been successfully confirmed. You can now log in using your credentials."];
+                var success = _localizer["ConfirmMessage"];
 
                 ViewBag.Title = title;
                 ViewBag.Success = success;

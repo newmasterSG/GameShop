@@ -8,9 +8,9 @@ namespace Domain.Entities
         public string? Name { get; set; }
         public string? Slug { get; set; }
         public string? Image { get; set; }
-        public int? Year_End { get; set; }
-        public int? Year_start { get; set; }
+        public int? YearEnd { get; set; }
+        public int? Yearstart { get; set; }
         public int Games_Count { get; set; }
-        public string? Image_Background { get; set; }
+        public string? ImageBackground { get; set; }
     }
 }

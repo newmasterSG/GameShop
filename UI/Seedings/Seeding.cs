@@ -1,6 +1,6 @@
 ﻿using Domain.Entities;
 
-namespace ParsingData
+namespace UI.Seedings
 {
     public class Seeding
     {
@@ -49,7 +49,7 @@ namespace ParsingData
                         Name = "PC",
                         Slug = "pc",
                     },
-                    Released_At = "",
+                    ReleasedAt = "",
                 },
 
                 new PlatformEntity
@@ -59,7 +59,7 @@ namespace ParsingData
                         Name = "PlayStation 4",
                         Slug = "playstation4",
                     },
-                    Released_At = "",
+                    ReleasedAt = "",
                 },
             };
 
@@ -141,8 +141,8 @@ namespace ParsingData
                     Name = "Singleplayer",
                     Slug = "singleplayer",
                     Language = "eng",
-                    Games_Count = 207277,
-                    Image_Background = "https://media.rawg.io/media/games/021/021c4e21a1824d2526f925eff6324653.jpg",
+                    GamesCount = 207277,
+                    ImageBackground = "https://media.rawg.io/media/games/021/021c4e21a1824d2526f925eff6324653.jpg",
                 },
 
                 new TagEntity
@@ -150,32 +150,32 @@ namespace ParsingData
                     Name = "Для одного игрока",
                     Slug = "dlia-odnogo-igroka",
                     Language = "rus",
-                    Games_Count = 35767,
-                    Image_Background = "https://media.rawg.io/media/games/960/960b601d9541cec776c5fa42a00bf6c4.jpg",
+                    GamesCount = 35767,
+                    ImageBackground = "https://media.rawg.io/media/games/960/960b601d9541cec776c5fa42a00bf6c4.jpg",
                 },
             };
 
             return new GamesEntity()
             {
-                Background_Image = backImg,
-                Added_By_Status = addedByStatusModel,
-                ESRB_Rating = eSRBRating,
+                BackgroundImage = backImg,
+                AddedByStatus = addedByStatusModel,
+                ESRBRating = eSRBRating,
                 Genres = genreModels,
                 Metacritic = metacritic,
                 Name = "Warframe",
                 Platforms = platforms,
                 Playtime = playTime,
                 Rating = Rating,
-                Rating_Top = ratingTop,
+                RatingTop = ratingTop,
                 Ratings = ratings,
                 Ratings_Count = ratingCount,
                 Released = released,
-                Reviews_Count = reviewsCount,
-                Reviews_Text_Count = reviewTextCount,
-                Short_Screenshots = shortScreenshots,
+                ReviewsCount = reviewsCount,
+                ReviewsTextCount = reviewTextCount,
+                ShortScreenshots = shortScreenshots,
                 Slug = Slug,
                 Stores = stores,
-                Suggestions_Count = suggestionCount,
+                SuggestionsCount = suggestionCount,
                 Tba = false,
                 Updated = Updated,
                 Tags = tags,

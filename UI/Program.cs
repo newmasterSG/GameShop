@@ -12,7 +12,6 @@ using Domain.Interfaces;
 using Infrastructure.Email;
 using Application.InterfaceServices;
 using IdentityModel;
-using ParsingData;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
@@ -27,6 +26,7 @@ using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using System.IdentityModel.Tokens.Jwt;
 using Duende.IdentityServer;
 using Domain.User;
+using UI.Seedings;
 
 namespace UI
 {
@@ -47,25 +47,13 @@ namespace UI
                 .AddDefaultTokenProviders();
 
             builder.Services
-                .AddConfig(builder.Configuration)
-                .AddMyDependencyGroup();
+                .AddMyDependencyGroup(builder.Configuration);
 
             var app = builder.Build();
 
-            var supportedCultures = new[]
-            {
-                new CultureInfo("en"),
-                new CultureInfo("uk"),
-            };
+            app.Configure(builder.Environment);
 
-            app.UseRequestLocalization(new RequestLocalizationOptions
-            {
-                DefaultRequestCulture = new RequestCulture("en"),
-                SupportedCultures = supportedCultures,
-                SupportedUICultures = supportedCultures,
-            });
-
-            //app.UseCulture();
+            app.UseCulture();
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
             {
@@ -150,25 +138,25 @@ namespace UI
 
             app.UseAuthentication();
 
-            //app.Use(async (context, next) =>
-            //{
-            //    var user = context.User;
+            app.Use(async (context, next) =>
+            {
+                var user = context.User;
 
-            //    if (user.Identity.IsAuthenticated)
-            //    {
-            //        var userService = context.RequestServices.GetRequiredService<IUserService>();
-            //        bool isEmailVerified = userService.IsEmailVerified(user.Identity.Name);
+                if (user.Identity.IsAuthenticated)
+                {
+                    var userService = context.RequestServices.GetRequiredService<IUserService>();
+                    bool isEmailVerified = userService.IsEmailVerified(user.Identity.Name);
 
-            //        if (!isEmailVerified)
-            //        {
-            //            await context.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            //            context.Response.Redirect("/Home/Index");
-            //            return;
-            //        }
-            //    }
+                    if (!isEmailVerified)
+                    {
+                        await context.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+                        context.Response.Redirect("/Home/Index");
+                        return;
+                    }
+                }
 
-            //    await next();
-            //});
+                await next();
+            });
 
             app.UseAuthorization();
 
