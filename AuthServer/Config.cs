@@ -66,6 +66,7 @@ namespace AuthServer
                     IdentityServerConstants.StandardScopes.Profile,
                     "ApiSteam"
                 },
+                AllowAccessTokensViaBrowser = true,
                 RequireConsent = true,
                 AlwaysIncludeUserClaimsInIdToken = true,
             },

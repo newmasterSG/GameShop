@@ -88,7 +88,8 @@ namespace AuthServer
                 {
                     options.ConfigureDbContext = b => b.UseSqlServer(connectionString,
                     sql => sql.MigrationsAssembly(migrationsAssembly));
-                });
+                })
+                .AddDeveloperSigningCredential();
 
             //builder.Services.AddAuthentication()
             //    .AddGoogle(options =>
@@ -119,7 +120,7 @@ namespace AuthServer
                 app.UseDeveloperExceptionPage();
             }
 
-            InitializeDatabase(app);
+            //InitializeDatabase(app);
             app.UseStaticFiles();
             app.UseRouting();
             app.UseIdentityServer();

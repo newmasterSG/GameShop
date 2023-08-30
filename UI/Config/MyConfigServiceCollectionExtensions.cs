@@ -106,16 +106,18 @@ namespace UI.ServiceProvider
 
             services.AddAuthentication(option =>
             {
-                option.DefaultScheme = "Cookies";
+                option.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                option.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 option.DefaultChallengeScheme = "oidc";
             })
-            .AddCookie("Cookies")
+            .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme)
            .AddOpenIdConnect("oidc", option =>
            {
                option.Authority = "https://localhost:5001";
                option.CallbackPath = "/signin-oidc";
                option.ClientId = "interactive";
                option.ClientSecret = "49C1A7E1-0C79-4A89-A3D6-A37998FB86B0";
+               option.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                option.ResponseType = OpenIdConnectResponseType.Code;
                option.RequireHttpsMetadata = false;
                option.ResponseMode = "query";
@@ -125,6 +127,7 @@ namespace UI.ServiceProvider
                option.Scope.Add("profile");
                option.Scope.Add("offline_access");
                option.Scope.Add("ApiSteam");
+
                option.GetClaimsFromUserInfoEndpoint = true;
                option.SaveTokens = true;
 

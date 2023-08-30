@@ -69,7 +69,6 @@ namespace UI.Controllers
                     {
                         await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Role, "Buyer"));
                         await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Name, user.UserName));
-                        await _userManager.AddClaimAsync(user, new Claim(JwtRegisteredClaimNames.Sub, user.UserName));
                         await _userManager.AddToRoleAsync(user, "Buyer");
 
                         await _signInManager.SignInAsync(user, isPersistent: false);

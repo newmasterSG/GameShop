@@ -65,7 +65,7 @@ namespace UI
                 SupportedUICultures = supportedCultures,
             });
 
-            app.UseCulture();
+            //app.UseCulture();
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
             {
@@ -140,7 +140,6 @@ namespace UI
                     {
                         await userManager.AddClaimAsync(adminUser, new Claim(JwtClaimTypes.Role, "Admin"));
                         await userManager.AddClaimAsync(adminUser, new Claim(JwtClaimTypes.Name, adminUser.UserName));
-                        await userManager.AddClaimAsync(adminUser, new Claim(JwtRegisteredClaimNames.Sub, adminUser.UserName));
                         await userManager.AddToRoleAsync(adminUser, "Admin");
                     }
                 }
