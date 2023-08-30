@@ -138,26 +138,6 @@ namespace UI
 
             app.UseAuthentication();
 
-            app.Use(async (context, next) =>
-            {
-                var user = context.User;
-
-                if (user.Identity.IsAuthenticated)
-                {
-                    var userService = context.RequestServices.GetRequiredService<IUserService>();
-                    bool isEmailVerified = userService.IsEmailVerified(user.Identity.Name);
-
-                    if (!isEmailVerified)
-                    {
-                        await context.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-                        context.Response.Redirect("/Home/Index");
-                        return;
-                    }
-                }
-
-                await next();
-            });
-
             app.UseAuthorization();
 
             app.MapControllerRoute(

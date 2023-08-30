@@ -1,4 +1,5 @@
 ﻿using Application.DTO;
+using Application.InterfaceServices;
 using Application.Services;
 using Domain.Entities;
 using IdentityModel.Client;
@@ -18,12 +19,12 @@ namespace UI.Controllers
     public class GameController : Controller
     {
         private readonly ILogger<GameController> _logger;
-        private readonly GameService _gameService;
-        private readonly ReviewsService _reviewService;
+        private readonly IGameService _gameService;
+        private readonly IReviewsService _reviewService;
         private readonly IHttpClientFactory _httpClientFactory;
-        public GameController(GameService gameService, 
+        public GameController(IGameService gameService, 
             ILogger<GameController> logger,
-            ReviewsService reviewService,
+            IReviewsService reviewService,
             IHttpClientFactory httpClientFactory)
         {
             _logger = logger;

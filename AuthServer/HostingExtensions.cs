@@ -120,7 +120,7 @@ namespace AuthServer
                 app.UseDeveloperExceptionPage();
             }
 
-            //InitializeDatabase(app);
+            InitializeDatabase(app);
             app.UseStaticFiles();
             app.UseRouting();
             app.UseIdentityServer();
