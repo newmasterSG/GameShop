@@ -13,8 +13,6 @@ namespace UI.Claims
             {
                 new Claim(ClaimTypes.Name, user.UserName),
                 new Claim(ClaimTypes.Role, "Byuer"),
-                new Claim(JwtRegisteredClaimNames.Sub, user.UserName)
-
             };
 
             var identity = new ClaimsIdentity(claims, "custom");

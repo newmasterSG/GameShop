@@ -1,3 +1,4 @@
+using ApiSteam.Registration;
 using Application.InterfaceServices;
 using Application.Services;
 using Domain.Interfaces;
@@ -33,18 +34,14 @@ namespace ApiSteam
             {
                 option.SignIn.RequireConfirmedEmail = true;
             })
-    .AddEntityFrameworkStores<GameShopContext>()
-    .AddDefaultTokenProviders();
+            .AddEntityFrameworkStores<GameShopContext>()
+            .AddDefaultTokenProviders();
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-            builder.Services.AddAuthentication()
-                .AddJwtBearer(config =>
-                {
-                    config.Authority = "https://localhost:7242";
-                    config.Audience = "ApiSteam";
-                });
+            builder.Services.AddIdentityServerJWTAuthentication();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

@@ -9,7 +9,7 @@ namespace Domain.Entities
         public string? Slug { get; set; }
 
         public int? Games_count { get; set; }
-        public string? Image_Background { get; set; }
+        public string? ImageBackground { get; set; }
 
         public List<GamesEntity> Games { get; set; }
 

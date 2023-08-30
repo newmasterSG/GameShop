@@ -1,4 +1,5 @@
 ﻿using Application.DTO;
+using Application.InterfaceServices;
 using Domain.Entities;
 using Domain.Interfaces;
 using Domain.User;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Application.Services
 {
-    public class OrderServices
+    public class OrderServices : IOrderServices
     {
         private readonly IUnitOfWork _context;
         public OrderServices(IUnitOfWork context)
@@ -25,13 +26,13 @@ namespace Application.Services
         /// <param name="userId"></param>
         /// <param name="gameIds"></param>
         /// <exception cref="Exception"></exception>
-        public void CreateOrder(UserEntity user, Dictionary<int,int> gameIds, decimal price)
+        public void CreateOrder(UserEntity user, Dictionary<int, int> gameIds, decimal price)
         {
             Guid guid = new Guid(user.Id);
 
             var order = new OrderEntity
             {
-                OrderDate = DateTime.Now,
+                OrderDate = DateTime.UtcNow,
                 UserId = guid,
                 OrderedGames = new List<OrderGameEntity>(),
                 Price = price,
@@ -49,13 +50,13 @@ namespace Application.Services
                     var keys = _context.GetRepository<GameKeyEntity>().List(g => g.GameId == game.Id).Where(k => k.IsBuy == false).Take(gameId.Value).ToList();
                     if (keys != null)
                     {
-                        foreach(var key in keys)
+                        foreach (var key in keys)
                         {
                             key.IsBuy = true;
                             order.GameKeys.Add(key);
                         }
 
-                        order.OrderedGames.Add(new OrderGameEntity { Game = game, } );
+                        order.OrderedGames.Add(new OrderGameEntity { Game = game, });
                     }
                     else
                     {
@@ -77,7 +78,7 @@ namespace Application.Services
             var user = _context.GetRepository<UserEntity>().Find(u => u.UserName == userName);
 
             var dbOrders = await _context.GetRepository<OrderEntity>().ListAsync(o => o.UserId.ToString() == user.Id);
-            
+
             foreach (var dbOrder in dbOrders)
             {
                 var dbOrderedGames = await _context.GetRepository<OrderGameEntity>().ListAsync(og => og.OrderId == dbOrder.Id);

@@ -20,7 +20,7 @@ namespace Application.Services
             List<GameDTO> gameDTOsForCarousel = new List<GameDTO>();
 
             var games = await _unitOfWork.GetRepository<GamesEntity>()
-        .ListAsync(x => x.Added_By_Status.Owned > 4000);
+        .ListAsync(x => x.AddedByStatus.Owned > 4000);
 
             foreach (var game in games)
             {
@@ -28,8 +28,8 @@ namespace Application.Services
                 {
                     Id = (int)game.Id,
                     Name = game.Name,
-                    Image = game.Background_Image,
-                    Owned = game.Added_By_Status?.Owned ?? 4000,
+                    Image = game.BackgroundImage,
+                    Owned = game.AddedByStatus?.Owned ?? 4000,
                     Price = game.Price,
                 });
             }
@@ -47,8 +47,8 @@ namespace Application.Services
                 {
                     Id = (int)game.Id,
                     Name = game.Name,
-                    Image = game.Background_Image,
-                    Owned = game.Added_By_Status?.Owned ?? 4000,
+                    Image = game.BackgroundImage,
+                    Owned = game.AddedByStatus?.Owned ?? 4000,
                     Price = game.Price,
                 });
             }
@@ -67,7 +67,7 @@ namespace Application.Services
                 {
                     Id = (int)item.Id,
                     Name = item.Name,
-                    Image = item.Background_Image,
+                    Image = item.BackgroundImage,
                     Price = item.Price,
                 });
             }
@@ -86,7 +86,7 @@ namespace Application.Services
                 tags.Add(new TagDTO()
                 {
                     Name = tag.Name,
-                    ImageBackground = tag.Image_Background,
+                    ImageBackground = tag.ImageBackground,
                 });
             }
 

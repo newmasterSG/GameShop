@@ -1,4 +1,5 @@
 ﻿using Application.DTO;
+using Application.InterfaceServices;
 using Domain.Entities;
 using Domain.Interfaces;
 using Domain.User;
@@ -11,10 +12,10 @@ using System.Threading.Tasks;
 
 namespace Application.Services
 {
-    public class ReviewsService
+    public class ReviewsService : IReviewsService
     {
         private readonly IUnitOfWork _unitOfWork;
-        
+
         public ReviewsService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;

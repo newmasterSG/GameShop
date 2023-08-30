@@ -1,4 +1,5 @@
-﻿using Application.DTO;
+﻿using Application.ConstNamingCashes;
+using Application.DTO;
 using Application.InterfaceServices;
 using Domain.Entities;
 using Domain.Interfaces;
@@ -52,9 +53,7 @@ namespace UI.Controllers
         [HttpGet]
         public async Task<ActionResult<List<GameDTO>>> GetCarouselGames()
         {
-            string cacheKey = "CarouselGames";
-
-            if (_cache.TryGetValue(cacheKey, out List<GameDTO> cachedCarouselGames))
+            if (_cache.TryGetValue(CachesNaming.CarouselGames, out List<GameDTO> cachedCarouselGames))
             {
                 return Json(cachedCarouselGames);
             }
@@ -68,7 +67,7 @@ namespace UI.Controllers
             try
             {
                 var games = await _unitOfWork.GetCarouselGames();
-                _cache.Set(cacheKey, games, cacheEntryOptions);
+                _cache.Set(CachesNaming.CarouselGames, games, cacheEntryOptions);
 
                 return Json(games);
             }
@@ -82,13 +81,13 @@ namespace UI.Controllers
         [HttpGet]
         public async Task<ActionResult<List<GameDTO>>> GetAllGames()
         {
-            if (_cache.TryGetValue("AllGames", out List<GameDTO> cachedAllGames))
+            if (_cache.TryGetValue(CachesNaming.AllGames, out List<GameDTO> cachedAllGames))
             {
                 return Json(cachedAllGames);
             }
 
             var games = await _unitOfWork.GetAllGames();
-            _cache.Set("AllGames", games, TimeSpan.FromMinutes(30));
+            _cache.Set(CachesNaming.AllGames, games, TimeSpan.FromMinutes(30));
 
             return Json(games);
         }

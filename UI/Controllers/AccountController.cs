@@ -69,7 +69,6 @@ namespace UI.Controllers
                     {
                         await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Role, "Buyer"));
                         await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Name, user.UserName));
-                        await _userManager.AddClaimAsync(user, new Claim(JwtRegisteredClaimNames.Sub, user.UserName));
                         await _userManager.AddToRoleAsync(user, "Buyer");
 
                         await _signInManager.SignInAsync(user, isPersistent: false);
@@ -351,7 +350,7 @@ namespace UI.Controllers
             {
                 // Email confirmed successfully, you can redirect to a page with a success message
                 var title = _localizer["EmailConfirmed"];
-                var success = _localizer["Your email has been successfully confirmed. You can now log in using your credentials."];
+                var success = _localizer["ConfirmMessage"];
 
                 ViewBag.Title = title;
                 ViewBag.Success = success;

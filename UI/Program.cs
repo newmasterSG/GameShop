@@ -12,7 +12,6 @@ using Domain.Interfaces;
 using Infrastructure.Email;
 using Application.InterfaceServices;
 using IdentityModel;
-using ParsingData;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
@@ -25,9 +24,9 @@ using Domain.Entities;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using System.IdentityModel.Tokens.Jwt;
-using static Org.BouncyCastle.Math.EC.ECCurve;
 using Duende.IdentityServer;
 using Domain.User;
+using UI.Seedings;
 
 namespace UI
 {
@@ -41,48 +40,18 @@ namespace UI
             builder.Services.AddDbContext<GameShopContext>(options =>
                 options.UseSqlServer(connectionString).EnableSensitiveDataLogging());
 
-            JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
-
-            builder.Services
-                .AddConfig(builder.Configuration)
-                .AddMyDependencyGroup();
-
-            builder.Services.AddAuthentication()
-            .AddGoogle("Google", googleOptions =>
+            builder.Services.AddIdentity<UserEntity, IdentityRole>(option =>
             {
-                googleOptions.ClientId = builder.Configuration["GoogleProviderLogin:client_iD"];
-                googleOptions.ClientSecret = builder.Configuration["GoogleProviderLogin:client_secret"];
-                googleOptions.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
-            });
-
-            builder.Services.AddIdentity<UserEntity, IdentityRole>(option => 
-            { 
                 option.SignIn.RequireConfirmedEmail = true;
-            })
-                .AddEntityFrameworkStores<GameShopContext>()
+            }).AddEntityFrameworkStores<GameShopContext>()
                 .AddDefaultTokenProviders();
 
-            builder.Services.ConfigureApplicationCookie(confing =>
-            {
-                confing.Cookie.Name = "IdentityServer.Cookie";
-                confing.LoginPath = "/Account/Login";
-            });
-
+            builder.Services
+                .AddMyDependencyGroup(builder.Configuration);
 
             var app = builder.Build();
 
-            var supportedCultures = new[]
-            {
-                new CultureInfo("en"),
-                new CultureInfo("uk"),
-            };
-
-            app.UseRequestLocalization(new RequestLocalizationOptions
-            {
-                DefaultRequestCulture = new RequestCulture("en"),
-                SupportedCultures = supportedCultures,
-                SupportedUICultures = supportedCultures,
-            });
+            app.Configure(builder.Environment);
 
             app.UseCulture();
             // Configure the HTTP request pipeline.
@@ -157,9 +126,8 @@ namespace UI
 
                     if (result.Succeeded)
                     {
-                        await userManager.AddClaimAsync(adminUser, new Claim(ClaimTypes.Role, "Admin"));
-                        await userManager.AddClaimAsync(adminUser, new Claim(ClaimTypes.Name, adminUser.UserName));
-                        await userManager.AddClaimAsync(adminUser, new Claim(JwtRegisteredClaimNames.Sub, adminUser.UserName));
+                        await userManager.AddClaimAsync(adminUser, new Claim(JwtClaimTypes.Role, "Admin"));
+                        await userManager.AddClaimAsync(adminUser, new Claim(JwtClaimTypes.Name, adminUser.UserName));
                         await userManager.AddToRoleAsync(adminUser, "Admin");
                     }
                 }
@@ -168,7 +136,7 @@ namespace UI
 
             app.UseRouting();
 
-            app.UseIdentityServer();
+            app.UseAuthentication();
 
             app.Use(async (context, next) =>
             {
