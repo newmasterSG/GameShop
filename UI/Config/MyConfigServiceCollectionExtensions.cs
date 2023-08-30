@@ -48,7 +48,10 @@ namespace UI.ServiceProvider
                 option.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 option.DefaultChallengeScheme = "oidc";
             })
-            .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme)
+           .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, option =>
+           {
+               option.ExpireTimeSpan = TimeSpan.FromDays(1);
+           })
            .AddOpenIdConnect("oidc", option =>
            {
                option.Authority = "https://localhost:5001";
