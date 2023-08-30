@@ -1,6 +1,7 @@
 ﻿using Application.Services;
 using Domain.Interfaces;
 using Domain.User;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -369,16 +370,17 @@ namespace UI.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> LogOut(string returnUrl = null)
         {
-            await _signInManager.SignOutAsync();
-            _logger.LogInformation("User logged out.");
-            if (returnUrl != null)
-            {
-                return LocalRedirect(returnUrl);
-            }
-            else
-            {
-                return RedirectToAction("Index","Home");
-            }
+            return SignOut(CookieAuthenticationDefaults.AuthenticationScheme, "oidc");
+            //await _signInManager.SignOutAsync();
+            //_logger.LogInformation("User logged out.");
+            //if (returnUrl != null)
+            //{
+            //    return LocalRedirect(returnUrl);
+            //}
+            //else
+            //{
+            //    return RedirectToAction("Index","Home");
+            //}
         }
     }
 }

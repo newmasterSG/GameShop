@@ -24,6 +24,7 @@ using UI.Validate;
 using Microsoft.IdentityModel.Tokens;
 using IdentityModel.AspNetCore.AccessTokenManagement;
 using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Authentication;
 
 namespace UI.ServiceProvider
 {
@@ -51,6 +52,10 @@ namespace UI.ServiceProvider
            .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, option =>
            {
                option.ExpireTimeSpan = TimeSpan.FromDays(1);
+               option.Events.OnSigningOut = async e =>
+               {
+                   await e.HttpContext.RevokeUserRefreshTokenAsync();
+               };
            })
            .AddOpenIdConnect("oidc", option =>
            {
@@ -74,7 +79,15 @@ namespace UI.ServiceProvider
 
            });
 
-          return services;
+            services.AddAccessTokenManagement(options =>
+            {
+                // client config is inferred from OpenID Connect settings
+                // if you want to specify scopes explicitly, do it here, otherwise the scope parameter will not be sent
+                options.Client.DefaultClient.Scope = "ApiSteam";
+            })
+           .ConfigureBackchannelHttpClient();
+
+            return services;
         }
 
         public static IServiceCollection AddLoca(this IServiceCollection services)
