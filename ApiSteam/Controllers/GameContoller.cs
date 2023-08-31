@@ -11,10 +11,10 @@ namespace ApiSteam.Controllers
     [ApiController]
     public class GameController: ControllerBase
     {
-        private readonly GameService _gameService;
+        private readonly IGameService _gameService;
         private readonly IMemoryCache _cache;
         private readonly IHomeService _unitOfWork;
-        public GameController(GameService gameService, IMemoryCache cache, IHomeService homeService)
+        public GameController(IGameService gameService, IMemoryCache cache, IHomeService homeService)
         {
             _gameService = gameService;
             _cache = cache;

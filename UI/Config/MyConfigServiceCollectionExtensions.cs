@@ -103,6 +103,21 @@ namespace UI.ServiceProvider
             return services;
         }
 
+        public static IServiceCollection AddOwnServices(this IServiceCollection services)
+        {
+            services.AddScoped<IUnitOfWork, UnitOfWork<GameShopContext>>();
+            services.AddScoped<IHomeService, HomeService>();
+            services.AddScoped<IGameService, GameService>();
+            services.AddTransient<EmailSender, SmtpEmailSender>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddDatabaseDeveloperPageExceptionFilter();
+            services.AddScoped<IOrderServices, OrderServices>();
+            services.AddScoped<IReviewsService, ReviewsService>();
+            services.AddScoped<IUserClaimsPrincipalFactory<UserEntity>, MyUserClaimsPrincipalFactory>();
+
+            return services;
+        }
+
         public static IServiceCollection AddMyDependencyGroup(
              this IServiceCollection services,
              IConfiguration config)
@@ -137,15 +152,7 @@ namespace UI.ServiceProvider
             services.AddDistributedMemoryCache();
 
             //My own services
-            services.AddScoped<IUnitOfWork, UnitOfWork<GameShopContext>>();
-            services.AddScoped<IHomeService, HomeService>();
-            services.AddScoped<IGameService, GameService>();
-            services.AddTransient<EmailSender, SmtpEmailSender>();
-            services.AddScoped<IUserService, UserService>();
-            services.AddDatabaseDeveloperPageExceptionFilter();
-            services.AddScoped<IOrderServices, OrderServices>();
-            services.AddScoped<IReviewsService, ReviewsService>();
-            services.AddScoped<IUserClaimsPrincipalFactory<UserEntity>, MyUserClaimsPrincipalFactory>();
+            services.AddOwnServices();
 
             //Localizations
             services.AddLoca();

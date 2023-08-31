@@ -1,4 +1,5 @@
-﻿using Application.Services;
+﻿using Application.InterfaceServices;
+using Application.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -9,8 +10,8 @@ namespace ApiSteam.Controllers
     [ApiController]
     public class ReviewsController : ControllerBase
     {
-        private readonly ReviewsService _reviewService;
-        public ReviewsController(ReviewsService reviewService)
+        private readonly IReviewsService _reviewService;
+        public ReviewsController(IReviewsService reviewService)
         {
             _reviewService = reviewService;
         }
