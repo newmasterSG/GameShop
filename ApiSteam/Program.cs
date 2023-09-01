@@ -23,6 +23,19 @@ namespace ApiSteam
             builder.Services.AddDbContext<GameShopContext>(options =>
                 options.UseSqlServer(connectionString).EnableSensitiveDataLogging());
 
+            var siteForCORS = new[] { "https://localhost:5444", ""};
+
+            var nameMyPolicy = "fromUI";
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy(nameMyPolicy, policy =>
+                {
+                    policy.WithOrigins(siteForCORS)
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
+                });
+            });
+
             builder.Services.AddMemoryCache();
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork<GameShopContext>>();
             builder.Services.AddScoped<IGameService, GameService>();
@@ -48,7 +61,10 @@ namespace ApiSteam
             
             app.UseHttpsRedirection();
 
+
             app.UseAuthentication();
+
+            app.UseCors(nameMyPolicy);
 
             app.UseAuthorization();
 
