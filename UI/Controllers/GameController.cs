@@ -101,6 +101,7 @@ namespace UI.Controllers
             }
             else
             {
+                ViewBag.GameName = viewModel.GameName;
                 viewModel.PagedSearchResults = new StaticPagedList<GameDTO>(games, pageNumber, pageSize, games.Count);
             }
 

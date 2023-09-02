@@ -26,17 +26,8 @@
                         aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="collapse navbar-collapse align-content-between" id="navbarNav">
-                    <ul class="navbar-nav ml-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">About</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Services</a>
-                        </li>
-                        <!-- Add more pages here as needed -->
-                    </ul>
-                    <div class="">
+                <div class="collapse navbar-collapse container" id="navbarNav">
+                    <div class="container">
                         @using (Html.BeginForm("Search", "Game", FormMethod.Post ))
                         {
                             <div class="input-group">
@@ -46,21 +37,27 @@
                         }
                     </div>
 
-                    <button class="btn btn-outline-secondary">
-                        <a href="~/MyOffice/Purchases">My Purchases</a>
-                    </button>
+                    <div class="">
+                        <a class="btn btn-outline-secondary" href="~/MyOffice/Purchases">My Purchases</a>
+                    </div>
 
-                    <a class="cart-icon" href="~/MyOffice/Card">
-                        <img src="~/Contents/icon-card-2.png" alt="Корзина">
-                    </a>
+                    <div class="">
+                        <a class="cart-icon" href="~/MyOffice/Card">
+                            <img src="~/Contents/icon-card-2.png" alt="Корзина">
+                        </a>
+                    </div>
 
-                    <form asp-controller="Home" asp-action="ChangeLanguage" asp-route-returnUrl="@Context.Request.Path" method="post" class="language-selector-form">
-                        <select name="lang" onchange="this.form.submit()">
-                            <option value="en" selected="@(currentLang == "en")">English</option>
-                            <option value="uk" selected="@(currentLang == "uk")">Українська</option>
-                        </select>
-                    </form>
-                    @await Component.InvokeAsync("LoginRegister")
+                    <div class="">
+                        <form asp-controller="Home" asp-action="ChangeLanguage" asp-route-returnUrl="@Context.Request.Path" method="post" class="language-selector-form">
+                            <select name="lang" onchange="this.form.submit()">
+                                <option value="en" selected="@(currentLang == "en")">English</option>
+                                <option value="uk" selected="@(currentLang == "uk")">Українська</option>
+                            </select>
+                        </form>
+                    </div>
+                    <div class="">
+                        @await Component.InvokeAsync("LoginRegister")
+                    </div>
                 </div>
             </div>
         </nav>
