@@ -54,18 +54,21 @@ namespace Application.Services
 
         public async Task<List<GameDTO>> SearchGame(string name)
         {
-            var dbGames = await _unitOfWork.GetRepository<GamesEntity>().ListAsync(g => g.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+            var dbGames = await _unitOfWork.GetRepository<GamesEntity>().ListAsync(g => g.Name.ToLower() == name.ToLower());
             var games = new List<GameDTO>();
-            foreach (var game in dbGames)
+            if(dbGames != null && dbGames.Count() > 0)
             {
-                games.Add(new GameDTO
+                foreach (var game in dbGames)
                 {
-                    Id = (int)game.Id,
-                    Name = game.Name,
-                    Image = game.BackgroundImage,
-                    Owned = game.AddedByStatus?.Owned ?? 4000,
-                    Price = game.Price,
-                });
+                    games.Add(new GameDTO
+                    {
+                        Id = (int)game.Id,
+                        Name = game.Name,
+                        Image = game.BackgroundImage,
+                        Owned = game.AddedByStatus?.Owned ?? 4000,
+                        Price = game.Price,
+                    });
+                }
             }
 
             return games;

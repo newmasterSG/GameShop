@@ -82,3 +82,44 @@
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
                 };
             });
+
+
+
+
+            
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> AddReview(int gameId, string reviewText, int rating, string token)
+        {
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+
+            var client = _httpClientFactory.CreateClient();
+
+            client.SetBearerToken(accessToken);
+
+            var postData = new List<KeyValuePair<string, string>>
+            {
+                new KeyValuePair<string, string>("gameId", gameId.ToString()),
+                new KeyValuePair<string, string>("reviewText", reviewText),
+                new KeyValuePair<string, string>("rating", rating.ToString()),
+            };
+
+            // Создаем HttpContent с данными
+            var content = new FormUrlEncodedContent(postData);
+
+            var response = await client.PostAsync($"https://localhost:7242/api/Reviews/AddReview?gameId={gameId}&reviewText={reviewText}&rating={rating}", content);
+            if (response.IsSuccessStatusCode)
+            {
+                // Log a successful response
+                _logger.LogInformation("HTTP POST was successful.");
+            }
+            else
+            {
+                // Log an unsuccessful response
+                _logger.LogError($"HTTP POST failed with status code: {response}");
+            }
+
+            return Ok();
+        }
+
+                        data: { gameId: gameId, reviewText: reviewText, rating: rating},

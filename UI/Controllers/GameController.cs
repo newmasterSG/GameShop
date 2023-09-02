@@ -1,6 +1,9 @@
 ﻿using Application.DTO;
+using Application.InterfaceServices;
 using Application.Services;
+using Azure.Core;
 using Domain.Entities;
+using Duende.IdentityServer.Extensions;
 using IdentityModel.Client;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
@@ -18,12 +21,12 @@ namespace UI.Controllers
     public class GameController : Controller
     {
         private readonly ILogger<GameController> _logger;
-        private readonly GameService _gameService;
-        private readonly ReviewsService _reviewService;
+        private readonly IGameService _gameService;
+        private readonly IReviewsService _reviewService;
         private readonly IHttpClientFactory _httpClientFactory;
-        public GameController(GameService gameService, 
+        public GameController(IGameService gameService, 
             ILogger<GameController> logger,
-            ReviewsService reviewService,
+            IReviewsService reviewService,
             IHttpClientFactory httpClientFactory)
         {
             _logger = logger;
@@ -32,9 +35,30 @@ namespace UI.Controllers
             _httpClientFactory = httpClientFactory;
         }
 
-        public IActionResult GameDetails(int id)
+        public async Task<IActionResult> GameDetails(int id)
         {
+            if(User.IsAuthenticated())
+            {
+                ViewBag.Token = await HttpContext.GetTokenAsync("access_token") ?? "";
+            }
             ViewBag.GameId = id;
+            return View();
+        }
+
+        public async Task<IActionResult> Index()
+        {
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+
+            //var client = _httpClientFactory.CreateClient("apisteam");
+
+            var client = _httpClientFactory.CreateClient();
+
+            client.SetBearerToken(accessToken);
+
+            var response = await client.GetAsync("https://localhost:7242/api/Reviews");
+
+            var content = await response.Content.ReadAsStringAsync();
+
             return View();
         }
 
@@ -88,29 +112,6 @@ namespace UI.Controllers
         {
             var reviews = await _reviewService.GetAllReviews(page,pageSize);
             return Ok(reviews);
-        }
-
-        [HttpPost]
-        [Authorize]
-        public async Task<IActionResult> AddReview(int gameId, string reviewText, int rating)
-        {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-            if (string.IsNullOrEmpty(userId))
-            {
-                return BadRequest(new { success = false, message = "You must be logged in to add a review." });
-            }
-
-            var success = await _reviewService.AddReview(gameId, userId, reviewText, rating);
-
-            if (success)
-            {
-                return Ok(new { success = true, message = "Review added successfully." });
-            }
-            else
-            {
-                return NotFound(new { success = false, message = "Game not found." });
-            }
         }
 
         [HttpGet]

@@ -46,10 +46,12 @@
                         }
                     </div>
 
-                    <button><a href="~/MyOffice/Purchases">My Purchases</a></button>
+                    <button class="btn btn-outline-secondary">
+                        <a href="~/MyOffice/Purchases">My Purchases</a>
+                    </button>
 
                     <a class="cart-icon" href="~/MyOffice/Card">
-                        <img src="cart-icon.png" alt="Корзина">
+                        <img src="~/Contents/icon-card-2.png" alt="Корзина">
                     </a>
 
                     <form asp-controller="Home" asp-action="ChangeLanguage" asp-route-returnUrl="@Context.Request.Path" method="post" class="language-selector-form">
@@ -78,6 +80,8 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/start.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

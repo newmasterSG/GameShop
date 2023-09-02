@@ -1,18 +1,24 @@
-﻿using Application.Services;
+﻿using Application.InterfaceServices;
+using Application.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
 namespace ApiSteam.Controllers
 {
+    [EnableCors("fromUI")]
     [Route("api/[controller]")]
     [ApiController]
     public class ReviewsController : ControllerBase
     {
-        private readonly ReviewsService _reviewService;
-        public ReviewsController(ReviewsService reviewService)
+        private readonly ILogger<ReviewsController> _logger;
+        private readonly IReviewsService _reviewService;
+        public ReviewsController(IReviewsService reviewService, 
+            ILogger<ReviewsController> logger)
         {
             _reviewService = reviewService;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -35,6 +41,7 @@ namespace ApiSteam.Controllers
         [Route("AddReview")]
         public async Task<IActionResult> AddReview(int gameId, string reviewText, int rating)
         {
+            _logger.LogDebug("Start");
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             if (string.IsNullOrEmpty(userId))

@@ -21,7 +21,7 @@ namespace AuthServer
                     Name = "ApiSteam",
                     DisplayName = "MyApi",
                     ApiSecrets = { new Secret("api_secret".Sha256())},
-                    Scopes = new List<string>(){"api"},
+                    Scopes = new List<string>(){"ApiSteam"},
                     UserClaims = {ClaimTypes.Email},
                 },
             };
@@ -29,7 +29,7 @@ namespace AuthServer
         public static IEnumerable<ApiScope> ApiScopes =>
             new List<ApiScope>
             {
-            new ApiScope("ApiSteam", "My API")
+            new ApiScope("ApiSteam", "My API"),
             };
 
         public static IEnumerable<Client> Clients =>
@@ -67,7 +67,7 @@ namespace AuthServer
                     "ApiSteam"
                 },
                 AllowAccessTokensViaBrowser = true,
-                RequireConsent = true,
+                RequireConsent = false,
                 AlwaysIncludeUserClaimsInIdToken = true,
             },
             };

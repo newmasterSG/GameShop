@@ -1,4 +1,5 @@
 ﻿using Application.DTO;
+using Application.InterfaceServices;
 using Application.Services;
 using Domain.User;
 using Microsoft.AspNetCore.Identity;
@@ -11,10 +12,10 @@ namespace ApiSteam.Controllers
     [ApiController]
     public class OrderController:ControllerBase
     {
-        private readonly OrderServices _orderServices;
+        private readonly IOrderServices _orderServices;
         private readonly UserManager<UserEntity> _userManager;
         private readonly SignInManager<UserEntity> _signInManager;
-        public OrderController(OrderServices orderServices, UserManager<UserEntity> userManager, SignInManager<UserEntity> signInManager)
+        public OrderController(IOrderServices orderServices, UserManager<UserEntity> userManager, SignInManager<UserEntity> signInManager)
         {
             _orderServices = orderServices;
             _userManager = userManager;

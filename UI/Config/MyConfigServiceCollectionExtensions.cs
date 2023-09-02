@@ -24,6 +24,7 @@ using UI.Validate;
 using Microsoft.IdentityModel.Tokens;
 using IdentityModel.AspNetCore.AccessTokenManagement;
 using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Authentication;
 
 namespace UI.ServiceProvider
 {
@@ -48,7 +49,14 @@ namespace UI.ServiceProvider
                 option.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 option.DefaultChallengeScheme = "oidc";
             })
-            .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme)
+           .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, option =>
+           {
+               option.ExpireTimeSpan = TimeSpan.FromDays(30);
+               option.Events.OnSigningOut = async e =>
+               {
+                   await e.HttpContext.RevokeUserRefreshTokenAsync();
+               };
+           })
            .AddOpenIdConnect("oidc", option =>
            {
                option.Authority = "https://localhost:5001";
@@ -71,7 +79,15 @@ namespace UI.ServiceProvider
 
            });
 
-          return services;
+            services.AddAccessTokenManagement(options =>
+            {
+                // client config is inferred from OpenID Connect settings
+                // if you want to specify scopes explicitly, do it here, otherwise the scope parameter will not be sent
+                options.Client.DefaultClient.Scope = "ApiSteam";
+            })
+           .ConfigureBackchannelHttpClient();
+
+            return services;
         }
 
         public static IServiceCollection AddLoca(this IServiceCollection services)
@@ -83,6 +99,21 @@ namespace UI.ServiceProvider
                     options.DataAnnotationLocalizerProvider = (type, factory) =>
                         factory.Create(typeof(ValidationResources));
                 });
+
+            return services;
+        }
+
+        public static IServiceCollection AddOwnServices(this IServiceCollection services)
+        {
+            services.AddScoped<IUnitOfWork, UnitOfWork<GameShopContext>>();
+            services.AddScoped<IHomeService, HomeService>();
+            services.AddScoped<IGameService, GameService>();
+            services.AddTransient<EmailSender, SmtpEmailSender>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddDatabaseDeveloperPageExceptionFilter();
+            services.AddScoped<IOrderServices, OrderServices>();
+            services.AddScoped<IReviewsService, ReviewsService>();
+            services.AddScoped<IUserClaimsPrincipalFactory<UserEntity>, MyUserClaimsPrincipalFactory>();
 
             return services;
         }
@@ -121,15 +152,7 @@ namespace UI.ServiceProvider
             services.AddDistributedMemoryCache();
 
             //My own services
-            services.AddScoped<IUnitOfWork, UnitOfWork<GameShopContext>>();
-            services.AddScoped<IHomeService, HomeService>();
-            services.AddScoped<IGameService, GameService>();
-            services.AddTransient<EmailSender, SmtpEmailSender>();
-            services.AddScoped<IUserService, UserService>();
-            services.AddDatabaseDeveloperPageExceptionFilter();
-            services.AddScoped<IOrderServices, OrderServices>();
-            services.AddScoped<IReviewsService, ReviewsService>();
-            services.AddScoped<IUserClaimsPrincipalFactory<UserEntity>, MyUserClaimsPrincipalFactory>();
+            services.AddOwnServices();
 
             //Localizations
             services.AddLoca();

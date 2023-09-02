@@ -1,3 +1,4 @@
+using AuthServer.Pages.Login;
 using Domain.User;
 using Duende.IdentityServer;
 using Duende.IdentityServer.EntityFramework.DbContexts;
@@ -50,6 +51,14 @@ namespace AuthServer
                     }
                     context.SaveChanges();
                 }
+                if (!context.ApiResources.Any())
+                {
+                    foreach (var resource in Config.ApiResources)
+                    {
+                        context.ApiResources.Add(resource.ToEntity());
+                    }
+                    context.SaveChanges();
+                }
             }
         }
 
@@ -91,17 +100,21 @@ namespace AuthServer
                 })
                 .AddDeveloperSigningCredential();
 
-            //builder.Services.AddAuthentication()
-            //    .AddGoogle(options =>
-            //    {
-            //        options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
+            builder.Services.AddAuthentication()
+                .AddCookie("IdentityServer.Cookie", options =>
+                {
+                    options.ExpireTimeSpan = TimeSpan.FromDays(30);
+                })
+                .AddGoogle(options =>
+                {
+                    options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
 
-            //        // register your IdentityServer with Google at https://console.developers.google.com
-            //        // enable the Google+ API
-            //        // set the redirect URI to https://localhost:5001/signin-google
-            //        options.ClientId = "copy client ID from Google here";
-            //        options.ClientSecret = "copy client secret from Google here";
-            //    })
+                    //// register your IdentityServer with Google at https://console.developers.google.com
+                    //// enable the Google+ API
+                    //// set the redirect URI to https://localhost:5001/signin-google
+                    options.ClientId = builder.Configuration["GoogleProviderLogin:client_iD"];
+                    options.ClientSecret = builder.Configuration["GoogleProviderLogin:client_secret"];
+                });
 
             builder.Services.ConfigureApplicationCookie(config =>
             {
@@ -120,7 +133,7 @@ namespace AuthServer
                 app.UseDeveloperExceptionPage();
             }
 
-            //InitializeDatabase(app);
+            InitializeDatabase(app);
             app.UseStaticFiles();
             app.UseRouting();
             app.UseIdentityServer();
