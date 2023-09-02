@@ -1,3 +1,4 @@
+using ApiSteam.Config;
 using ApiSteam.Registration;
 using Application.InterfaceServices;
 using Application.Services;
@@ -23,27 +24,11 @@ namespace ApiSteam
             builder.Services.AddDbContext<GameShopContext>(options =>
                 options.UseSqlServer(connectionString).EnableSensitiveDataLogging());
 
-            var siteForCORS = new[] { "https://localhost:5444", ""};
+            builder.Services
+                .AddCORSRealization()
+                .AddingOwnDI()
+                .AddIdentityServerJWTAuthentication();
 
-            var nameMyPolicy = "fromUI";
-            builder.Services.AddCors(options =>
-            {
-                options.AddPolicy(nameMyPolicy, policy =>
-                {
-                    policy.WithOrigins(siteForCORS)
-                    .AllowAnyHeader()
-                    .AllowAnyMethod();
-                });
-            });
-
-            builder.Services.AddMemoryCache();
-            builder.Services.AddScoped<IUnitOfWork, UnitOfWork<GameShopContext>>();
-            builder.Services.AddScoped<IGameService, GameService>();
-            builder.Services.AddScoped<IOrderServices, OrderServices>();
-            builder.Services.AddScoped<IReviewsService, ReviewsService>();
-            builder.Services.AddScoped<IHomeService, HomeService>();
-
-            builder.Services.AddIdentityServerJWTAuthentication();
             builder.Services.AddLogging();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
@@ -64,7 +49,7 @@ namespace ApiSteam
 
             app.UseAuthentication();
 
-            app.UseCors(nameMyPolicy);
+            app.UseCors("fromUI");
 
             app.UseAuthorization();
 

@@ -228,11 +228,15 @@
             var reviewText = $('#reviewText').val();
             var gameId = @ViewBag.GameId;
             var rating = $('#rating').val();
-
+            var token = '@ViewBag.Token';
             $.ajax({
-                url: '/Game/AddReview',
+                //url: '/Game/AddReview',
+                url: 'https://localhost:7242/api/Reviews/AddReview?gameId='+ gameId + '&reviewText='+reviewText+'&rating='+ rating,
                 type: 'POST',
-                data: { gameId: gameId, reviewText: reviewText, rating: rating },
+                data: { gameId: gameId, reviewText: reviewText, rating: rating},
+                headers:{
+                    Authorization: 'Bearer ' + token
+                },
                 success: function (response) {
                     if (response.success) {
                         // Clear the textarea and add the new review to the list
@@ -243,7 +247,8 @@
                         alert(response.message);
                     }
                 },
-                error: function () {
+                error: function (error) {
+                    console.log(error);
                     alert('An error occurred while submitting the review.');
                 }
             });
