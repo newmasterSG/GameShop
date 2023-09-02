@@ -1,3 +1,4 @@
+using AuthServer.Pages.Login;
 using Domain.User;
 using Duende.IdentityServer;
 using Duende.IdentityServer.EntityFramework.DbContexts;
@@ -100,6 +101,10 @@ namespace AuthServer
                 .AddDeveloperSigningCredential();
 
             builder.Services.AddAuthentication()
+                .AddCookie("IdentityServer.Cookie", options =>
+                {
+                    options.ExpireTimeSpan = TimeSpan.FromDays(30);
+                })
                 .AddGoogle(options =>
                 {
                     options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;

@@ -230,10 +230,8 @@
             var rating = $('#rating').val();
             var token = '@ViewBag.Token';
             $.ajax({
-                //url: '/Game/AddReview',
                 url: 'https://localhost:7242/api/Reviews/AddReview?gameId='+ gameId + '&reviewText='+reviewText+'&rating='+ rating,
                 type: 'POST',
-                data: { gameId: gameId, reviewText: reviewText, rating: rating},
                 headers:{
                     Authorization: 'Bearer ' + token
                 },

@@ -51,7 +51,7 @@ namespace UI.ServiceProvider
             })
            .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, option =>
            {
-               option.ExpireTimeSpan = TimeSpan.FromDays(1);
+               option.ExpireTimeSpan = TimeSpan.FromDays(30);
                option.Events.OnSigningOut = async e =>
                {
                    await e.HttpContext.RevokeUserRefreshTokenAsync();

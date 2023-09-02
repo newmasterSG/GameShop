@@ -121,3 +121,5 @@
 
             return Ok();
         }
+
+                        data: { gameId: gameId, reviewText: reviewText, rating: rating},
