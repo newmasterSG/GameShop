@@ -160,6 +160,7 @@ namespace UI.ServiceProvider
             //Authentication
             services.AddAuth();
 
+            services.AddSignalR();
             services.AddHttpClient("apisteam", h =>
             {
                 h.BaseAddress = new Uri("https://localhost:7242/");
