@@ -27,6 +27,7 @@ using System.IdentityModel.Tokens.Jwt;
 using Duende.IdentityServer;
 using Domain.User;
 using UI.Seedings;
+using UI.Hubs;
 
 namespace UI
 {
@@ -139,6 +140,8 @@ namespace UI
             app.UseAuthentication();
 
             app.UseAuthorization();
+
+            app.MapHub<ChatHub>("/chatHub");
 
             app.MapControllerRoute(
                 name: "default",

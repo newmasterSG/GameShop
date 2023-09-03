@@ -5,22 +5,21 @@
 
 @if (Model.PagedSearchResults != null && Model.PagedSearchResults.Count > 0)
 {
-    <h3>Search Results: </h3>
-    <ul>
+    <h3 class="text-center">Search Results: @ViewBag.GameName</h3>
+    <div class="container align-content-center justify-content-center">
         @foreach (var game in Model.PagedSearchResults)
         {
-            <li>
-                <div>
-                    <h4>@game.Name</h4>
-                    <img src="@game.Image" alt="Game Image" />
-                    <p>Price: @game.Price</p>
-                    <p>Owned: @game.Owned</p>
-                </div>
-            </li>
+                <h4>@game.Name</h4>
+                <img src="@game.Image" alt="Game Image" style="width: 100px" />
+                <p>Price: @game.Price</p>
+                <p>Owned: @game.Owned</p>
         }
-    </ul>
+    </div>
 
     <div>
         <pager pager-list="@Model.PagedSearchResults" asp-action="Search" asp-route-gameName="@Model.GameName"></pager>
     </div>
+}
+else{
+
 }

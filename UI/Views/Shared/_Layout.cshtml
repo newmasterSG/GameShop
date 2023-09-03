@@ -26,17 +26,8 @@
                         aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="collapse navbar-collapse align-content-between" id="navbarNav">
-                    <ul class="navbar-nav ml-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">About</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Services</a>
-                        </li>
-                        <!-- Add more pages here as needed -->
-                    </ul>
-                    <div class="">
+                <div class="collapse navbar-collapse container" id="navbarNav">
+                    <div class="container">
                         @using (Html.BeginForm("Search", "Game", FormMethod.Post ))
                         {
                             <div class="input-group">
@@ -46,21 +37,27 @@
                         }
                     </div>
 
-                    <button class="btn btn-outline-secondary">
-                        <a href="~/MyOffice/Purchases">My Purchases</a>
-                    </button>
+                    <div class="">
+                        <a class="btn btn-outline-secondary" href="~/MyOffice/Purchases">My Purchases</a>
+                    </div>
 
-                    <a class="cart-icon" href="~/MyOffice/Card">
-                        <img src="~/Contents/icon-card-2.png" alt="Корзина">
-                    </a>
+                    <div class="">
+                        <a class="cart-icon" href="~/MyOffice/Card">
+                            <img src="~/Contents/icon-card-2.png" alt="Корзина">
+                        </a>
+                    </div>
 
-                    <form asp-controller="Home" asp-action="ChangeLanguage" asp-route-returnUrl="@Context.Request.Path" method="post" class="language-selector-form">
-                        <select name="lang" onchange="this.form.submit()">
-                            <option value="en" selected="@(currentLang == "en")">English</option>
-                            <option value="uk" selected="@(currentLang == "uk")">Українська</option>
-                        </select>
-                    </form>
-                    @await Component.InvokeAsync("LoginRegister")
+                    <div class="">
+                        <form asp-controller="Home" asp-action="ChangeLanguage" asp-route-returnUrl="@Context.Request.Path" method="post" class="language-selector-form">
+                            <select name="lang" onchange="this.form.submit()">
+                                <option value="en" selected="@(currentLang == "en")">English</option>
+                                <option value="uk" selected="@(currentLang == "uk")">Українська</option>
+                            </select>
+                        </form>
+                    </div>
+                    <div class="">
+                        @await Component.InvokeAsync("LoginRegister")
+                    </div>
                 </div>
             </div>
         </nav>
@@ -69,6 +66,62 @@
             <main role="main">
                 @RenderBody()
             </main>
+@*
+        <div class="container">
+            <div class="row p-1">
+                <div class="col-1">User</div>
+                <div class="col-5"><input type="text" id="userInput" /></div>
+            </div>
+            <div class="row p-1">
+                <div class="col-1">Message</div>
+                <div class="col-5"><input type="text" class="w-100" id="messageInput" /></div>
+            </div>
+            <div class="row p-1">
+                <div class="col-6 text-end">
+                    <input type="button" id="sendButton" value="Send Message" />
+                </div>
+            </div>
+            <div class="row p-1">
+                <div class="col-6">
+                    <hr />
+                </div>
+            </div>
+            <div class="row p-1">
+                <div class="col-6">
+                    <ul id="messagesList"></ul>
+                </div>
+            </div>
+        </div>*@
+
+        <div class="container">
+            <div id="body">
+                <div id="chat-circle" class="btn btn-raised">
+                    <div id="chat-overlay"></div>
+                    <i class="material-icons">Chat</i>
+                </div>
+
+                <div class="chat-box">
+                    <div class="chat-box-header">
+                        ChatBot
+                        <span class="chat-box-toggle"><i class="material-icons">close</i></span>
+                    </div>
+                    <div class="chat-box-body">
+                        <div class="chat-box-overlay">
+                        </div>
+                        <div class="chat-logs">
+                            <ul id="messagesList"></ul>
+                        </div>
+                    </div>
+                    <div class="chat-input">
+@*                        <form>*@
+                            <input type="hidden" id="userInput" value="Yehor"/>
+                            <input type="text" id="chat-input" placeholder="Send a message..." />
+                            <button type="submit" class="chat-submit" id="chat-submit"><i class="material-icons" id="sendButton">Send Message</i></button>
+@*                        </form>*@
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <footer class="border-top text-muted bg-dark">
@@ -76,6 +129,8 @@
             &copy; 2023 - UI - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
+    <script src="~/js/signalr/dist/browser/signalr.js"></script>
+    <script src="~/js/chat.js"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
