@@ -66,7 +66,7 @@
             <main role="main">
                 @RenderBody()
             </main>
-
+@*
         <div class="container">
             <div class="row p-1">
                 <div class="col-1">User</div>
@@ -89,6 +89,36 @@
             <div class="row p-1">
                 <div class="col-6">
                     <ul id="messagesList"></ul>
+                </div>
+            </div>
+        </div>*@
+
+        <div class="container">
+            <div id="body">
+                <div id="chat-circle" class="btn btn-raised">
+                    <div id="chat-overlay"></div>
+                    <i class="material-icons">Chat</i>
+                </div>
+
+                <div class="chat-box">
+                    <div class="chat-box-header">
+                        ChatBot
+                        <span class="chat-box-toggle"><i class="material-icons">close</i></span>
+                    </div>
+                    <div class="chat-box-body">
+                        <div class="chat-box-overlay">
+                        </div>
+                        <div class="chat-logs">
+                            <ul id="messagesList"></ul>
+                        </div>
+                    </div>
+                    <div class="chat-input">
+@*                        <form>*@
+                            <input type="hidden" id="userInput" value="Yehor"/>
+                            <input type="text" id="chat-input" placeholder="Send a message..." />
+                            <button type="submit" class="chat-submit" id="chat-submit"><i class="material-icons" id="sendButton">Send Message</i></button>
+@*                        </form>*@
+                    </div>
                 </div>
             </div>
         </div>
