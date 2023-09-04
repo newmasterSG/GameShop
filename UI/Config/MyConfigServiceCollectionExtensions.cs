@@ -73,7 +73,7 @@ namespace UI.ServiceProvider
                option.Scope.Add("profile");
                option.Scope.Add("offline_access");
                option.Scope.Add("ApiSteam");
-
+               
                option.GetClaimsFromUserInfoEndpoint = true;
                option.SaveTokens = true;
 
@@ -114,6 +114,7 @@ namespace UI.ServiceProvider
             services.AddScoped<IOrderServices, OrderServices>();
             services.AddScoped<IReviewsService, ReviewsService>();
             services.AddScoped<IUserClaimsPrincipalFactory<UserEntity>, MyUserClaimsPrincipalFactory>();
+            services.AddScoped<IMessageService, MessageService>();
 
             return services;
         }
@@ -161,6 +162,7 @@ namespace UI.ServiceProvider
             services.AddAuth();
 
             services.AddSignalR();
+
             services.AddHttpClient("apisteam", h =>
             {
                 h.BaseAddress = new Uri("https://localhost:7242/");

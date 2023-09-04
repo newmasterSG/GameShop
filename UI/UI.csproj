@@ -50,9 +50,6 @@
   <ItemGroup>
     <_ContentIncludedByDefault Remove="Views\Account\ForgotPassword.cshtml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Views\Admin\" />
-  </ItemGroup>
   
 
 </Project>

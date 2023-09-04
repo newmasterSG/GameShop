@@ -47,8 +47,6 @@ namespace UI.Controllers
 
         public async Task<IActionResult> Index()
         {
-            _logger.LogDebug(HttpContext.User.FindFirstValue(ClaimTypes.Name));
-
             return View();
         }
 

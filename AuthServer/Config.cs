@@ -22,7 +22,7 @@ namespace AuthServer
                     DisplayName = "MyApi",
                     ApiSecrets = { new Secret("api_secret".Sha256())},
                     Scopes = new List<string>(){"ApiSteam"},
-                    UserClaims = {ClaimTypes.Email},
+                    UserClaims = {ClaimTypes.Email, ClaimTypes.Role}, 
                 },
             };
 

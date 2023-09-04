@@ -1,0 +1,11 @@
+﻿using Domain.Entities;
+
+namespace Application.InterfaceServices
+{
+    public interface IMessageService
+    {
+        Task AddMessage(string userEmail, string message);
+        Task SendAdminReply(string userId, string adminReply);
+        Task<IEnumerable<MessageEntity>> GetUserMessages();
+    }
+}
