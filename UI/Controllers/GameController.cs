@@ -47,17 +47,7 @@ namespace UI.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var accessToken = await HttpContext.GetTokenAsync("access_token");
-
-            //var client = _httpClientFactory.CreateClient("apisteam");
-
-            var client = _httpClientFactory.CreateClient();
-
-            client.SetBearerToken(accessToken);
-
-            var response = await client.GetAsync("https://localhost:7242/api/Reviews");
-
-            var content = await response.Content.ReadAsStringAsync();
+            _logger.LogDebug(HttpContext.User.FindFirstValue(ClaimTypes.Name));
 
             return View();
         }
