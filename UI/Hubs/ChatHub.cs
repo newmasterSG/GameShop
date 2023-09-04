@@ -20,8 +20,9 @@ namespace UI.Hubs
             if (!string.IsNullOrEmpty(user) && !user.Equals("User"))
             {
                 await _messageService.AddMessage(user, message);
+                //await Clients.User(Context.User.Claims.FirstOrDefault(c => c.Type == "sub").Value).SendAsync("ReceiveMessage", user, message);
+                //await Task.CompletedTask;
             }
-
             await Clients.All.SendAsync("ReceiveMessage", user, message);
         }
 
@@ -31,7 +32,7 @@ namespace UI.Hubs
             await _messageService.SendAdminReply(userId, adminReply);
 
             // Send the admin reply to the specific user. Not Worked
-            //await Clients.User(userId).SendAsync("ReceiveAdminReply", adminReply);
+            await Clients.User(userId).SendAsync("ReceiveAdminReply", adminReply);
 
             //Worked
             await Clients.All.SendAsync("ReceiveAdminReply", adminReply);
@@ -39,10 +40,10 @@ namespace UI.Hubs
 
         public override async Task OnConnectedAsync()
         {
-            //if (Context.User.IsInRole("Admin"))
-            //{
+            if (Context.User.IsInRole("Admin"))
+            {
                 await Groups.AddToGroupAsync(Context.ConnectionId, "Admins");
-            //}
+            }
 
             await base.OnConnectedAsync();
         }

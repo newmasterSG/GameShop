@@ -1,6 +1,7 @@
 ﻿using Application.Services;
 using Domain.Interfaces;
 using Domain.User;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authorization;
@@ -43,7 +44,6 @@ namespace UI.Controllers
             _sharedLocalizer = stringLocalizer;
         }
 
-        // GET: AccountController
         public ActionResult Index()
         {
             return View();
@@ -110,89 +110,14 @@ namespace UI.Controllers
         }
 
         [HttpGet]
-        public IActionResult Login()
+        public IActionResult Login(string returnUrl = null)
         {
-            var logInText = _localizer["LoginText"];
-            var rememberText = _localizer["RememberMeText"];
-            ViewBag.Login = logInText;
-            ViewBag.Remember = rememberText;
-            return View();
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginViewModel model)
-        {
-            if (ModelState.IsValid)
+            // Создать челлендж для аутентификации
+            var props = new AuthenticationProperties
             {
-                var user = await _userManager.FindByEmailAsync(model.Email);
-
-                if(user.EmailConfirmed == false)
-                {
-                    ModelState.AddModelError("", $"User not confirmed email");
-                    return View();
-                }
-
-                if (user != null)
-                {
-                    var result = await _signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, lockoutOnFailure: true);
-
-                    if (result.Succeeded)
-                    {
-                        return RedirectToAction("Index", "Home"); // Redirect to home page after successful login
-                    }
-                }
-
-                ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-            }
-
-            return View(model);
-        }
-
-        [AllowAnonymous]
-        [HttpGet]
-        public IActionResult ExternalLogin(string provider, string returnUrl = null)
-        {
-            string authenticationScheme = string.Empty;
-
-            if (provider.Equals("google"))
-            {
-                authenticationScheme = GoogleDefaults.AuthenticationScheme;
-            }
-
-            var redirectUrl = Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl });
-            var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
-            return new ChallengeResult(authenticationScheme, properties);
-        }
-
-        [AllowAnonymous]
-        [HttpGet]
-        public async Task<IActionResult> ExternalLoginCallback(string returnUrl = null, string remoteError = null)
-        {
-            if (remoteError != null)
-            {
-                // Обработка ошибки
-                return RedirectToAction("Login");
-            }
-
-            var info = await _signInManager.GetExternalLoginInfoAsync();
-            if (info == null)
-            {
-                // Обработка ошибки
-                return RedirectToAction("Login");
-            }
-
-            // Если пользователь уже зарегистрирован на вашем сайте, можно автоматически войти
-            var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
-            if (result.Succeeded)
-            {
-                return LocalRedirect(returnUrl);
-            }
-
-            // Если пользователь еще не зарегистрирован, перенаправьте на страницу регистрации или другую обработку
-            ViewBag.ReturnUrl = returnUrl;
-            ViewBag.LoginProvider = info.LoginProvider;
-            return View("ExternalLoginConfirmation");
+                RedirectUri = returnUrl
+            };
+            return Challenge(props,"oidc");
         }
 
         [AllowAnonymous]
@@ -371,16 +296,7 @@ namespace UI.Controllers
         public async Task<IActionResult> LogOut(string returnUrl = null)
         {
             return SignOut(CookieAuthenticationDefaults.AuthenticationScheme, "oidc");
-            //await _signInManager.SignOutAsync();
-            //_logger.LogInformation("User logged out.");
-            //if (returnUrl != null)
-            //{
-            //    return LocalRedirect(returnUrl);
-            //}
-            //else
-            //{
-            //    return RedirectToAction("Index","Home");
-            //}
+
         }
     }
 }
