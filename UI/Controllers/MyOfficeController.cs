@@ -63,7 +63,7 @@ namespace UI.Controllers
         [HttpGet]
         public async Task<ActionResult<List<OrderPurchaseDto>>> Purchases()
         {
-            string userName = User.Identity.Name;
+            string userName = User.Claims.FirstOrDefault(c => c.Type == "name")?.Value;
 
             List<OrderPurchaseDto> purchase = new List<OrderPurchaseDto>();
 
