@@ -8,6 +8,7 @@ using IdentityModel.Client;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Localization;
 using Microsoft.EntityFrameworkCore;
 using PagedList;
 using System.Drawing.Printing;
@@ -24,15 +25,18 @@ namespace UI.Controllers
         private readonly IGameService _gameService;
         private readonly IReviewsService _reviewService;
         private readonly IHttpClientFactory _httpClientFactory;
+        private readonly IHtmlLocalizer<GameController> _localizer;
         public GameController(IGameService gameService, 
             ILogger<GameController> logger,
             IReviewsService reviewService,
-            IHttpClientFactory httpClientFactory)
+            IHttpClientFactory httpClientFactory,
+            IHtmlLocalizer<GameController> localizer)
         {
             _logger = logger;
             _gameService = gameService;
             _reviewService = reviewService;
             _httpClientFactory = httpClientFactory;
+            _localizer = localizer;
         }
 
         public async Task<IActionResult> GameDetails(int id)

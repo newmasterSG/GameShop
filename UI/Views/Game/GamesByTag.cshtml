@@ -3,3 +3,38 @@
 *@
 @{
 }
+@model List<Application.DTO.GameDTO>
+<style>
+    .custom-card {
+        height: 100%;
+        transition: transform 0.3s;
+    }
+
+        .custom-card:hover {
+            transform: scale(1.05);
+        }
+
+    #card-row {
+        align-content: center;
+        justify-content: center;
+        margin-left: 10%;
+    }
+</style>
+<div class="row" id="card-row">
+    @foreach(var game in Model)
+    {
+        <div class="col-md-4 mb-3">
+            <div class="card custom-card w-50">
+                <a href="@Url.Action("GameDetails","Game")/@game.Id">
+                    <img class="card-img" src="@game.Image" alt="@game.Name">
+                    <div class="card-body">
+                        <h5 class="card-title">@game.Name</h5>
+                        <p class="card-text">@game.Price</p>
+                    </div>
+                </a>
+             </div>
+
+
+        </div>
+    }
+</div>
