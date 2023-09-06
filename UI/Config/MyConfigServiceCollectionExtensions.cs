@@ -27,6 +27,8 @@ using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Authentication;
 using IdentityModel;
 using System.Security.Claims;
+using Microsoft.AspNetCore.SignalR;
+using UI.Config;
 
 namespace UI.ServiceProvider
 {
@@ -124,6 +126,7 @@ namespace UI.ServiceProvider
             services.AddScoped<IOrderServices, OrderServices>();
             services.AddScoped<IReviewsService, ReviewsService>();
             services.AddScoped<IUserClaimsPrincipalFactory<UserEntity>, MyUserClaimsPrincipalFactory>();
+            services.AddSingleton<IUserIdProvider, CustomUserIdProvider>();
             services.AddScoped<IMessageService, MessageService>();
 
             return services;
