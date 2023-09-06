@@ -1,5 +1,6 @@
 ﻿using Duende.IdentityServer;
 using Duende.IdentityServer.Models;
+using IdentityModel;
 using System.Security.Claims;
 
 namespace AuthServer
@@ -11,6 +12,13 @@ namespace AuthServer
             {
             new IdentityResources.OpenId(),
             new IdentityResources.Profile(),
+                new IdentityResource
+                {
+                    Name = "role",
+                    DisplayName = "User Role",
+                    Description = "Your user role information",
+                    UserClaims = {JwtClaimTypes.Role},
+                }
             };
 
         public static IEnumerable<ApiResource> ApiResources =>
@@ -22,14 +30,14 @@ namespace AuthServer
                     DisplayName = "MyApi",
                     ApiSecrets = { new Secret("api_secret".Sha256())},
                     Scopes = new List<string>(){"ApiSteam"},
-                    UserClaims = {ClaimTypes.Email, ClaimTypes.Role}, 
+                    UserClaims = {ClaimTypes.Email, JwtClaimTypes.Role}, 
                 },
             };
 
         public static IEnumerable<ApiScope> ApiScopes =>
             new List<ApiScope>
             {
-            new ApiScope("ApiSteam", "My API"),
+                new ApiScope("ApiSteam", "My API", new [] {"role"}),
             };
 
         public static IEnumerable<Client> Clients =>
@@ -64,7 +72,9 @@ namespace AuthServer
 
                     IdentityServerConstants.StandardScopes.OpenId,
                     IdentityServerConstants.StandardScopes.Profile,
-                    "ApiSteam"
+                    "ApiSteam",
+
+                    "role",
                 },
                 AllowAccessTokensViaBrowser = true,
                 RequireConsent = false,

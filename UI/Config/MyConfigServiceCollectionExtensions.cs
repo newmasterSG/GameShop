@@ -25,6 +25,8 @@ using Microsoft.IdentityModel.Tokens;
 using IdentityModel.AspNetCore.AccessTokenManagement;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Authentication;
+using IdentityModel;
+using System.Security.Claims;
 
 namespace UI.ServiceProvider
 {
@@ -73,7 +75,15 @@ namespace UI.ServiceProvider
                option.Scope.Add("profile");
                option.Scope.Add("offline_access");
                option.Scope.Add("ApiSteam");
-               
+               option.Scope.Add("role");
+               //option.ClaimActions.MapJsonKey("Role", "Role");
+
+               option.TokenValidationParameters = new TokenValidationParameters
+               {
+                   NameClaimType = "email",
+                   RoleClaimType = "role",
+               };
+
                option.GetClaimsFromUserInfoEndpoint = true;
                option.SaveTokens = true;
 

@@ -7,7 +7,7 @@ using UI.Hubs;
 
 namespace UI.Controllers
 {
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
         private readonly IHubContext<ChatHub> _chatHubContext;
