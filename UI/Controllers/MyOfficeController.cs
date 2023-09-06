@@ -38,10 +38,10 @@ namespace UI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> BuyGames(OrderDTO orderDTO, string name, string price)
+        public async Task<IActionResult> BuyGames(OrderDTO orderDTO, string userId, string price)
         {
             // Get the user, for example, through ASP.NET Identity
-            var user = await _userManager.FindByNameAsync(name);
+            var user = await _userManager.FindByIdAsync(userId);
 
             decimal prices;
             CultureInfo culture = CultureInfo.InvariantCulture;
@@ -63,13 +63,13 @@ namespace UI.Controllers
         [HttpGet]
         public async Task<ActionResult<List<OrderPurchaseDto>>> Purchases()
         {
-            string userName = User.Claims.FirstOrDefault(c => c.Type == "name")?.Value;
+            string userId = User.Claims.FirstOrDefault(c => c.Type == "sub")?.Value;
 
             List<OrderPurchaseDto> purchase = new List<OrderPurchaseDto>();
 
-            if(userName !=  null)
+            if(userId !=  null)
             {
-                purchase = await _orderServices.GetOrderPurchases(userName);
+                purchase = await _orderServices.GetOrderPurchases(userId);
             }
             
 

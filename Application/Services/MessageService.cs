@@ -18,9 +18,9 @@ namespace Application.Services
             _context = unitOfWork;
         }
 
-        public async Task AddMessage(string userEmail, string message)
+        public async Task AddMessage(string userId, string message)
         {
-            var user = _context.GetRepository<UserEntity>().Find(e => e.Email.Equals(userEmail));
+            var user = _context.GetRepository<UserEntity>().Find(e => e.Id.Equals(userId));
 
             if (user != null)
             {

@@ -71,11 +71,11 @@ namespace Application.Services
             _context.Save();
         }
 
-        public async Task<List<OrderPurchaseDto>> GetOrderPurchases(string userName)
+        public async Task<List<OrderPurchaseDto>> GetOrderPurchases(string userId)
         {
             var orders = new List<OrderPurchaseDto>();
 
-            var user = _context.GetRepository<UserEntity>().Find(u => u.UserName == userName);
+            var user = _context.GetRepository<UserEntity>().Find(u => u.Id == userId);
 
             var dbOrders = await _context.GetRepository<OrderEntity>().ListAsync(o => o.UserId.ToString() == user.Id);
 

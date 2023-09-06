@@ -91,7 +91,7 @@
 @*                        <form>*@
                         @if(User.Identity.IsAuthenticated)
                         {
-                            <input type="hidden" id="userInput" value="@User.Claims.FirstOrDefault(c => c.Type == "name")?.Value" />
+                            <input type="hidden" id="userInput" value="@User.Claims.FirstOrDefault(c => c.Type == "sub")?.Value" />
                         }
                         else
                         {

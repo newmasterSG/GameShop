@@ -16,15 +16,16 @@ namespace UI.Hubs
         }
         public async Task SendMessage(string user, string message)
         {
-
+            var adminId = "56c3b0d4-f715-42fc-9f57-d8cd31910372";
+            var userReal = "Users";
             if (!string.IsNullOrEmpty(user) && !user.Equals("User"))
             {
+                userReal = Context.User?.Claims.FirstOrDefault(e => e.Value == user)?
+                .Subject?.Claims.FirstOrDefault(c => c.Type == "name")?.Value;
                 await _messageService.AddMessage(user, message);
-                await Clients.User(Context.User.Claims.FirstOrDefault(c => c.Type == "sub").Value).SendAsync("ReceiveMessage", user, message);
-                await Task.CompletedTask;
             }
 
-            await Clients.All.SendAsync("ReceiveMessage", user, message);
+            await Clients.User(adminId).SendAsync("ReceiveMessage", userReal, message);
         }
 
         public async Task SendAdminReply(string userId, string adminReply)
