@@ -32,8 +32,8 @@
                         @using (Html.BeginForm("Search", "Game", FormMethod.Post ))
                         {
                             <div class="input-group">
-                                <input class="form-control mr-sm-2" type="search" placeholder="Search" name="GameName" aria-label="Search">
-                                <button class="input-group-text btn btn-outline-light" type="submit">Search</button>
+                                <input class="cyber-search form-control mr-sm-2" type="search" placeholder="Search" name="GameName" aria-label="Search">
+                                <button class="cyber-search-btn input-group-text btn btn-outline-light" type="submit">Search</button>
                             </div>
                         }
                     </div>
@@ -50,9 +50,9 @@
 
                     <div class="">
                         <form asp-controller="Home" asp-action="ChangeLanguage" asp-route-returnUrl="@Context.Request.Path" method="post" class="language-selector-form">
-                            <select name="lang" onchange="this.form.submit()">
-                                <option value="en" selected="@(currentLang == "en")">English</option>
-                                <option value="uk" selected="@(currentLang == "uk")">Українська</option>
+                            <select name="lang" onchange="this.form.submit()" class="cyber-select">
+                                <option value="en" selected="@(currentLang == "en")" class="cyber-option">English</option>
+                                <option value="uk" selected="@(currentLang == "uk")" class="cyber-option">Українська</option>
                             </select>
                         </form>
                     </div>
@@ -111,6 +111,7 @@
             &copy; 2023 - UI - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
+    <link rel="stylesheet" href="~/css/home.css" asp-append-version="true" />
     <script src="~/js/signalr/dist/browser/signalr.js"></script>
     <script src="~/js/chat.js"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

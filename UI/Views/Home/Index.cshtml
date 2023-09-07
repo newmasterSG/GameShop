@@ -2,56 +2,6 @@
 @{
     ViewData["Title"] = "Home Page";
 }
-<style>
-    .custom-card {
-        height:100%;
-        transition: transform 0.3s;
-    }
-
-        .custom-card:hover {
-            transform: scale(1.05);
-        }
-
-    #card-row{
-        align-content:center;
-        justify-content: center;
-        margin-left: 10%;
-    }
-
-    #topGamesCarousel{
-        margin-bottom: 20px;
-    }
-
-    #asideTag ul {
-        list-style: none;
-        padding: 0;
-    }
-
-    .neon-tag {
-        display: inline-block;
-        padding: 5px 10px;
-        margin: 5px 0;
-        font-size: 16px;
-        border: 2px solid transparent;
-        border-radius: 20px;
-        text-decoration: none;
-        color: #fff;
-        transition: background-color 0.3s, border-color 0.3s;
-    }
-
-        /* Анимация при наведении на тег */
-        .neon-tag:hover {
-            background-color: #00ff00; /* Замените на желаемый неоновый цвет */
-            border-color: #00ff00; /* Замените на желаемый неоновый цвет */
-            transition: background-color 0.3s, border-color 0.3s;
-        }
-        @@media screen and (max-width: 790px)
-        {
-            #asideTag{
-                display:none;
-            }
-        }
-</style>
 
     <div class="row">
         <aside class="col-md-1" id="asideTag">
@@ -59,7 +9,7 @@
         </aside>
 
         <div class="container col-md-11">
-        <h2 class="mb-4 text-center">@localizer["topGame"]</h2>
+        <h2 class="mb-4 text-center neon-text">@localizer["topGame"]</h2>
 
         <div id="topGamesCarousel" class="carousel slide carousel-fade w-25 mx-auto" data-ride="carousel">
             <div class="carousel-inner" id="carouselInner">
@@ -74,7 +24,7 @@
             </button>
         </div>
         <div class="text-end">
-            <a href="#" class="btn btn-primary">@localizer["showall_text"]</a>
+            <a href="#" class="btn btn-primary neon-text">@localizer["showall_text"]</a>
         </div>
 
         <div class="row" id="card-row">
@@ -136,8 +86,8 @@
                     var gameLink = $('<a>').attr('href', '@Url.Action("GameDetails","Game")/' + game.id);
                     var gameImage = $('<img class="card-img">').attr('src', game.image).attr('alt', game.name);
                     var cardBody = $('<div class="card-body">');
-                    var title = $('<h5 class="card-title">').text(game.name);
-                    var price = $('<p class="card-text">').text(game.price);
+                var title = $('<h5 class="card-title neon-text">').text(game.name);
+                    var price = $('<p class="card-text neon-text">').text(game.price);
 
                     cardBody.append(title);
                     cardBody.append(price);

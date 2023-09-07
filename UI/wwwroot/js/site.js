@@ -10,7 +10,7 @@ $(function () {
         if (msg.trim() == '') {
             return false;
         }
-        generate_message(msg, 'self');
+        //generate_message(msg, 'self');
         var buttons = [
             {
                 name: 'Existing User',
@@ -21,13 +21,13 @@ $(function () {
                 value: 'new'
             }
         ];
-        setTimeout(function () {
-            generate_message(msg, 'user');
-        }, 1000)
+        //setTimeout(function () {
+        //    generate_message(msg, 'user');
+        //}, 1000)
 
     })
 
-    function generate_message(msg, type) {
+    function generate_message(msg, type, from) {
         INDEX++;
         var str = "";
         str += "<div id='cm-msg-" + INDEX + "' class=\"chat-msg " + type + "\">";
@@ -35,6 +35,7 @@ $(function () {
         str += "            <img src=\"https:\/\/image.crisp.im\/avatar\/operator\/196af8cc-f6ad-4ef7-afd1-c45d5231387c\/240\/?1483361727745\">";
         str += "          <\/span>";
         str += "          <div class=\"cm-msg-text\">";
+        str += from;
         str += msg;
         str += "          <\/div>";
         str += "        <\/div>";

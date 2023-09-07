@@ -16,11 +16,13 @@ connection.on("ReceiveMessage", function (user, message) {
     // should be aware of possible script injection concerns.
     li.textContent = `${user} says ${message}`;
 });
-    connection.on("ReceiveAdminReply", function (adminReply) {
+
+
+connection.on("ReceiveAdminReply", function (adminReply) {
         var li = document.createElement("li");
         document.getElementById("messagesList").appendChild(li);
         li.textContent = `Admin says ${adminReply}`;
-    });
+});
 
 
 
