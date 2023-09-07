@@ -1,6 +1,9 @@
 ﻿"use strict";
 
-var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
+var connection = new signalR
+    .HubConnectionBuilder()
+    .withUrl("/chatHub")
+    .build();
 
 //Disable the send button until connection is established.
 document.getElementById("sendButton").disabled = true;
@@ -13,6 +16,15 @@ connection.on("ReceiveMessage", function (user, message) {
     // should be aware of possible script injection concerns.
     li.textContent = `${user} says ${message}`;
 });
+
+
+connection.on("ReceiveAdminReply", function (adminReply) {
+        var li = document.createElement("li");
+        document.getElementById("messagesList").appendChild(li);
+        li.textContent = `Admin says ${adminReply}`;
+});
+
+
 
 connection.start().then(function () {
     document.getElementById("sendButton").disabled = false;
@@ -27,4 +39,23 @@ document.getElementById("sendButton").addEventListener("click", function (event)
         return console.error(err.toString());
     });
     event.preventDefault();
+});
+
+document.querySelectorAll(".reply-button").forEach(button => {
+    button.addEventListener("click", function () {
+        console.log(this);
+        console.log(this.parentElement);
+        const some = this.parentElement.querySelector(".admin-reply");
+        console.log(some);
+        const userId = some.getAttribute("data-user-id");
+        const adminReply = this.parentElement.querySelector(".admin-reply").value;
+
+        // Send the admin's reply to the specific user using SignalR.
+        connection.invoke("SendAdminReply", userId, adminReply).catch(function (err) {
+            return console.error(err.toString());
+        });
+
+        // Clear the reply input field after sending the reply.
+        this.parentElement.querySelector(".admin-reply").value = "";
+    });
 });

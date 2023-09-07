@@ -10,5 +10,7 @@ namespace Domain.User
         public int GameOwning { get; set; }
 
         public ICollection<ReviewEntity> Reviews { get; set; }
+
+        public ICollection<MessageEntity> Messages { get; set; }
     }
 }

@@ -16,7 +16,6 @@
 </div>
 <script src="~/js/displayCartItems.js"></script>
 <script src="~/js/cartLogic.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
 
     $("#payButton").click(function (e) {
@@ -46,7 +45,7 @@
                 orderDTO: {
                     gameIds: gameQuantities,
                 },
-                name: "@User.Identity.Name",// Assuming Razor syntax
+                userId: "@User.Claims.FirstOrDefault(c => c.Type == "sub")?.Value",
                 price: totalPriceString
             },
             success: function (response) {

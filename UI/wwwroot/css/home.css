@@ -1,0 +1,164 @@
+﻿.custom-card {
+    height: 100%;
+    transition: transform 0.3s;
+}
+
+    .custom-card:hover {
+        transform: scale(1.05);
+    }
+
+#card-row {
+    align-content: center;
+    justify-content: center;
+    margin-left: 10%;
+    text-shadow: 0 0 5px #ffffff, 0 0 10px #ffffff, 0 0 20px #ffffff, 0 0 40px #ff00de, 0 0 80px #ff00de, 0 0 90px #ff00de, 0 0 100px #ff00de, 0 0 150px #ff00de;
+}
+
+#topGamesCarousel {
+    margin-bottom: 20px;
+}
+
+#asideTag ul {
+    list-style: none;
+    padding: 0;
+}
+
+.neon-tag {
+    display: inline-block;
+    padding: 5px 10px;
+    margin: 5px 0;
+    font-size: 16px;
+    border: 2px solid transparent;
+    border-radius: 20px;
+    text-decoration: none;
+    color: #fff;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+    /* Анимация при наведении на тег */
+    .neon-tag:hover {
+        background-color: #8c1204;
+        border-color: #4f048c;
+        transition: background-color 0.3s, border-color 0.3s;
+    }
+
+/* Styles for Search input */
+.cyber-search {
+    background-color: transparent;
+    border: 2px solid #00ff00;
+    color: #fff;
+    border-radius: 25px;
+    padding: 10px 20px;
+    font-size: 16px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+    .cyber-search::placeholder {
+        color: #666; /* Цвет текста-подсказки */
+    }
+
+    .cyber-search:focus {
+        outline: none;
+        border-color: #00ff00;
+        box-shadow: 0 0 10px #00ff00;
+    }
+
+/* Styles for "Search" */
+.cyber-search-btn {
+    background-color: transparent;
+    border: 2px solid #00ff00;
+    color: #00ff00;
+    border-radius: 25px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+}
+
+    .cyber-search-btn:hover {
+        background-color: #00ff00; 
+        color: #000;
+        border-color: #00ff00;
+    }
+
+
+    /*Deleting standart styles for a tag*/
+a {
+    color: inherit;
+}
+
+    a:link {
+        text-decoration: none;
+    }
+
+    a:visited {
+        text-decoration: none;
+    }
+
+    a:hover {
+        text-decoration: none;
+    }
+
+    a:active {
+        text-decoration: none;
+    }
+
+
+/* Styles for button logout */
+
+    form .btn-secondary {
+        background-color: transparent;
+        border: 2px solid #ff0000;
+        color: #ff0000;
+        border-radius: 25px;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+    }
+
+        form .btn-secondary:hover {
+            background-color: #ff0000;
+            color: #000;
+            border-color: #ff0000;
+        }
+
+/*Styles for Log In dropDown*/
+.dropdown .btn-secondary {
+    background-color: transparent;
+    border: 2px solid #00ff00;
+    color: #fff;
+    border-radius: 25px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+}
+
+    .dropdown .btn-secondary:hover {
+        background-color: #00ff00;
+        color: #000;
+        border-color: #00ff00;
+    }
+
+.dropdown-menu {
+    background-color: #000;
+    border: 2px solid transparent;
+    box-shadow: 0 0 10px #ff0000, /* Красный неоновый эффект для краев */
+    0 0 20px #ff0000, /* Более яркая неоновая подсветка */
+    0 0 30px #ff0000; /* Еще более яркая неоновая подсветка */
+}
+
+.dropdown-item {
+    color: darkred;
+}
+
+
+
+
+
+@media screen and (max-width: 790px) {
+    #asideTag {
+        display: none;
+    }
+}
