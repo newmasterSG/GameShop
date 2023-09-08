@@ -15,7 +15,7 @@ namespace Domain.Entities
 
         public string UserId { get; set; }
 
-        public UserEntity User { get; set; }
+        public virtual UserEntity User { get; set; }
 
         public bool IsAnswered { get; set; }
     }

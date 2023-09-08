@@ -54,6 +54,8 @@ namespace Infrastructure.Context
 
         public DbSet<ReviewEntity> Reviews { get; set; }
 
+        public DbSet<MessageEntity> Messages { get; set; }
+
         public GameShopContext(DbContextOptions<GameShopContext> option) : base(option) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

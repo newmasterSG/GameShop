@@ -33,7 +33,8 @@ namespace UI.Controllers
             EmailSender emailSender,
             IWebHostEnvironment webHostEnvironment,
             IHtmlLocalizer<AccountController> localizer,
-            IStringLocalizer<ValidationResources> stringLocalizer)
+            IStringLocalizer<ValidationResources> stringLocalizer
+            )
         {
             _logger = logger;
             _userManager = userManager;
@@ -117,6 +118,7 @@ namespace UI.Controllers
             {
                 RedirectUri = returnUrl
             };
+
             return Challenge(props,"oidc");
         }
 
