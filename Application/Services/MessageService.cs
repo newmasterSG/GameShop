@@ -2,6 +2,8 @@
 using Domain.Entities;
 using Domain.Interfaces;
 using Domain.User;
+using Infrastructure.Context;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -55,9 +57,7 @@ namespace Application.Services
 
         public async Task<IEnumerable<MessageEntity>> GetUserMessages()
         {
-            // Implement logic to retrieve user messages from the database.
-            // Replace the following line with your actual implementation.
-            return await _context.GetRepository<MessageEntity>().GetAllAsync();
+            return _context.GetRepository<MessageEntity>().SelectInclude(msg => msg.User);
         }
     }
 }

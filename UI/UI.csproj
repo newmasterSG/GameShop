@@ -51,5 +51,9 @@
     <_ContentIncludedByDefault Remove="Views\Account\ForgotPassword.cshtml" />
   </ItemGroup>
   
+  <ItemGroup>
+    <Folder Include="Contents"/>
+   </ItemGroup>
+  
 
 </Project>

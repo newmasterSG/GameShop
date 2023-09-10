@@ -7,7 +7,7 @@
     "sourceMap": true,
     "target": "ES5",
     "module": "commonjs",
-    "lib": [ "ES2015", "DOM" ],
+    "lib": [ "ES2018", "DOM" ],
     "outDir": "wwwroot/js"
   },
   "include": [

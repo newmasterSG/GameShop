@@ -144,9 +144,9 @@ a {
 .dropdown-menu {
     background-color: #000;
     border: 2px solid transparent;
-    box-shadow: 0 0 10px #ff0000, /* Красный неоновый эффект для краев */
-    0 0 20px #ff0000, /* Более яркая неоновая подсветка */
-    0 0 30px #ff0000; /* Еще более яркая неоновая подсветка */
+    box-shadow: 0 0 10px #ff0000,
+    0 0 20px #ff0000,
+    0 0 30px #ff0000;
 }
 
 .dropdown-item {

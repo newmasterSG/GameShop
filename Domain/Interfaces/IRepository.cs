@@ -37,5 +37,7 @@ namespace Domain.Interfaces
 
         T Find(Expression<Func<T, bool>> match);
 
+        IQueryable<T> SelectInclude<TProperty>(Expression<Func<T, TProperty>> expression);
+
     }
 }

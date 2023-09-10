@@ -120,5 +120,10 @@ namespace Infrastructure.Repository.Repositories
         {
             return _dbContext.Set<T>().SingleOrDefault(match);
         }
+
+        public IQueryable<T> SelectInclude<TProperty>(Expression<Func<T, TProperty>> expression)
+        {
+            return _dbContext.Set<T>().Include(expression);
+        }
     }
 }

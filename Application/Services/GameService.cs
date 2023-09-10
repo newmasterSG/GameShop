@@ -27,27 +27,34 @@ namespace Application.Services
 
             var game = await _unitOfWork.GetRepository<GamesEntity>().GetByIdAsync(id);
 
-            var screenShoots = await _unitOfWork.GetRepository<ShortScreenshotEntity>().ListAsync(x => x.Game.Id == game.Id);
+            GamesViewDTO gamesView = new GamesViewDTO();
 
-            var developers = await _unitOfWork.GetRepository<DevelopersEntity>()
-                .ListAsync(x => x.GamesToDevelopers.Any(gtd => gtd.GameId == game.Id));
-
-            var tags = await _unitOfWork.GetRepository<TagEntity>()
-                .ListAsync(x => x.ToTagsModels.Any(gtd => gtd.GamesId == game.Id));
-
-            var store = await _unitOfWork.GetRepository<StoreEntity>()
-                .ListAsync(x => x.GamesToStores.Any(gtd => gtd.GameId == game.Id));
-
-            GamesViewDTO gamesView = new GamesViewDTO()
+            if (game != null)
             {
-                Name = game.Name,
-                Price = game.Price,
-                Developers = developers.Select(x => x.Name).ToList(),
-                ScrenShoots = screenShoots.Select(x => x.Image).ToList(),
-                Tags = tags.Select(x => x.Name).ToList(),
-                Image = game.BackgroundImage,
-                Stores = store.Select(x => x.Store?.Name).ToList(),
-            };
+                var screenShoots = await _unitOfWork.GetRepository<ShortScreenshotEntity>().ListAsync(x => x.Game.Id == game.Id);
+
+                var developers = await _unitOfWork.GetRepository<DevelopersEntity>()
+                    .ListAsync(x => x.GamesToDevelopers.Any(gtd => gtd.GameId == game.Id));
+
+                var tags = await _unitOfWork.GetRepository<TagEntity>()
+                    .ListAsync(x => x.ToTagsModels.Any(gtd => gtd.GamesId == game.Id));
+
+                var store = await _unitOfWork.GetRepository<StoreEntity>()
+                    .ListAsync(x => x.GamesToStores.Any(gtd => gtd.GameId == game.Id));
+
+                GamesViewDTO gamesViewDTO = new GamesViewDTO()
+                {
+                    Name = game.Name,
+                    Price = game.Price,
+                    Developers = developers.Select(x => x.Name).ToList(),
+                    ScrenShoots = screenShoots.Select(x => x.Image).ToList(),
+                    Tags = tags.Select(x => x.Name).ToList(),
+                    Image = game.BackgroundImage,
+                    Stores = store.Select(x => x.Store?.Name).ToList(),
+                };
+
+                gamesView = gamesViewDTO;
+            }
 
             return gamesView;
         }
@@ -94,14 +101,17 @@ namespace Application.Services
                 foreach (var game in dbGamesId)
                 {
                     var g = await gameRepo.GetByIdAsync(game.Value);
-                    games.Add(new GameDTO
+                    if(g != null)
                     {
-                        Id = (int)g.Id,
-                        Image = g.BackgroundImage,
-                        Name = g.Name,
-                        Owned = g.AddedByStatus?.Owned ?? 4000,
-                        Price = g.Price,
-                    });
+                        games.Add(new GameDTO
+                        {
+                            Id = (int)g.Id,
+                            Image = g.BackgroundImage,
+                            Name = g.Name,
+                            Owned = g.AddedByStatus?.Owned ?? 4000,
+                            Price = g.Price,
+                        });
+                    }
                 }
             }
 
