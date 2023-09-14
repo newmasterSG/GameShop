@@ -61,7 +61,7 @@ namespace Application.Services
 
         public async Task<List<GameDTO>> SearchGame(string name)
         {
-            var dbGames = await _unitOfWork.GetRepository<GamesEntity>().ListAsync(g => g.Name.ToLower() == name.ToLower());
+            var dbGames = await _unitOfWork.GetRepository<GamesEntity>().ListAsync(g => g.Name.ToLower().Contains(name.ToLower()));
             var games = new List<GameDTO>();
             if(dbGames != null && dbGames.Count() > 0)
             {

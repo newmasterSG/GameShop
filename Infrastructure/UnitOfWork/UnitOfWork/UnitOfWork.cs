@@ -11,6 +11,7 @@ namespace Infrastructure.UnitOfWork.UnitOfWork
         private Dictionary<Type, object> _repositories;
 
         private readonly TContext _context;
+
         public UnitOfWork(TContext context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));

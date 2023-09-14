@@ -29,6 +29,7 @@ using IdentityModel;
 using System.Security.Claims;
 using Microsoft.AspNetCore.SignalR;
 using UI.Config;
+using Application.Decorators;
 
 namespace UI.ServiceProvider
 {
@@ -128,6 +129,14 @@ namespace UI.ServiceProvider
             services.AddScoped<IUserClaimsPrincipalFactory<UserEntity>, MyUserClaimsPrincipalFactory>();
             services.AddSingleton<IUserIdProvider, CustomUserIdProvider>();
             services.AddScoped<IMessageService, MessageService>();
+            //services.AddScoped(serviceProvider =>
+            //{
+            //    var gameServices = serviceProvider.GetRequiredService<GameService>();
+
+            //    IGameService gameDecorator = new GameDecorator(gameServices);
+
+            //    return gameDecorator;
+            //});
 
             return services;
         }

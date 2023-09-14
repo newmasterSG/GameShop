@@ -5,4 +5,5 @@ myNavBar === null || myNavBar === void 0 ? void 0 : myNavBar.addEventListener('m
 myNavBar === null || myNavBar === void 0 ? void 0 : myNavBar.addEventListener('mouseleave', function () {
     myNavBar.style.animation = 'none';
 });
+
 //# sourceMappingURL=start.js.map

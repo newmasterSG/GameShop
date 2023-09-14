@@ -137,7 +137,7 @@
                 data.screenshots.forEach(function (screenshot, index) {
                     var activeClass = index === 0 ? 'active' : '';
                     var imgHtml = '<div class="carousel-item ' + activeClass + '">' +
-                        '<img src="' + screenshot + '" class="d-block w-100" alt="Screenshot">' +
+                        '<img src="' + screenshot + '" class="d-block" alt="Screenshot">' +
                         '</div>';
                     screenshotsCarouselInner.append(imgHtml);
                 });
@@ -230,7 +230,6 @@
             var gameId = @ViewBag.GameId;
             var rating = $('#rating').val();
             var token = '@ViewBag.Token';
-            console.log(token);
             $.ajax({
                 url: 'https://localhost:7242/api/Reviews/AddReview?gameId='+ gameId + '&reviewText='+reviewText+'&rating='+ rating,
                 type: 'POST',

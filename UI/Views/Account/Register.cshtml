@@ -6,9 +6,9 @@
 
 <div class="row align-content-center justify-content-center">
     <div class="col-md-4">
-        <form asp-controller="Account" asp-action="Register" method="post">
+        <form asp-controller="Account" asp-action="Register" method="post" class="cyberpunk-form">
             <h4>@localizer["CreateAccount"]</h4>
-            <hr />
+            <hr class="neon-border" />
             <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Email"></label>
@@ -29,3 +29,42 @@
         </form>
     </div>
 </div>
+
+<style>
+    .cyberpunk-form {
+        background-color: #060c28; /* Тёмно-синий цвет */
+        color: #0f0;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+        border: 2px solid transparent;
+        border-image: linear-gradient(45deg, #f06, #0f6, #06f, #f06);
+        border-image-slice: 1;
+        animation: neon-animation 2s linear infinite;
+    }
+
+.neon-border {
+    border: 10px solid transparent;
+    border-image: linear-gradient(45deg, #FF0000, #d10d58, #9d12c7, #121bc7 );
+    border-image-slice: 1;
+    animation: neon-animation 2s linear infinite;
+}
+
+@@keyframes neon-animation {
+    0% {
+            border-image-source: linear-gradient(45deg, #FF0000, #d10d58, #9d12c7, #121bc7);
+    }
+    25% {
+            border-image-source: linear-gradient(45deg, #FF0000, #d10d58, #9d12c7, #121bc7);
+    }
+    50% {
+            border-image-source: linear-gradient(45deg, #FF0000, #d10d58, #9d12c7, #121bc7);
+    }
+    75% {
+            border-image-source: linear-gradient(45deg, #FF0000, #d10d58, #9d12c7, #121bc7;
+    }
+    100% {
+            border-image-source: linear-gradient(45deg, #FF0000, #d10d58, #9d12c7, #121bc7);
+    }
+}
+</style>

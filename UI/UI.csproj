@@ -33,6 +33,7 @@
     <PrivateAssets>all</PrivateAssets>
     <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
   </PackageReference>
+  <PackageReference Include="NRedisStack" Version="0.9.0" />
   <PackageReference Include="PagedList" Version="1.17.0" />
   </ItemGroup>
   
@@ -52,8 +53,11 @@
   </ItemGroup>
   
   <ItemGroup>
-    <Folder Include="Contents"/>
-   </ItemGroup>
+    <Content Include="Contents\**\.*.">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Visible>true</Visible>
+    </Content>
+  </ItemGroup>
   
 
 </Project>

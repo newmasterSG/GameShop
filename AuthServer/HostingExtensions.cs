@@ -12,10 +12,11 @@ using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using System.Reflection;
+using ILogger = Serilog.ILogger;
 
 namespace AuthServer
 {
-    internal static class HostingExtensions
+    public static class HostingExtensions
     {
         private static void InitializeDatabase(IApplicationBuilder app)
         {
@@ -62,11 +63,13 @@ namespace AuthServer
             }
         }
 
-        public static WebApplication ConfigureServices(this WebApplicationBuilder builder)
+        public static WebApplication ConfigureServices(this WebApplicationBuilder builder, ILogger logger)
         {
             builder.Services.AddRazorPages();
+            var connectionString = builder.Configuration["ConnectionStrings:DefaultConnection"];
 
-            const string connectionString = $@"Server=.\SQLEXPRESS;Database=GameShop;Trusted_Connection=True;TrustServerCertificate=true";
+            logger.Information(connectionString);
+
             builder.Services.AddDbContext<GameShopContext>(options =>
                 options.UseSqlServer(connectionString).EnableSensitiveDataLogging());
 
