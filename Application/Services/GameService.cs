@@ -117,5 +117,24 @@ namespace Application.Services
 
             return games;
         }
+
+        public async Task<List<GameDTO>> GetAllGames()
+        {
+            var games = _unitOfWork.GetRepository<GamesEntity>()
+                        .GetAllAsync()
+                        .GetAwaiter()
+                        .GetResult()
+                        .Select(game => new GameDTO
+                        {
+                            Id = (int)game.Id,
+                            Name = game.Name,
+                            Image = game.BackgroundImage,
+                            Owned = game.AddedByStatus?.Owned ?? 4000,
+                            Price = game.Price,
+                        })
+                    .ToList();
+
+            return games;
+        }
     }
 }

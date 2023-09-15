@@ -105,11 +105,11 @@
     $.get('/Home/GetAllTags', function (data) {
         var ulList = $('<ul></ul>');
         let text = '@localizer["showall_text"]';
-        let i;
-        data.forEach(function (tag) {
-            var li = $('<li class="tags"></li>').text(tag.name);
-            i++;
 
+        for (let i = 0; i < data.length; i++) {
+            const tag = data[i];
+            const li = $('<li class="tags"></li>').text(tag.name);
+            console.log(i);
             li.on('click', function () {
                 window.location.href = '@Url.Action("GamesByTag","Game")?tag=' + encodeURIComponent(tag.name);
             });
@@ -117,11 +117,13 @@
             ulList.append(li);
 
             if (i === 29) {
-                var linkText = $('<a>').attr('href', '/Game/ListTags').text(text);
-                var listItem = $('<li>').append(linkText);
+                const linkText = $('<a>').attr('href', '/Game/ListTags').text(text);
+                const listItem = $('<li>').append(linkText);
                 ulList.append(listItem);
+                break;
             }
-        });
+        }
+
         var asideTagWidth = $('#asideTag').width();
 
         $('#asideTag').append(ulList);

@@ -10,7 +10,7 @@
 <ul>
     @foreach (var message in Model)
     {
-        <li>@message.UserId: @message.Message</li>
+        <li>@message.User.Email: @message.Message</li>
         @if (!message.IsAnswered)
         {
             <li>

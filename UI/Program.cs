@@ -95,8 +95,8 @@ namespace UI
                     dbContext.Games.Add(gameEntity);
                 }
 
-                string email = "testing.project.ts@gmail.com";
-                string userPassword = "Eg.1234";
+                string email = builder.Configuration["DefaultUser:email"];
+                string userPassword = builder.Configuration["DefaultUser:password"];
 
                 foreach (var role in roles)
                 {
@@ -125,6 +125,7 @@ namespace UI
                         await userManager.AddToRoleAsync(adminUser, "Admin");
                     }
                 }
+
                 dbContext.SaveChanges();
             }
 

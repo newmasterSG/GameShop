@@ -258,11 +258,14 @@ background-color: #F5F5F5;
     margin-bottom: 70px;
 }
 
+.hidden {
+    display: none;
+}
 
 
 .cyber-select {
     background-color: transparent;
-    border: 2px solid #00ff00; /* Замените на желаемый неоновый цвет */
+    border: 2px solid rgba(255, 0, 0);
     color: #fff;
     border-radius: 25px;
     padding: 10px 20px;
@@ -274,8 +277,8 @@ background-color: #F5F5F5;
 
     .cyber-select:focus {
         outline: none;
-        border-color: #00ff00; /* Цвет обводки при активации */
-        box-shadow: 0 0 10px #00ff00; /* Эффект неоновой подсветки при активации */
+        border-color: rgba(255, 0, 0); /* Цвет обводки при активации */
+        box-shadow: 0 0 10px rgba(105, 105, 105); /* Эффект неоновой подсветки при активации */
     }
 
 /* Стили для опций внутри элемента <select> */

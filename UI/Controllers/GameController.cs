@@ -15,6 +15,7 @@ using System.Drawing.Printing;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http.Headers;
 using System.Security.Claims;
+using UI.Models.Game;
 using UI.Models.Search;
 
 namespace UI.Controllers
@@ -121,6 +122,34 @@ namespace UI.Controllers
             }
 
             return View(games);
+        }
+
+        public async Task<IActionResult> AllGames(int page = 1, int pageSize = 10)
+        {
+            var allGames = await _gameService.GetAllGames();
+
+            if(allGames != null)
+            {
+                int totalCount = allGames.Count;
+                int totalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
+
+                // Выбираем игры для текущей страницы
+                var gamesOnPage = allGames.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+                var viewModel = new GamesViewModel
+                {
+                    Games = gamesOnPage,
+                    PageNumber = page,
+                    PageSize = pageSize,
+                    TotalCount = totalCount,
+                    TotalPages = totalPages
+                };
+
+                return View(viewModel);
+            }
+
+
+            return View();
         }
     }
 }

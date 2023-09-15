@@ -8,13 +8,24 @@ var connection = new signalR
 //Disable the send button until connection is established.
 document.getElementById("sendButton").disabled = true;
 
-connection.on("ReceiveMessage", function (user, message) {
+connection.on("ReceiveMessage", function (user, message, userId) {
     var li = document.createElement("li");
+    var userProfileButton = document.createElement("button");
+    var replyButton = document.createElement("button");
+
+    userProfileButton.innerText = "View Profile";
+    userProfileButton.classList.add("user-profile-button");
+    userProfileButton.setAttribute("data-user-id", userId);
+
+    replyButton.innerText = "Reply";
+    replyButton.classList.add("reply-button");
+    replyButton.setAttribute("data-user-id", userId);
+
+    li.textContent = `${user} says: ${message}`;
+    li.appendChild(userProfileButton);
+    li.appendChild(replyButton);
+
     document.getElementById("messagesList").appendChild(li);
-    // We can assign user-supplied strings to an element's textContent because it
-    // is not interpreted as markup. If you're assigning in any other way, you 
-    // should be aware of possible script injection concerns.
-    li.textContent = `${user} says ${message}`;
 });
 
 
@@ -46,7 +57,6 @@ document.querySelectorAll(".reply-button").forEach(button => {
         console.log(this);
         console.log(this.parentElement);
         const some = this.parentElement.querySelector(".admin-reply");
-        console.log(some);
         const userId = some.getAttribute("data-user-id");
         const adminReply = this.parentElement.querySelector(".admin-reply").value;
 

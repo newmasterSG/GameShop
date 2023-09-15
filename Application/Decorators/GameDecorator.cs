@@ -21,6 +21,11 @@ namespace Application.Decorators
             return await _gameService.GamesByTags(tag);
         }
 
+        public async Task<List<GameDTO>> GetAllGames()
+        {
+            return await _gameService.GetAllGames();
+        }
+
         public async Task<GamesViewDTO> GetGame(int id)
         {
             return await _gameService.GetGame(id);

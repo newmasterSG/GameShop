@@ -59,53 +59,26 @@
                     <div class="">
                         @await Component.InvokeAsync("LoginRegister")
                     </div>
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
+                            Categories
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                            <li><a class="dropdown-item" href="~/Game/AllGames">Games</a></li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </nav>
+       
     </header>
-    <div class="neon-bars">
-
-    </div>
     <div id="main" class="container-fluid">
             <main role="main">
                 @RenderBody()
             </main>
 
         <div class="container">
-            <div id="body">
-                <div id="chat-circle" class="btn btn-raised">
-                    <div id="chat-overlay"></div>
-                    <i class="material-icons">Chat</i>
-                </div>
-
-                <div class="chat-box">
-                    <div class="chat-box-header">
-                        ChatBot
-                        <span class="chat-box-toggle"><i class="material-icons">close</i></span>
-                    </div>
-                    <div class="chat-box-body">
-                        <div class="chat-box-overlay">
-                        </div>
-                        <div class="chat-logs">
-                            <ul id="messagesList"></ul>
-                        </div>
-                    </div>
-                    <div class="chat-input">
-@*                        <form>*@
-                        @if(User.Identity.IsAuthenticated)
-                        {
-                            <input type="hidden" id="userInput" value="@User.Claims.FirstOrDefault(c => c.Type == "sub")?.Value" />
-                        }
-                        else
-                        {
-                            <input type="hidden" id="userInput" value="User" />
-                        }
-                        <input type="text" id="chat-input" placeholder="Send a message..." />
-                        <button type="submit" class="chat-submit" id="chat-submit"><i class="material-icons" id="sendButton">Send Message</i></button>
-@*                        </form>*@
-                    </div>
-                </div>
-            </div>
+            @await Component.InvokeAsync("Chats")
         </div>
     </div>
 

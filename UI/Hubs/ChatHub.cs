@@ -33,7 +33,6 @@ namespace UI.Hubs
             // Admin sends a reply to a specific user.
             await _messageService.SendAdminReply(userId, adminReply);
 
-            // Send the admin reply to the specific user. Not Worked
             await Clients.User(userId).SendAsync("ReceiveAdminReply", adminReply);
         }
 

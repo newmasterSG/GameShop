@@ -169,7 +169,7 @@ a {
 /*Styles for Log In dropDown*/
 .dropdown .btn-secondary {
     background-color: transparent;
-    border: 2px solid #00ff00;
+    border: 2px solid rgba(255, 0, 0);
     color: #fff;
     border-radius: 25px;
     padding: 10px 20px;
@@ -179,17 +179,12 @@ a {
 }
 
     .dropdown .btn-secondary:hover {
-        background-color: #00ff00;
-        color: #000;
-        border-color: #00ff00;
+        border-color: rgba(255, 0, 0);
     }
 
 .dropdown-menu {
     background-color: #000;
     border: 2px solid transparent;
-    box-shadow: 0 0 10px #ff0000,
-    0 0 20px #ff0000,
-    0 0 30px #ff0000;
 }
 
 .dropdown-item {
