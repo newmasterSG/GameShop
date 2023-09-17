@@ -30,6 +30,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.SignalR;
 using UI.Config;
 using Application.Decorators;
+using Microsoft.EntityFrameworkCore;
 
 namespace UI.ServiceProvider
 {
@@ -47,6 +48,20 @@ namespace UI.ServiceProvider
             services.AddScoped<IAuthorizationHandler, DateRegistrationHandler>();
 
             JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
+
+            bool httpMetaData = false;
+
+            var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+
+            if (environment == "Development")
+            {
+                httpMetaData = false;
+            }
+            else
+            {
+                httpMetaData = true;
+            }
+
 
             services.AddAuthentication(option =>
             {
@@ -70,7 +85,7 @@ namespace UI.ServiceProvider
                option.ClientSecret = "49C1A7E1-0C79-4A89-A3D6-A37998FB86B0";
                option.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                option.ResponseType = OpenIdConnectResponseType.Code;
-               option.RequireHttpsMetadata = false;
+               option.RequireHttpsMetadata = httpMetaData;
                option.ResponseMode = "query";
                option.Scope.Clear();
 
@@ -79,7 +94,6 @@ namespace UI.ServiceProvider
                option.Scope.Add("offline_access");
                option.Scope.Add("ApiSteam");
                option.Scope.Add("role");
-               //option.ClaimActions.MapJsonKey("Role", "Role");
 
                option.TokenValidationParameters = new TokenValidationParameters
                {
@@ -94,8 +108,6 @@ namespace UI.ServiceProvider
 
             services.AddAccessTokenManagement(options =>
             {
-                // client config is inferred from OpenID Connect settings
-                // if you want to specify scopes explicitly, do it here, otherwise the scope parameter will not be sent
                 options.Client.DefaultClient.Scope = "ApiSteam";
             })
            .ConfigureBackchannelHttpClient();
@@ -120,7 +132,7 @@ namespace UI.ServiceProvider
         {
             services.AddScoped<IUnitOfWork, UnitOfWork<GameShopContext>>();
             services.AddScoped<IHomeService, HomeService>();
-            services.AddScoped<IGameService, GameService>();
+            services.AddScoped<GameService>();
             services.AddTransient<EmailSender, SmtpEmailSender>();
             services.AddScoped<IUserService, UserService>();
             services.AddDatabaseDeveloperPageExceptionFilter();
@@ -129,24 +141,25 @@ namespace UI.ServiceProvider
             services.AddScoped<IUserClaimsPrincipalFactory<UserEntity>, MyUserClaimsPrincipalFactory>();
             services.AddSingleton<IUserIdProvider, CustomUserIdProvider>();
             services.AddScoped<IMessageService, MessageService>();
-            //services.AddScoped(serviceProvider =>
-            //{
-            //    var gameServices = serviceProvider.GetRequiredService<GameService>();
+            services.AddScoped(serviceProvider =>
+            {
+                var gameServices = serviceProvider.GetRequiredService<GameService>();
 
-            //    IGameService gameDecorator = new GameDecorator(gameServices);
+                IGameService gameDecorator = new GameDecorator(gameServices);
 
-            //    return gameDecorator;
-            //});
+                return gameDecorator;
+            });
 
             return services;
         }
 
-        public static IServiceCollection AddMyDependencyGroup(
-             this IServiceCollection services,
-             IConfiguration config)
+        public static IServiceCollection AddConfIdentity(this IServiceCollection services)
         {
-
-            services.Configure<SmtpOptions>(config.GetSection("Smtp"));
+            services.AddIdentity<UserEntity, IdentityRole>(option =>
+            {
+                option.SignIn.RequireConfirmedEmail = true;
+            }).AddEntityFrameworkStores<GameShopContext>()
+               .AddDefaultTokenProviders();
 
             services.Configure<IdentityOptions>(options =>
             {
@@ -169,6 +182,31 @@ namespace UI.ServiceProvider
                 options.User.RequireUniqueEmail = true;
                 options.SignIn.RequireConfirmedEmail = true;
             });
+
+            return services;
+        }
+
+        public static IServiceCollection AddMyDependencyGroup(
+             this IServiceCollection services,
+             IConfiguration config)
+        {
+            var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+
+            if (environment == "Development")
+            {
+                services.AddDbContext<GameShopContext>(options =>
+                    options.UseSqlServer(config["ConnectionStrings:DefaultConnection"])
+                           .EnableSensitiveDataLogging());
+            }
+            else
+            {
+                services.AddDbContext<GameShopContext>(options =>
+                    options.UseSqlServer(config["ConnectionStrings:DefaultConnection"]));
+            }
+
+            services.AddConfIdentity();
+
+            services.Configure<SmtpOptions>(config.GetSection("Smtp"));
 
             //Caching
             services.AddMemoryCache();

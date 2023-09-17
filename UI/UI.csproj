@@ -53,10 +53,21 @@
   </ItemGroup>
   
   <ItemGroup>
-    <Content Include="Contents\**\.*.">
+    <Content Update="Contents\EmailConfirmationSent.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <Visible>true</Visible>
     </Content>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Content Update="Contents\RecoveryPassword.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <None Update="Contents\icon-card-2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   
 
