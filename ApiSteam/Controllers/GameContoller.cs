@@ -22,7 +22,7 @@ namespace ApiSteam.Controllers
         }
 
         [HttpGet]
-        [Route("GetGame")]
+        [Route("GetGameAsync")]
         public async Task<ActionResult<GamesViewDTO>> GetGame(int id)
         {
             if (id == null)
@@ -30,7 +30,7 @@ namespace ApiSteam.Controllers
                 return NotFound(); // Возвращаем 404 Not Found, если id не передан
             }
 
-            var game = await _gameService.GetGame(id);
+            var game = await _gameService.GetGameAsync(id);
 
             if (game == null)
             {
@@ -41,7 +41,7 @@ namespace ApiSteam.Controllers
         }
 
         [HttpGet]
-        [Route("GetCarouselGames")]
+        [Route("GetCarouselGamesAsync")]
         public async Task<ActionResult<List<GameDTO>>> GetCarouselGames()
         {
             string cacheKey = "CarouselGames";
@@ -59,7 +59,7 @@ namespace ApiSteam.Controllers
 
             try
             {
-                var games = await _unitOfWork.GetCarouselGames();
+                var games = await _unitOfWork.GetCarouselGamesAsync();
                 _cache.Set(cacheKey, games, cacheEntryOptions);
 
                 return new JsonResult(games);
@@ -72,7 +72,7 @@ namespace ApiSteam.Controllers
         }
 
         [HttpGet]
-        [Route("GetAllGames")]
+        [Route("GetAllGamesAsync")]
         public async Task<ActionResult<List<GameDTO>>> GetAllGames()
         {
             if (_cache.TryGetValue("AllGames", out List<GameDTO> cachedAllGames))
@@ -80,17 +80,17 @@ namespace ApiSteam.Controllers
                 return new JsonResult(cachedAllGames);
             }
 
-            var games = await _unitOfWork.GetAllGames();
+            var games = await _unitOfWork.GetAllGamesAsync();
             _cache.Set("AllGames", games, TimeSpan.FromMinutes(30));
 
             return new JsonResult(games);
         }
 
         [HttpGet]
-        [Route("GetAllTags")]
+        [Route("GetAllTagsAsync")]
         public async Task<ActionResult<List<TagDTO>>> GetAllTags()
         {
-            var tags = await _unitOfWork.GetAllTags();
+            var tags = await _unitOfWork.GetAllTagsAsync();
 
             return new JsonResult(tags);
         }

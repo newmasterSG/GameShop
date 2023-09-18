@@ -69,7 +69,7 @@ namespace UI.Controllers
 
             if(userId !=  null)
             {
-                purchase = await _orderServices.GetOrderPurchases(userId);
+                purchase = await _orderServices.GetOrderPurchasesAsync(userId);
             }
             
 

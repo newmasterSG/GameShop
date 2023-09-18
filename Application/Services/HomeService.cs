@@ -15,7 +15,7 @@ namespace Application.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<List<GameDTO>> GetCarouselGames()
+        public async Task<List<GameDTO>> GetCarouselGamesAsync()
         {
             List<GameDTO> gameDTOsForCarousel = new List<GameDTO>();
 
@@ -37,7 +37,7 @@ namespace Application.Services
             return gameDTOsForCarousel;
         }
 
-        public async Task<List<GameDTO>> GetAllGames()
+        public async Task<List<GameDTO>> GetAllGamesAsync()
         {
             List<GameDTO> gameDTOs = new List<GameDTO>();
             var games = await _unitOfWork.GetRepository<GamesEntity>().TakeAsync(0, 12);
@@ -55,7 +55,7 @@ namespace Application.Services
             return gameDTOs;
         }
 
-        public async Task<List<GameDTO>> GetGames()
+        public async Task<List<GameDTO>> GetGamesAsync()
         {
             List<GameDTO> gameDTOs = new List<GameDTO>();
 
@@ -75,7 +75,7 @@ namespace Application.Services
             return gameDTOs;
         }
 
-        public async Task<List<TagDTO>> GetAllTags()
+        public async Task<List<TagDTO>> GetAllTagsAsync()
         {
             List<TagDTO> tags = new List<TagDTO>();
 

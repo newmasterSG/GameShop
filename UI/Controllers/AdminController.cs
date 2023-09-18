@@ -21,7 +21,7 @@ namespace UI.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var userMessages = await _messageService.GetUserMessages();
+            var userMessages = await _messageService.GetUserMessagesAsync();
             return View(userMessages.ToList());
         }
     }

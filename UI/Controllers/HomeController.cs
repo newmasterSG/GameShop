@@ -66,7 +66,7 @@ namespace UI.Controllers
 
             try
             {
-                var games = await _unitOfWork.GetCarouselGames();
+                var games = await _unitOfWork.GetCarouselGamesAsync();
                 _cache.Set(CachesNaming.CarouselGames, games, cacheEntryOptions);
 
                 return Json(games);
@@ -86,7 +86,7 @@ namespace UI.Controllers
                 return Json(cachedAllGames);
             }
 
-            var games = await _unitOfWork.GetAllGames();
+            var games = await _unitOfWork.GetAllGamesAsync();
             _cache.Set(CachesNaming.AllGames, games, TimeSpan.FromMinutes(30));
 
             return Json(games);
@@ -95,7 +95,7 @@ namespace UI.Controllers
         [HttpGet]
         public async Task<ActionResult<List<TagDTO>>> GetAllTags()
         {
-            var tags = await _unitOfWork.GetAllTags();
+            var tags = await _unitOfWork.GetAllTagsAsync();
 
             return Json(tags);
         }

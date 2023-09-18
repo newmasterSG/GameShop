@@ -141,6 +141,7 @@ namespace UI.ServiceProvider
             services.AddScoped<IUserClaimsPrincipalFactory<UserEntity>, MyUserClaimsPrincipalFactory>();
             services.AddSingleton<IUserIdProvider, CustomUserIdProvider>();
             services.AddScoped<IMessageService, MessageService>();
+            services.AddScoped<IAdminService, AdminService>();
             services.AddScoped(serviceProvider =>
             {
                 var gameServices = serviceProvider.GetRequiredService<GameService>();

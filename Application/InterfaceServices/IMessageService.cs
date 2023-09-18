@@ -4,8 +4,8 @@ namespace Application.InterfaceServices
 {
     public interface IMessageService
     {
-        Task AddMessage(string userId, string message);
-        Task SendAdminReply(string userId, string adminReply);
-        Task<IEnumerable<MessageEntity>> GetUserMessages();
+        Task AddMessageAsync(string userId, string message);
+        Task SendAdminReplyAsync(string userId, string adminReply);
+        Task<IEnumerable<MessageEntity>> GetUserMessagesAsync();
     }
 }

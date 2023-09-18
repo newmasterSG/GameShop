@@ -70,7 +70,7 @@ namespace UI.Controllers
                 return NotFound(); // Возвращаем 404 Not Found, если id не передан
             }
 
-            var game = await _gameService.GetGame(id);
+            var game = await _gameService.GetGameAsync(id);
 
             if (game == null)
             {
@@ -86,7 +86,7 @@ namespace UI.Controllers
             int pageNumber = page ?? 1;
             int pageSize = 12;
 
-            var games = await _gameService.SearchGame(viewModel.GameName);
+            var games = await _gameService.SearchGameAsync(viewModel.GameName);
 
             if (games == null || games.Count == 0)
             {
@@ -104,7 +104,7 @@ namespace UI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllReviews(int page = 1, int pageSize = 12)
         {
-            var reviews = await _reviewService.GetAllReviews(page,pageSize);
+            var reviews = await _reviewService.GetAllReviewsAsync(page,pageSize);
             return Ok(reviews);
         }
 
@@ -114,7 +114,7 @@ namespace UI.Controllers
             int pageNumber = page ?? 1;
             int pageSize = 12;
 
-            var games = await _gameService.GamesByTags(tag);
+            var games = await _gameService.GamesByTagsAsync(tag);
 
             if (games == null || games.Count == 0)
             {
@@ -126,7 +126,7 @@ namespace UI.Controllers
 
         public async Task<IActionResult> AllGames(int page = 1, int pageSize = 10)
         {
-            var allGames = await _gameService.GetAllGames();
+            var allGames = await _gameService.GetAllGamesAsync();
 
             if(allGames != null)
             {

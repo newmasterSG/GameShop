@@ -16,24 +16,24 @@ namespace Application.Decorators
             _gameService = gameService;
         }
 
-        public async Task<List<GameDTO>> GamesByTags(string tag)
+        public async Task<List<GameDTO>> GamesByTagsAsync(string tag)
         {
-            return await _gameService.GamesByTags(tag);
+            return await _gameService.GamesByTagsAsync(tag);
         }
 
-        public async Task<List<GameDTO>> GetAllGames()
+        public async Task<List<GameDTO>> GetAllGamesAsync()
         {
-            return await _gameService.GetAllGames();
+            return await _gameService.GetAllGamesAsync();
         }
 
-        public async Task<GamesViewDTO> GetGame(int id)
+        public async Task<GamesViewDTO> GetGameAsync(int id)
         {
-            return await _gameService.GetGame(id);
+            return await _gameService.GetGameAsync(id);
         }
 
-        public async Task<List<GameDTO>> SearchGame(string name)
+        public async Task<List<GameDTO>> SearchGameAsync(string name)
         {
-            return await _gameService.SearchGame(name);
+            return await _gameService.SearchGameAsync(name);
         }
     }
 }

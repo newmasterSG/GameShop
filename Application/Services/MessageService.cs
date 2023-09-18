@@ -20,7 +20,7 @@ namespace Application.Services
             _context = unitOfWork;
         }
 
-        public async Task AddMessage(string userId, string message)
+        public async Task AddMessageAsync(string userId, string message)
         {
             var user = _context.GetRepository<UserEntity>().Find(e => e.Id.Equals(userId));
 
@@ -35,7 +35,7 @@ namespace Application.Services
             }
         }
 
-        public async Task SendAdminReply(string userId, string adminReply)
+        public async Task SendAdminReplyAsync(string userId, string adminReply)
         {
             // Implement logic to send an admin reply to a user.
             // Set the IsAnswered flag and save the message.
@@ -55,7 +55,7 @@ namespace Application.Services
             }
         }
 
-        public async Task<IEnumerable<MessageEntity>> GetUserMessages()
+        public async Task<IEnumerable<MessageEntity>> GetUserMessagesAsync()
         {
             return _context.GetRepository<MessageEntity>().SelectInclude(msg => msg.User);
         }

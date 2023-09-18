@@ -11,7 +11,7 @@
 
     <div class="chat-box">
         <div class="chat-box-header">
-            Chat With Users
+            ChatBot
             <span class="chat-box-toggle"><i class="material-icons">close</i></span>
         </div>
         <div class="chat-box-body">
@@ -22,7 +22,18 @@
             </div>
         </div>
         <div class="chat-input">
-          
+            @*                        <form>*@
+            @if (User.Identity.IsAuthenticated)
+            {
+                <input type="hidden" id="userInput" value="@User.Claims.FirstOrDefault(c => c.Type == "sub")?.Value" />
+            }
+            else
+            {
+                <input type="hidden" id="userInput" value="User" />
+            }
+            <input type="text" id="chat-input" placeholder="Send a message..." />
+            <button type="submit" class="chat-submit" id="chat-submit"><i class="material-icons" id="sendButton">Send Message</i></button>
+            @*                        </form>*@
         </div>
     </div>
 </div>

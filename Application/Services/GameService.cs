@@ -18,7 +18,7 @@ namespace Application.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<GamesViewDTO> GetGame(int id)
+        public async Task<GamesViewDTO> GetGameAsync(int id)
         {
             if (id == null)
             {
@@ -59,7 +59,7 @@ namespace Application.Services
             return gamesView;
         }
 
-        public async Task<List<GameDTO>> SearchGame(string name)
+        public async Task<List<GameDTO>> SearchGameAsync(string name)
         {
             var dbGames = await _unitOfWork.GetRepository<GamesEntity>().ListAsync(g => g.Name.ToLower().Contains(name.ToLower()));
             var games = new List<GameDTO>();
@@ -81,7 +81,7 @@ namespace Application.Services
             return games;
         }
 
-        public async Task<List<GameDTO>> GamesByTags(string tag)
+        public async Task<List<GameDTO>> GamesByTagsAsync(string tag)
         {
             var games = new List<GameDTO>();
 
@@ -118,7 +118,7 @@ namespace Application.Services
             return games;
         }
 
-        public async Task<List<GameDTO>> GetAllGames()
+        public async Task<List<GameDTO>> GetAllGamesAsync()
         {
             var games = _unitOfWork.GetRepository<GamesEntity>()
                         .GetAllAsync()

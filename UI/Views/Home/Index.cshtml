@@ -24,7 +24,7 @@
             </button>
         </div>
         <div class="text-end">
-            <a href="#" class="btn btn-primary neon-text">@localizer["showall_text"]</a>
+            <a href="~/Game/AllGames" class="btn btn-primary neon-text">@localizer["showall_text"]</a>
         </div>
 
         <div class="row" id="card-row">
@@ -37,7 +37,7 @@
         // Выполняем AJAX запрос для получения списка игр
         $.ajax({
             type:'GET',
-            url: '@Url.Action("GetCarouselGames", "Home")',
+            url: '@Url.Action("GetCarouselGamesAsync", "Home")',
             method: 'GET',
             dataType: 'json',
             success: function (data) {
@@ -74,7 +74,7 @@
         });
 
         $.ajax({
-        url: '@Url.Action("GetAllGames", "Home")',
+        url: '@Url.Action("GetAllGamesAsync", "Home")',
         method: 'GET',
         dataType: 'json',
         success: function (data) {

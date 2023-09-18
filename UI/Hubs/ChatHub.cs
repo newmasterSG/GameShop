@@ -7,31 +7,33 @@ namespace UI.Hubs
     {
         private IMessageService _messageService;
         private readonly IHubContext<ChatHub> _hubContext;
+        private readonly IAdminService _adminService;
 
         public ChatHub(IMessageService messageService,
-            IHubContext<ChatHub> hubContext) 
+            IHubContext<ChatHub> hubContext,
+            IAdminService adminService) 
         { 
             _messageService = messageService;
             _hubContext = hubContext;
+            _adminService = adminService;
         }
         public async Task SendMessage(string user, string message)
         {
-            var adminId = "56c3b0d4-f715-42fc-9f57-d8cd31910372";
             var userReal = "Users";
             if (!string.IsNullOrEmpty(user) && !user.Equals("User"))
             {
                 userReal = Context.User?.Claims.FirstOrDefault(e => e.Value == user)?
                 .Subject?.Claims.FirstOrDefault(c => c.Type == "name")?.Value;
-                await _messageService.AddMessage(user, message);
+                await _messageService.AddMessageAsync(user, message);
             }
 
-            await Clients.User(adminId).SendAsync("ReceiveMessage", userReal, message);
+            await SendToAllAdmins(userReal, message);
         }
 
         public async Task SendAdminReply(string userId, string adminReply)
         {
             // Admin sends a reply to a specific user.
-            await _messageService.SendAdminReply(userId, adminReply);
+            await _messageService.SendAdminReplyAsync(userId, adminReply);
 
             await Clients.User(userId).SendAsync("ReceiveAdminReply", adminReply);
         }
@@ -44,6 +46,16 @@ namespace UI.Hubs
             }
 
             await base.OnConnectedAsync();
+        }
+
+        private async Task SendToAllAdmins(string userReal, string message)
+        {
+            var admins = await _adminService.GetAllAdminAsync();
+
+            foreach (var admin in admins)
+            {
+                await Clients.User(admin.Id).SendAsync("ReceiveMessage", userReal, message);
+            }
         }
     }
 }

@@ -33,7 +33,7 @@ namespace MoqTest.ServicesTests
             var gameService = new GameService(unitOfWorkMock.Object);
 
             // Act
-            List<GameDTO> result = await gameService.SearchGame("GameName");
+            List<GameDTO> result = await gameService.SearchGameAsync("GameName");
 
             // Assert
             Assert.Equal("GameName", result[0].Name);
@@ -132,7 +132,7 @@ namespace MoqTest.ServicesTests
             var gameService = new GameService(unitOfWorkMock.Object);
 
             // Act
-            var result = await gameService.GetGame(2);
+            var result = await gameService.GetGameAsync(2);
 
             // Assert
             Assert.NotNull(result);
@@ -199,7 +199,7 @@ namespace MoqTest.ServicesTests
 
             var gameService = new GameService(unitOfWorkMock.Object);
 
-            var result = await gameService.GamesByTags("Tag1");
+            var result = await gameService.GamesByTagsAsync("Tag1");
 
             Assert.NotNull(result);
             Assert.Equal("GameName", result[0].Name);

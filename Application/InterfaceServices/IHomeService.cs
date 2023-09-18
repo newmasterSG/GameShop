@@ -4,10 +4,10 @@ namespace Application.InterfaceServices
 {
     public interface IHomeService
     {
-        Task<List<GameDTO>> GetGames();
-        Task<List<GameDTO>> GetCarouselGames();
-        Task<List<GameDTO>> GetAllGames();
+        Task<List<GameDTO>> GetGamesAsync();
+        Task<List<GameDTO>> GetCarouselGamesAsync();
+        Task<List<GameDTO>> GetAllGamesAsync();
 
-        Task<List<TagDTO>> GetAllTags();
+        Task<List<TagDTO>> GetAllTagsAsync();
     }
 }
