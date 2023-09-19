@@ -3,7 +3,7 @@
 *@
 @{
 }
-@model List<Application.DTO.GameDTO>
+@model UI.Models.Game.GamesViewModel
 <style>
     .custom-card {
         height: 100%;
@@ -20,21 +20,32 @@
         margin-left: 10%;
     }
 </style>
-<div class="row" id="card-row">
-    @foreach(var game in Model)
+<div class="container align-content-center justify-content-center">
+    @foreach (var game in Model.Games)
     {
-        <div class="col-md-4 mb-3">
-            <div class="card custom-card w-50">
-                <a href="@Url.Action("GameDetails","Game")/@game.Id">
-                    <img class="card-img" src="@game.Image" alt="@game.Name">
-                    <div class="card-body">
-                        <h5 class="card-title">@game.Name</h5>
-                        <p class="card-text">@game.Price</p>
-                    </div>
-                </a>
-             </div>
-
-
-        </div>
+        <a href="@Url.Action("GameDetails", "Game", new { id = game.Id })">
+            <h4>@game.Name</h4>
+            <img src="@game.Image" alt="Game Image" style="width: 200px" />
+            <p>Price: @game.Price</p>
+            <p>Owned: @game.Owned</p>
+        </a>
     }
+
+
+    <div class="pagination">
+        @if (Model.PageNumber > 1)
+        {
+            <a class="btn btn-outline-dark" href="@Url.Action("GamesByTag", "Game", new { page = Model.PageNumber - 1, pageSize = Model.PageSize })">Previous</a>
+        }
+
+        @for (int i = 1; i <= Model.TotalPages; i++)
+        {
+            <a class="btn btn-outline-dark" href="@Url.Action("GamesByTag", "Game", new { page = i, pageSize = Model.PageSize })" @(i == Model.PageNumber ? "class=current" : "")>@i</a>
+        }
+
+        @if (Model.PageNumber < Model.TotalPages)
+        {
+            <a class="btn btn-outline-dark" href="@Url.Action("GamesByTag", "Game", new { page = Model.PageNumber + 1, pageSize = Model.PageSize })">Next</a>
+        }
+    </div>
 </div>

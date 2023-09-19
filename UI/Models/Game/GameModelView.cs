@@ -1,4 +1,6 @@
-﻿namespace UI.Models.Game
+﻿using Application.DTO;
+
+namespace UI.Models.Game
 {
     public class GameModelView
     {
@@ -11,5 +13,23 @@
         public List<string> ScrenShoots { get; set; }
 
         public List<string> Stores { get; set; }
+    }
+
+    public class GamesViewModel
+    {
+        public List<GameDTO> Games { get; set; }
+        public int PageNumber { get; set; }
+        public int PageSize { get; set; }
+        public int TotalCount { get; set; }
+        public int TotalPages { get; set; }
+    }
+
+    public class TagsViewModel
+    {
+        public List<TagDTO> Tags { get; set; }
+        public int PageNumber { get; set; }
+        public int PageSize { get; set; }
+        public int TotalCount { get; set; }
+        public int TotalPages { get; set; }
     }
 }

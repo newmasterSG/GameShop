@@ -11,13 +11,10 @@ body {
 
 #main {
     flex: 1 0 auto;
-    background-color: #04047b;
-    color: #ffffff;
+    color: #d9d0d0;
 }
 header {
-    background-color: #04047b;
     color: #00ff00;
-    padding: 10px 0;
 }
 
 footer {
@@ -83,7 +80,8 @@ footer {
     text-align: center;
     text-transform: uppercase;
     letter-spacing: 2px;
-    text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00, 0 0 30px #00ff00;
+    text-shadow: 0 0 10px #FFFF00, 0 0 20px #F0E68C, 0 0 30px #BDB76B;
+    color: #FFD700;
 }
 
 .chat-box {
@@ -260,11 +258,14 @@ background-color: #F5F5F5;
     margin-bottom: 70px;
 }
 
+.hidden {
+    display: none;
+}
 
 
 .cyber-select {
     background-color: transparent;
-    border: 2px solid #00ff00; /* Замените на желаемый неоновый цвет */
+    border: 2px solid rgba(255, 0, 0);
     color: #fff;
     border-radius: 25px;
     padding: 10px 20px;
@@ -276,8 +277,8 @@ background-color: #F5F5F5;
 
     .cyber-select:focus {
         outline: none;
-        border-color: #00ff00; /* Цвет обводки при активации */
-        box-shadow: 0 0 10px #00ff00; /* Эффект неоновой подсветки при активации */
+        border-color: rgba(255, 0, 0); /* Цвет обводки при активации */
+        box-shadow: 0 0 10px rgba(105, 105, 105); /* Эффект неоновой подсветки при активации */
     }
 
 /* Стили для опций внутри элемента <select> */
@@ -285,8 +286,6 @@ background-color: #F5F5F5;
     background-color: #000; /* Задний фон опций */
     color: #fff;
 }
-
-
 
 @keyframes waveEffect {
     0%, 100% {

@@ -22,10 +22,10 @@ namespace ApiSteam.Controllers
         }
 
         [HttpGet]
-        [Route("GetAllReviews")]
+        [Route("GetAllReviewsAsync")]
         public async Task<IActionResult> GetAllReviews(int page = 1, int pageSize = 12)
         {
-            var reviews = await _reviewService.GetAllReviews(page, pageSize);
+            var reviews = await _reviewService.GetAllReviewsAsync(page, pageSize);
             return Ok(reviews);
         }
 
@@ -38,7 +38,7 @@ namespace ApiSteam.Controllers
 
         [HttpPost]
         [Authorize]
-        [Route("AddReview")]
+        [Route("AddReviewAsync")]
         public async Task<IActionResult> AddReview(int gameId, string reviewText, int rating)
         {
             _logger.LogDebug("Start");
@@ -49,7 +49,7 @@ namespace ApiSteam.Controllers
                 return BadRequest(new { success = false, message = "You must be logged in to add a review." });
             }
 
-            var success = await _reviewService.AddReview(gameId, userId, reviewText, rating);
+            var success = await _reviewService.AddReviewAsync(gameId, userId, reviewText, rating);
 
             if (success)
             {

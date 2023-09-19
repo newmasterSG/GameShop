@@ -24,6 +24,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 card.appendChild(img);
             }
             var cardBody = document.createElement('div');
+            cardBody.style.border = 'border-radius : 20px';
             cardBody.classList.add('card-body');
             cardBody.setAttribute('data-game-id', product.id.toString());
             var infoDiv = document.createElement('div');

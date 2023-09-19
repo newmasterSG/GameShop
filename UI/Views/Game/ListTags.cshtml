@@ -1,0 +1,30 @@
+﻿
+@model UI.Models.Game.TagsViewModel
+@{
+}
+<div class="container align-content-center justify-content-center">
+    @foreach (var tag in Model.Tags)
+    {
+        <a href="@Url.Action("GamesByTag", "Game", new { tag = tag.Name })">
+            <h4>@tag.Name</h4>
+        </a>
+    }
+
+
+    <div class="pagination">
+        @if (Model.PageNumber > 1)
+        {
+            <a class="btn btn-outline-dark" href="@Url.Action("ListTags", "Game", new { page = Model.PageNumber - 1, pageSize = Model.PageSize })">Previous</a>
+        }
+
+        @for (int i = 1; i <= Model.TotalPages; i++)
+        {
+            <a class="btn btn-outline-dark" href="@Url.Action("ListTags", "Game", new { page = i, pageSize = Model.PageSize })" @(i == Model.PageNumber ? "class=current" : "")>@i</a>
+        }
+
+        @if (Model.PageNumber < Model.TotalPages)
+        {
+            <a class="btn btn-outline-dark" href="@Url.Action("ListTags", "Game", new { page = Model.PageNumber + 1, pageSize = Model.PageSize })">Next</a>
+        }
+    </div>
+</div>

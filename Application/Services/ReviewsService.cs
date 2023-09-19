@@ -21,7 +21,7 @@ namespace Application.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<bool> AddReview(int gameId, string userId, string reviewText, int rating)
+        public async Task<bool> AddReviewAsync(int gameId, string userId, string reviewText, int rating)
         {
             var game = _unitOfWork.GetRepository<GamesEntity>().Find(g => g.Id == gameId);
 
@@ -45,7 +45,7 @@ namespace Application.Services
             return true;
         }
 
-        public async Task<List<ReviewDto>> GetAllReviews(int page, int pageSize)
+        public async Task<List<ReviewDto>> GetAllReviewsAsync(int page, int pageSize)
         {
             var reviewDtos = new List<ReviewDto>();
             var reviews = await _unitOfWork.GetRepository<ReviewEntity>().GetAllAsync();

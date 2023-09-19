@@ -1,0 +1,12 @@
+﻿services:
+  db.sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    ports:
+      - 1433:1433
+    user: root
+    volumes:
+      - './volumes/db/sqlserver:/var/opt/mssql/data'
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=Egor.2003
+      - MSSQL_TCP_PORT=1433

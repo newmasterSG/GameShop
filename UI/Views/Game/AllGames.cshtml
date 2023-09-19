@@ -1,0 +1,33 @@
+﻿@model UI.Models.Game.GamesViewModel
+@{
+}
+<div class="container align-content-center justify-content-center">
+    @foreach (var game in Model.Games)
+    {
+        <a href="@Url.Action("GameDetails", "Game", new { id = game.Id })">
+            <h4>@game.Name</h4>  
+            <img src="@game.Image" alt="Game Image" style="width: 200px" />
+            <p>Price: @game.Price</p>
+            <p>Owned: @game.Owned</p>
+        </a>
+    }
+
+
+    <div class="pagination">
+        @if (Model.PageNumber > 1)
+        {
+            <a class="btn btn-outline-dark" href="@Url.Action("AllGames", "Game", new { page = Model.PageNumber - 1, pageSize = Model.PageSize })">Previous</a>
+        }
+
+        @for (int i = 1; i <= Model.TotalPages; i++)
+        {
+            <a class="btn btn-outline-dark" href="@Url.Action("AllGames", "Game", new { page = i, pageSize = Model.PageSize })" @(i == Model.PageNumber ? "class=current" : "")>@i</a>
+        }
+
+        @if (Model.PageNumber < Model.TotalPages)
+        {
+            <a class="btn btn-outline-dark" href="@Url.Action("AllGames", "Game", new { page = Model.PageNumber + 1, pageSize = Model.PageSize })">Next</a>
+        }
+    </div>
+</div>
+

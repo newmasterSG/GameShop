@@ -4,14 +4,14 @@
 }
 
     <div class="row">
-        <aside class="col-md-1" id="asideTag">
+        <div class="col-md-1 container" id="asideTag">
             
-        </aside>
+        </div>
 
-        <div class="container col-md-11">
+    <div class="container col-md-11">
         <h2 class="mb-4 text-center neon-text">@localizer["topGame"]</h2>
 
-        <div id="topGamesCarousel" class="carousel slide carousel-fade w-25 mx-auto" data-ride="carousel">
+        <div id="topGamesCarousel" class="carousel slide w-25 mx-auto" data-ride="carousel">
             <div class="carousel-inner" id="carouselInner">
             </div>
             <button class="carousel-control-prev" type="button" data-bs-target="#topGamesCarousel" data-bs-slide="prev">
@@ -24,7 +24,7 @@
             </button>
         </div>
         <div class="text-end">
-            <a href="#" class="btn btn-primary neon-text">@localizer["showall_text"]</a>
+            <a href="~/Game/AllGames" class="btn btn-primary neon-text">@localizer["showall_text"]</a>
         </div>
 
         <div class="row" id="card-row">
@@ -52,11 +52,11 @@
                         isFirst = false;
                     }
 
-                var gameLink = $('<a>').attr('href', '@Url.Action("GameDetails","Game")/' + game.id);
+                var gameLink = $('<a class="divAsA">').attr('href', '@Url.Action("GameDetails","Game")/' + game.id);
                     var gameImage = $('<img class="d-block mx-auto img-fluid">').attr('src', game.image).attr('alt', game.name);
                     var carouselCaption = $('<div class="carousel-caption">');
                     var title = $('<h5 class="card-title">').text(game.name);
-                    var price = $('<p class="card-text">').text(game.price);
+                    var price = $('<p class="card-text">').text(game.price + ' $');
 
                     carouselCaption.append(title);
                     carouselCaption.append(price);
@@ -73,22 +73,21 @@
             }
         });
 
-            $.ajax({
-                url: '@Url.Action("GetAllGames", "Home")',
-                method: 'GET',
-                dataType: 'json',
-                success: function (data) {
+        $.ajax({
+        url: '@Url.Action("GetPagingGame", "Home")',
+        method: 'GET',
+        dataType: 'json',
+        success: function (data) {
                     var cardRow = $('#card-row');
 
                 data.forEach(function (game) {
                     var col = $('<div class="col-md-4 mb-3">');
                     var card = $('<div class="card custom-card w-50">');
-                    var gameLink = $('<a>').attr('href', '@Url.Action("GameDetails","Game")/' + game.id);
-                    var gameImage = $('<img class="card-img">').attr('src', game.image).attr('alt', game.name);
+                    var gameLink = $('<a class="aDiv">').attr('href', '@Url.Action("GameDetails","Game")/' + game.id);
+                    var gameImage = $('<img class="card-img" style="border-radius: 5px;">').attr('src', game.image).attr('alt', game.name);
                     var cardBody = $('<div class="card-body">');
-                var title = $('<h5 class="card-title neon-text">').text(game.name);
-                    var price = $('<p class="card-text neon-text">').text(game.price);
-
+                var title = $('<h5 class="card-title">').text(game.name);
+                    var price = $('<p class="card-text">').text(game.price + ' $');
                     cardBody.append(title);
                     cardBody.append(price);
                     gameLink.append(gameImage);
@@ -106,23 +105,11 @@
     $.get('/Home/GetAllTags', function (data) {
         var ulList = $('<ul></ul>');
         let text = '@localizer["showall_text"]';
-        let i;
-        data.forEach(function (tag) {
-            var li = $('<li class="neon-tag fas fa-cyber-eye"></li>').text(tag.name);
-            i++;
-            li.on('mouseenter', function () {
-                var img = $('<img>').attr('src', tag.imageBackground).css({
-                    'max-width': '100px',
-                    'max-height': '100px',
-                    'z-index': '100',
-                });
-                li.append(img);
-            });
 
-            li.on('mouseleave', function () {
-                li.find('img').remove();
-            });
-
+        for (let i = 0; i < data.length; i++) {
+            const tag = data[i];
+            const li = $('<li class="tags"></li>').text(tag.name);
+            console.log(i);
             li.on('click', function () {
                 window.location.href = '@Url.Action("GamesByTag","Game")?tag=' + encodeURIComponent(tag.name);
             });
@@ -130,11 +117,13 @@
             ulList.append(li);
 
             if (i === 29) {
-                var linkText = $('<a>').attr('href', '/Game/ListTags').text(text);
-                var listItem = $('<li>').append(linkText);
+                const linkText = $('<a>').attr('href', '@Url.Action("ListTags", "Game")').text(text);
+                const listItem = $('<li>').append(linkText);
                 ulList.append(listItem);
+                break;
             }
-        });
+        }
+
         var asideTagWidth = $('#asideTag').width();
 
         $('#asideTag').append(ulList);
@@ -150,3 +139,4 @@
     });
     
 </script>
+<script src="~/js/changeAside.js"></script>

@@ -71,7 +71,7 @@ namespace Application.Services
             _context.Save();
         }
 
-        public async Task<List<OrderPurchaseDto>> GetOrderPurchases(string userId)
+        public async Task<List<OrderPurchaseDto>> GetOrderPurchasesAsync(string userId)
         {
             var orders = new List<OrderPurchaseDto>();
 

@@ -37,16 +37,6 @@ namespace UI
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            var connectionString = builder.Configuration["ConnectionString"];
-            builder.Services.AddDbContext<GameShopContext>(options =>
-                options.UseSqlServer(connectionString).EnableSensitiveDataLogging());
-
-            builder.Services.AddIdentity<UserEntity, IdentityRole>(option =>
-            {
-                option.SignIn.RequireConfirmedEmail = true;
-            }).AddEntityFrameworkStores<GameShopContext>()
-                .AddDefaultTokenProviders();
-
             builder.Services
                 .AddMyDependencyGroup(builder.Configuration);
 
@@ -95,8 +85,8 @@ namespace UI
                     dbContext.Games.Add(gameEntity);
                 }
 
-                string email = "testing.project.ts@gmail.com";
-                string userPassword = "Eg.1234";
+                string email = builder.Configuration["DefaultUser:email"];
+                string userPassword = builder.Configuration["DefaultUser:password"];
 
                 foreach (var role in roles)
                 {
@@ -113,7 +103,7 @@ namespace UI
                         UserName = email,
                         Email = email,
                         EmailConfirmed = true,
-                        DateRegistration = DateTime.Now,
+                        DateRegistration = DateTime.UtcNow,
                     };
 
                     IdentityResult result = await userManager.CreateAsync(adminUser, userPassword);
@@ -125,6 +115,7 @@ namespace UI
                         await userManager.AddToRoleAsync(adminUser, "Admin");
                     }
                 }
+
                 dbContext.SaveChanges();
             }
 

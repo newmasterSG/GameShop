@@ -19,17 +19,17 @@ namespace UI.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly IHomeService _unitOfWork;
+        private readonly IGameService _gameService;
         private readonly IHtmlLocalizer<HomeController> _localizer;
         private readonly IMemoryCache _cache;
 
         public HomeController(ILogger<HomeController> logger, 
-            IHomeService unitOfWork,
+            IGameService gameService,
             IHtmlLocalizer<HomeController> localizer,
             IMemoryCache cache)
         {
             _logger = logger;
-            _unitOfWork = unitOfWork;
+            _gameService = gameService;
             _localizer = localizer;
             _cache = cache;
         }
@@ -61,12 +61,13 @@ namespace UI.Controllers
             var cancellationTokenSource = new CancellationTokenSource();
             var cacheEntryOptions = new MemoryCacheEntryOptions
             {
-                AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(30),
+                AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5),
+                SlidingExpiration = TimeSpan.FromSeconds(40),
             };
 
             try
             {
-                var games = await _unitOfWork.GetCarouselGames();
+                var games = await _gameService.GetCarouselGamesAsync();
                 _cache.Set(CachesNaming.CarouselGames, games, cacheEntryOptions);
 
                 return Json(games);
@@ -79,15 +80,15 @@ namespace UI.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<GameDTO>>> GetAllGames()
+        public async Task<ActionResult<List<GameDTO>>> GetPagingGameAsync()
         {
             if (_cache.TryGetValue(CachesNaming.AllGames, out List<GameDTO> cachedAllGames))
             {
                 return Json(cachedAllGames);
             }
 
-            var games = await _unitOfWork.GetAllGames();
-            _cache.Set(CachesNaming.AllGames, games, TimeSpan.FromMinutes(30));
+            var games = await _gameService.GetPagingGame();
+            _cache.Set(CachesNaming.AllGames, games, TimeSpan.FromMinutes(5));
 
             return Json(games);
         }
@@ -95,7 +96,7 @@ namespace UI.Controllers
         [HttpGet]
         public async Task<ActionResult<List<TagDTO>>> GetAllTags()
         {
-            var tags = await _unitOfWork.GetAllTags();
+            var tags = await _gameService.GetAllTagsAsync();
 
             return Json(tags);
         }

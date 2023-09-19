@@ -15,6 +15,7 @@ using System.Drawing.Printing;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http.Headers;
 using System.Security.Claims;
+using UI.Models.Game;
 using UI.Models.Search;
 
 namespace UI.Controllers
@@ -69,7 +70,7 @@ namespace UI.Controllers
                 return NotFound(); // Возвращаем 404 Not Found, если id не передан
             }
 
-            var game = await _gameService.GetGame(id);
+            var game = await _gameService.GetGameAsync(id);
 
             if (game == null)
             {
@@ -85,7 +86,7 @@ namespace UI.Controllers
             int pageNumber = page ?? 1;
             int pageSize = 12;
 
-            var games = await _gameService.SearchGame(viewModel.GameName);
+            var games = await _gameService.SearchGameAsync(viewModel.GameName);
 
             if (games == null || games.Count == 0)
             {
@@ -103,24 +104,95 @@ namespace UI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllReviews(int page = 1, int pageSize = 12)
         {
-            var reviews = await _reviewService.GetAllReviews(page,pageSize);
+            var reviews = await _reviewService.GetAllReviewsAsync(page,pageSize);
             return Ok(reviews);
         }
 
         [HttpGet]
-        public async Task<IActionResult> GamesByTag(string tag, int? page)
+        public async Task<IActionResult> GamesByTag(string tag, int page = 1, int pageSize = 10)
         {
-            int pageNumber = page ?? 1;
-            int pageSize = 12;
+            var games = await _gameService.GamesByTagsAsync(tag);
 
-            var games = await _gameService.GamesByTags(tag);
+            if (games != null)
+            {
+                int totalCount = games.Count;
+                int totalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
+
+                var gamesOnPage = games.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+                var viewModel = new GamesViewModel
+                {
+                    Games = gamesOnPage,
+                    PageNumber = page,
+                    PageSize = pageSize,
+                    TotalCount = totalCount,
+                    TotalPages = totalPages
+                };
+
+                return View(viewModel);
+            }
 
             if (games == null || games.Count == 0)
             {
                 ModelState.AddModelError("", "No such games");
             }
 
-            return View(games);
+            return View();
+        }
+
+        public async Task<IActionResult> AllGames(int page = 1, int pageSize = 10)
+        {
+            var allGames = await _gameService.GetAllGamesAsync();
+
+            if(allGames != null)
+            {
+                int totalCount = allGames.Count;
+                int totalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
+
+                // Выбираем игры для текущей страницы
+                var gamesOnPage = allGames.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+                var viewModel = new GamesViewModel
+                {
+                    Games = gamesOnPage,
+                    PageNumber = page,
+                    PageSize = pageSize,
+                    TotalCount = totalCount,
+                    TotalPages = totalPages
+                };
+
+                return View(viewModel);
+            }
+
+
+            return View();
+        }
+
+        public async Task<IActionResult> ListTags(int page = 1, int pageSize = 10)
+        {
+            var tags = await _gameService.GetAllTagsAsync();
+
+            if (tags != null)
+            {
+                int totalCount = tags.Count;
+                int totalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
+
+                // Выбираем игры для текущей страницы
+                var tagsOnPage = tags.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+                var viewModel = new TagsViewModel
+                {
+                    Tags = tagsOnPage,
+                    PageNumber = page,
+                    PageSize = pageSize,
+                    TotalCount = totalCount,
+                    TotalPages = totalPages
+                };
+
+                return View(viewModel);
+            }
+
+            return View();
         }
     }
 }

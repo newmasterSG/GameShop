@@ -4,7 +4,7 @@ namespace Application.InterfaceServices
 {
     public interface IReviewsService
     {
-        Task<bool> AddReview(int gameId, string userId, string reviewText, int rating);
-        Task<List<ReviewDto>> GetAllReviews(int page, int pageSize);
+        Task<bool> AddReviewAsync(int gameId, string userId, string reviewText, int rating);
+        Task<List<ReviewDto>> GetAllReviewsAsync(int page, int pageSize);
     }
 }
