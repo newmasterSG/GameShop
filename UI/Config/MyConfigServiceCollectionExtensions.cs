@@ -31,6 +31,7 @@ using Microsoft.AspNetCore.SignalR;
 using UI.Config;
 using Application.Decorators;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Distributed;
 
 namespace UI.ServiceProvider
 {
@@ -131,7 +132,6 @@ namespace UI.ServiceProvider
         public static IServiceCollection AddOwnServices(this IServiceCollection services)
         {
             services.AddScoped<IUnitOfWork, UnitOfWork<GameShopContext>>();
-            services.AddScoped<IHomeService, HomeService>();
             services.AddScoped<GameService>();
             services.AddTransient<EmailSender, SmtpEmailSender>();
             services.AddScoped<IUserService, UserService>();
@@ -145,8 +145,9 @@ namespace UI.ServiceProvider
             services.AddScoped(serviceProvider =>
             {
                 var gameServices = serviceProvider.GetRequiredService<GameService>();
+                var cache = serviceProvider.GetRequiredService<IDistributedCache>();
 
-                IGameService gameDecorator = new GameDecorator(gameServices);
+                IGameService gameDecorator = new GameDecorator(gameServices, cache);
 
                 return gameDecorator;
             });

@@ -1,8 +1,10 @@
-﻿using Application.InterfaceServices;
+﻿using Application.Decorators;
+using Application.InterfaceServices;
 using Application.Services;
 using Domain.Interfaces;
 using Infrastructure.Context;
 using Infrastructure.UnitOfWork.UnitOfWork;
+using Microsoft.Extensions.Caching.Distributed;
 
 namespace ApiSteam.Config
 {
@@ -30,10 +32,18 @@ namespace ApiSteam.Config
         {
             services.AddMemoryCache();
             services.AddScoped<IUnitOfWork, UnitOfWork<GameShopContext>>();
-            services.AddScoped<IGameService, GameService>();
+            services.AddScoped<GameService>();
             services.AddScoped<IOrderServices, OrderServices>();
             services.AddScoped<IReviewsService, ReviewsService>();
-            services.AddScoped<IHomeService, HomeService>();
+            services.AddScoped(serviceProvider =>
+            {
+                var gameServices = serviceProvider.GetRequiredService<GameService>();
+                var cache = serviceProvider.GetRequiredService<IDistributedCache>();
+
+                IGameService gameDecorator = new GameDecorator(gameServices, cache);
+
+                return gameDecorator;
+            });
 
             return services;
         }

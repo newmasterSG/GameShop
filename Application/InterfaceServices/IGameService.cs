@@ -9,5 +9,9 @@ namespace Application.InterfaceServices
         Task<List<GameDTO>> SearchGameAsync(string name);
 
         Task<List<GameDTO>> GetAllGamesAsync();
+
+        Task<List<GameDTO>> GetCarouselGamesAsync();
+        Task<List<GameDTO>> GetPagingGame();
+        Task<List<TagDTO>> GetAllTagsAsync();
     }
 }

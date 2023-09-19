@@ -120,21 +120,79 @@ namespace Application.Services
 
         public async Task<List<GameDTO>> GetAllGamesAsync()
         {
-            var games = _unitOfWork.GetRepository<GamesEntity>()
-                        .GetAllAsync()
-                        .GetAwaiter()
-                        .GetResult()
-                        .Select(game => new GameDTO
-                        {
-                            Id = (int)game.Id,
-                            Name = game.Name,
-                            Image = game.BackgroundImage,
-                            Owned = game.AddedByStatus?.Owned ?? 4000,
-                            Price = game.Price,
-                        })
-                    .ToList();
+            var DbGames = await _unitOfWork.GetRepository<GamesEntity>()
+                        .GetAllAsync();
+            
+            var games = DbGames.Select(game => new GameDTO
+            {
+                Id = (int)game.Id,
+                Name = game.Name,
+                Image = game.BackgroundImage,
+                Owned = game.AddedByStatus?.Owned ?? 4000,
+                Price = game.Price,
+            })
+            .ToList();
 
             return games;
+        }
+
+        public async Task<List<GameDTO>> GetCarouselGamesAsync()
+        {
+            List<GameDTO> gameDTOsForCarousel = new List<GameDTO>();
+
+            var games = _unitOfWork.GetRepository<GamesEntity>()
+                .SelectInclude(a => a.AddedByStatus)
+                .Where(item => (int)item.AddedByStatus.Owned > 4000);
+
+            foreach (var game in games)
+            {
+                gameDTOsForCarousel.Add(new GameDTO()
+                {
+                    Id = (int)game.Id,
+                    Name = game.Name,
+                    Image = game.BackgroundImage,
+                    Owned = game.AddedByStatus?.Owned ?? 4000,
+                    Price = game.Price,
+                });
+            }
+
+            return gameDTOsForCarousel;
+        }
+
+        public async Task<List<GameDTO>> GetPagingGame()
+        {
+            List<GameDTO> gameDTOs = new List<GameDTO>();
+            var games = _unitOfWork.GetRepository<GamesEntity>().SelectInclude(a => a.AddedByStatus).Take(12);
+            foreach (var game in games)
+            {
+                gameDTOs.Add(new GameDTO()
+                {
+                    Id = (int)game.Id,
+                    Name = game.Name,
+                    Image = game.BackgroundImage,
+                    Owned = game.AddedByStatus?.Owned ?? 4000,
+                    Price = game.Price,
+                });
+            }
+            return gameDTOs;
+        }
+
+        public async Task<List<TagDTO>> GetAllTagsAsync()
+        {
+            List<TagDTO> tags = new List<TagDTO>();
+
+            var dbTags = await _unitOfWork.GetRepository<TagEntity>().GetAllAsync();
+
+            foreach (var tag in dbTags)
+            {
+                tags.Add(new TagDTO()
+                {
+                    Name = tag.Name,
+                    ImageBackground = tag.ImageBackground,
+                });
+            }
+
+            return tags;
         }
     }
 }

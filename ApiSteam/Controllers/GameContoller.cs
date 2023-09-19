@@ -13,16 +13,14 @@ namespace ApiSteam.Controllers
     {
         private readonly IGameService _gameService;
         private readonly IMemoryCache _cache;
-        private readonly IHomeService _unitOfWork;
-        public GameController(IGameService gameService, IMemoryCache cache, IHomeService homeService)
+        public GameController(IGameService gameService, IMemoryCache cache)
         {
             _gameService = gameService;
             _cache = cache;
-            _unitOfWork = homeService;
         }
 
         [HttpGet]
-        [Route("GetGameAsync")]
+        [Route("GetGame")]
         public async Task<ActionResult<GamesViewDTO>> GetGame(int id)
         {
             if (id == null)
@@ -41,7 +39,7 @@ namespace ApiSteam.Controllers
         }
 
         [HttpGet]
-        [Route("GetCarouselGamesAsync")]
+        [Route("GetCarouselGames")]
         public async Task<ActionResult<List<GameDTO>>> GetCarouselGames()
         {
             string cacheKey = "CarouselGames";
@@ -59,7 +57,7 @@ namespace ApiSteam.Controllers
 
             try
             {
-                var games = await _unitOfWork.GetCarouselGamesAsync();
+                var games = await _gameService.GetCarouselGamesAsync();
                 _cache.Set(cacheKey, games, cacheEntryOptions);
 
                 return new JsonResult(games);
@@ -72,25 +70,26 @@ namespace ApiSteam.Controllers
         }
 
         [HttpGet]
-        [Route("GetAllGamesAsync")]
-        public async Task<ActionResult<List<GameDTO>>> GetAllGames()
+        [Route("GetPagingGame")]
+        public async Task<ActionResult<List<GameDTO>>> GetPagingGame()
         {
             if (_cache.TryGetValue("AllGames", out List<GameDTO> cachedAllGames))
             {
                 return new JsonResult(cachedAllGames);
             }
 
-            var games = await _unitOfWork.GetAllGamesAsync();
+            var games = await _gameService.GetPagingGame();
             _cache.Set("AllGames", games, TimeSpan.FromMinutes(30));
 
             return new JsonResult(games);
         }
 
+
         [HttpGet]
         [Route("GetAllTagsAsync")]
         public async Task<ActionResult<List<TagDTO>>> GetAllTags()
         {
-            var tags = await _unitOfWork.GetAllTagsAsync();
+            var tags = await _gameService.GetAllTagsAsync();
 
             return new JsonResult(tags);
         }

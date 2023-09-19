@@ -32,7 +32,7 @@ namespace Application.Services
             await _cache.SetStringAsync(attemptsKey, attempts.ToString(), options);
         }
 
-        public async Task<bool> IsBlockedAsync(string userId)
+        public async Task<bool> HasAttempts(string userId)
         {
             var attemptsKey = $"PasswordResetAttempts_{userId}";
             var attemptsBytes = await _cache.GetAsync(attemptsKey);
@@ -46,7 +46,7 @@ namespace Application.Services
             return false;
         }
 
-        public async Task UnblockUserAsync(string userId)
+        public async Task RefreshAttempts(string userId)
         {
             var attemptsKey = $"PasswordResetAttempts_{userId}";
             await _cache.RemoveAsync(attemptsKey);

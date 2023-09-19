@@ -109,19 +109,35 @@ namespace UI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GamesByTag(string tag, int? page)
+        public async Task<IActionResult> GamesByTag(string tag, int page = 1, int pageSize = 10)
         {
-            int pageNumber = page ?? 1;
-            int pageSize = 12;
-
             var games = await _gameService.GamesByTagsAsync(tag);
+
+            if (games != null)
+            {
+                int totalCount = games.Count;
+                int totalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
+
+                var gamesOnPage = games.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+                var viewModel = new GamesViewModel
+                {
+                    Games = gamesOnPage,
+                    PageNumber = page,
+                    PageSize = pageSize,
+                    TotalCount = totalCount,
+                    TotalPages = totalPages
+                };
+
+                return View(viewModel);
+            }
 
             if (games == null || games.Count == 0)
             {
                 ModelState.AddModelError("", "No such games");
             }
 
-            return View(games);
+            return View();
         }
 
         public async Task<IActionResult> AllGames(int page = 1, int pageSize = 10)
@@ -148,6 +164,33 @@ namespace UI.Controllers
                 return View(viewModel);
             }
 
+
+            return View();
+        }
+
+        public async Task<IActionResult> ListTags(int page = 1, int pageSize = 10)
+        {
+            var tags = await _gameService.GetAllTagsAsync();
+
+            if (tags != null)
+            {
+                int totalCount = tags.Count;
+                int totalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
+
+                // Выбираем игры для текущей страницы
+                var tagsOnPage = tags.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+                var viewModel = new TagsViewModel
+                {
+                    Tags = tagsOnPage,
+                    PageNumber = page,
+                    PageSize = pageSize,
+                    TotalCount = totalCount,
+                    TotalPages = totalPages
+                };
+
+                return View(viewModel);
+            }
 
             return View();
         }

@@ -37,7 +37,7 @@
         // Выполняем AJAX запрос для получения списка игр
         $.ajax({
             type:'GET',
-            url: '@Url.Action("GetCarouselGamesAsync", "Home")',
+            url: '@Url.Action("GetCarouselGames", "Home")',
             method: 'GET',
             dataType: 'json',
             success: function (data) {
@@ -74,7 +74,7 @@
         });
 
         $.ajax({
-        url: '@Url.Action("GetAllGamesAsync", "Home")',
+        url: '@Url.Action("GetPagingGame", "Home")',
         method: 'GET',
         dataType: 'json',
         success: function (data) {
@@ -117,7 +117,7 @@
             ulList.append(li);
 
             if (i === 29) {
-                const linkText = $('<a>').attr('href', '/Game/ListTags').text(text);
+                const linkText = $('<a>').attr('href', '@Url.Action("ListTags", "Game")').text(text);
                 const listItem = $('<li>').append(linkText);
                 ulList.append(listItem);
                 break;
