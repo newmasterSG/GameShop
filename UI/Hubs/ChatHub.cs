@@ -19,7 +19,7 @@ namespace UI.Hubs
         }
         public async Task SendMessage(string user, string message)
         {
-            var userReal = "Users";
+            var userReal = "User";
             if (!string.IsNullOrEmpty(user) && !user.Equals("User"))
             {
                 userReal = Context.User?.Claims.FirstOrDefault(e => e.Value == user)?
@@ -27,7 +27,7 @@ namespace UI.Hubs
                 await _messageService.AddMessageAsync(user, message);
             }
 
-            await SendToAllAdmins(userReal, message);
+            await SendToAllAdmins(userReal, message, Context.User?.Claims.FirstOrDefault(c => c.Type == "sub")?.Value);
         }
 
         public async Task SendAdminReply(string userId, string adminReply)
@@ -48,13 +48,13 @@ namespace UI.Hubs
             await base.OnConnectedAsync();
         }
 
-        private async Task SendToAllAdmins(string userReal, string message)
+        private async Task SendToAllAdmins(string userReal, string message, string userId)
         {
             var admins = await _adminService.GetAllAdminAsync();
 
             foreach (var admin in admins)
             {
-                await Clients.User(admin.Id).SendAsync("ReceiveMessage", userReal, message);
+                await Clients.User(admin.Id).SendAsync("ReceiveMessage", userReal, message, userId);
             }
         }
     }

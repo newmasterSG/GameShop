@@ -52,20 +52,21 @@ document.getElementById("sendButton").addEventListener("click", function (event)
     event.preventDefault();
 });
 
-document.querySelectorAll(".reply-button").forEach(button => {
-    button.addEventListener("click", function () {
-        console.log(this);
-        console.log(this.parentElement);
-        const some = this.parentElement.querySelector(".admin-reply");
-        const userId = some.getAttribute("data-user-id");
-        const adminReply = this.parentElement.querySelector(".admin-reply").value;
+document.getElementById("messagesList").addEventListener("click", function (event) {
+    if (event.target && event.target.classList.contains("reply-button")) {
+        const button = event.target;
+        console.log(button);
+        console.log(button.parentElement);
+        const textElement = document.getElementById('chat-input');
+        const userId = button.getAttribute("data-user-id");
+        const adminReply = textElement.value;
 
-        // Send the admin's reply to the specific user using SignalR.
+        // Отправить ответ администратора конкретному пользователю с использованием SignalR.
         connection.invoke("SendAdminReply", userId, adminReply).catch(function (err) {
             return console.error(err.toString());
         });
 
-        // Clear the reply input field after sending the reply.
-        this.parentElement.querySelector(".admin-reply").value = "";
-    });
+        // Очистить поле ввода ответа после отправки ответа.
+        button.parentElement.querySelector(".admin-reply").value = "";
+    }
 });
