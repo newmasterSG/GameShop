@@ -1,8 +1,6 @@
 ﻿const asideTag = document.querySelector("#asideTag");
 const asideOverlay = document.createElement("div");
 const tagsText = document.getElementsByClassName("tags");
-console.log(tagsText)
-
 
 asideOverlay.style.position = "fixed";
 asideOverlay.style.top = 0;

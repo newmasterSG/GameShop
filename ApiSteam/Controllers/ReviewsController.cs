@@ -1,4 +1,5 @@
-﻿using Application.InterfaceServices;
+﻿using ApiSteam.Model;
+using Application.InterfaceServices;
 using Application.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
@@ -22,34 +23,25 @@ namespace ApiSteam.Controllers
         }
 
         [HttpGet]
-        [Route("GetAllReviewsAsync")]
         public async Task<IActionResult> GetAllReviews(int page = 1, int pageSize = 12)
         {
             var reviews = await _reviewService.GetAllReviewsAsync(page, pageSize);
             return Ok(reviews);
         }
 
-        [HttpGet]
-        [Authorize]
-        public async Task<IActionResult> SayHello()
-        {
-            return Ok("swswww");
-        }
-
         [HttpPost]
-        [Authorize]
-        [Route("AddReviewAsync")]
-        public async Task<IActionResult> AddReview(int gameId, string reviewText, int rating)
+        //[Authorize]
+        public async Task<IActionResult> AddReview([FromBody] Review review)
         {
             _logger.LogDebug("Start");
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             if (string.IsNullOrEmpty(userId))
             {
-                return BadRequest(new { success = false, message = "You must be logged in to add a review." });
+                return Unauthorized(new { success = false, message = "You must be logged in to add a review." });
             }
 
-            var success = await _reviewService.AddReviewAsync(gameId, userId, reviewText, rating);
+            var success = await _reviewService.AddReviewAsync(review.gameId, userId, review.reviewText, review.rating);
 
             if (success)
             {
@@ -60,5 +52,6 @@ namespace ApiSteam.Controllers
                 return NotFound(new { success = false, message = "Game not found." });
             }
         }
+
     }
 }

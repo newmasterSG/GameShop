@@ -68,7 +68,6 @@
 
             },
             error: function () {
-                // Обработка ошибки, если не удалось получить данные
                 console.error('Ошибка при получении списка игр.');
             }
         });
@@ -109,7 +108,6 @@
         for (let i = 0; i < data.length; i++) {
             const tag = data[i];
             const li = $('<li class="tags"></li>').text(tag.name);
-            console.log(i);
             li.on('click', function () {
                 window.location.href = '@Url.Action("GamesByTag","Game")?tag=' + encodeURIComponent(tag.name);
             });

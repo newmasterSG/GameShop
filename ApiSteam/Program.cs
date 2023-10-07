@@ -20,7 +20,7 @@ namespace ApiSteam
             // Add services to the container.
 
             builder.Services.AddControllers();
-            var connectionString = builder.Configuration["ConnectionString"];
+            var connectionString = builder.Configuration["ConnectionStrings:DefaultConnection"];
             builder.Services.AddDbContext<GameShopContext>(options =>
                 options.UseSqlServer(connectionString).EnableSensitiveDataLogging());
 
@@ -52,7 +52,6 @@ namespace ApiSteam
             app.UseCors("fromUI");
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 

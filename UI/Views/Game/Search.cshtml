@@ -1,13 +1,13 @@
 ﻿@{
 }
 @using Microsoft.AspNetCore.Mvc.TagHelpers
-@model UI.Models.Search.SearchViewModel
+@model Application.DTO.SearchResult<Application.DTO.GameDTO>
 
-@if (Model.PagedSearchResults != null && Model.PagedSearchResults.Count > 0)
+@if (Model.Data.Count > 0)
 {
     <h3 class="text-center">Search Results: @ViewBag.GameName</h3>
     <div class="container align-content-center justify-content-center">
-        @foreach (var game in Model.PagedSearchResults)
+        @foreach (var game in Model.Data)
         {      <a href="@Url.Action("GameDetails","Game")/@game.Id">
                     <h4>@game.Name</h4>
                     <img src="@game.Image" alt="Game Image" style="width: 100px" />
@@ -17,9 +17,22 @@
         }
     </div>
 
-    <div>
-        <pager pager-list="@Model.PagedSearchResults" asp-action="Search" asp-route-gameName="@Model.GameName"></pager>
-    </div>
+    @if (Model.PageNumber > 1)
+    {
+        <a class="btn btn-outline-dark" href="@Url.Action("Search", "Game", new {gameName = ViewBag.GameName, page = Model.PageNumber - 1, pageSize = Model.PageSize })">Previous</a>
+    }
+
+    @for (int i = 1; i <= Model.TotalPages; i++)
+    {
+        <a class="btn btn-outline-dark" href="@Url.Action("Search", "Game", new { gameName = ViewBag.GameName, page = i, pageSize = Model.PageSize })" @(i == Model.PageNumber ? "class=current" : "")>@i</a>
+    }
+
+    @if (Model.PageNumber < Model.TotalPages)
+    {
+        <a class="btn btn-outline-dark" href="@Url.Action("Search", "Game", new { gameName = ViewBag.GameName, page = Model.PageNumber + 1, pageSize = Model.PageSize })">Next</a>
+    }
+
+    <input hidden value="@ViewBag.GameName"/>
 }
 else{
 

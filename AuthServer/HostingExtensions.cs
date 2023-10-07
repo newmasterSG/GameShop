@@ -100,6 +100,8 @@ namespace AuthServer
                 {
                     options.ConfigureDbContext = b => b.UseSqlServer(connectionString,
                     sql => sql.MigrationsAssembly(migrationsAssembly));
+                    options.EnableTokenCleanup = true;
+                    options.TokenCleanupInterval = 3600;
                 })
                 .AddDeveloperSigningCredential();
 

@@ -39,5 +39,9 @@ namespace Domain.Interfaces
 
         IQueryable<T> SelectInclude<TProperty>(Expression<Func<T, TProperty>> expression);
 
+        IQueryable<T> Where(Expression<Func<T, bool>> match);
+
+        IQueryable<T> AsNoTracking();
+
     }
 }

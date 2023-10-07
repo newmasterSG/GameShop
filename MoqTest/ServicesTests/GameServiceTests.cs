@@ -33,11 +33,11 @@ namespace MoqTest.ServicesTests
             var gameService = new GameService(unitOfWorkMock.Object);
 
             // Act
-            List<GameDTO> result = await gameService.SearchGameAsync("GameName");
+            var result = await gameService.SearchGameAsync("GameName", 1 , 12);
 
             // Assert
-            Assert.Equal("GameName", result[0].Name);
-            Assert.Equal(10.0m, result[0].Price);
+            Assert.Equal("GameName", result.Data[0].Name);
+            Assert.Equal(10.0m, result.Data[0].Price);
         }
 
         [Fact]

@@ -112,12 +112,15 @@
 <script src="~/js/cartLogic.js"></script>
 <script>
     var gameId = @ViewBag.GameId;
+    var token = '@ViewBag.Token';
     var priceValue;
     var basePrice;
     $.ajax({
         type: 'GET',
-        url: '@Url.Action("GetGame", "Game")',
-        data: { id: gameId },
+        url: 'https://localhost:7242/Game/' + gameId,
+        headers: {
+            Authorization: 'Bearer ' + token,
+        },
         dataType: 'json',
         success: function (data) {
             $('#gameTitle').text(data.name);
@@ -131,10 +134,10 @@
             // Populate screenshots carousel
             var screenshotsCarouselInner = $('#screenshotsCarouselInner');
             screenshotsCarouselInner.empty();
-            if (data.screenshots && Array.isArray(data.screenshots)) {
+            if (data.screnShoots && Array.isArray(data.screnShoots)) {
                 var screenshotsCarouselInner = $('#screenshotsCarouselInner');
                 screenshotsCarouselInner.empty();
-                data.screenshots.forEach(function (screenshot, index) {
+                data.screnShoots.forEach(function (screenshot, index) {
                     var activeClass = index === 0 ? 'active' : '';
                     var imgHtml = '<div class="carousel-item ' + activeClass + '">' +
                         '<img src="' + screenshot + '" class="d-block" alt="Screenshot">' +
@@ -229,12 +232,20 @@
             var reviewText = $('#reviewText').val();
             var gameId = @ViewBag.GameId;
             var rating = $('#rating').val();
-            var token = '@ViewBag.Token';
+
+            var reviewData = {
+                reviewText: reviewText,
+                rating: rating,
+                gameId: gameId
+            };
+
             $.ajax({
-                url: 'https://localhost:7242/api/Reviews/AddReview?gameId='+ gameId + '&reviewText='+reviewText+'&rating='+ rating,
+                url: 'https://localhost:7242/api/Reviews',
                 type: 'POST',
+                contentType: "application/json",
+                data: JSON.stringify(reviewData),
                 headers:{
-                    Authorization: 'Bearer ' + token
+                    Authorization: 'Bearer ' + token,
                 },
                 success: function (response) {
                     if (response.success) {

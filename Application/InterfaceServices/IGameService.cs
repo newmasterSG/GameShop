@@ -6,7 +6,7 @@ namespace Application.InterfaceServices
     {
         Task<List<GameDTO>> GamesByTagsAsync(string tag);
         Task<GamesViewDTO> GetGameAsync(int id);
-        Task<List<GameDTO>> SearchGameAsync(string name);
+        Task<SearchResult<GameDTO>> SearchGameAsync(string name, int pageNumber, int pageSize);
 
         Task<List<GameDTO>> GetAllGamesAsync();
 

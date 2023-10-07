@@ -31,6 +31,7 @@ namespace ApiSteam.Config
         public static IServiceCollection AddingOwnDI(this IServiceCollection services)
         {
             services.AddMemoryCache();
+            services.AddDistributedMemoryCache();
             services.AddScoped<IUnitOfWork, UnitOfWork<GameShopContext>>();
             services.AddScoped<GameService>();
             services.AddScoped<IOrderServices, OrderServices>();
