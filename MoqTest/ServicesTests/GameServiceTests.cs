@@ -20,12 +20,12 @@ namespace MoqTest.ServicesTests
         {
             // Arrange
             var gameRepositoryMock = new Mock<IRepository<GamesEntity>>();
-            gameRepositoryMock.Setup(repo => repo.ListAsync(It.IsAny<Expression<Func<GamesEntity, bool>>>()))
-                .ReturnsAsync(new List<GamesEntity>
+            gameRepositoryMock.Setup(repo => repo.Where(It.IsAny<Expression<Func<GamesEntity, bool>>>()))
+                .Returns(new List<GamesEntity>
                 {
                     new GamesEntity { Id = 1, Name = "GameName", Price = 10.0m },
                     new GamesEntity { Id = 2, Name = "AnotherGame", Price = 15.0m }
-                });
+                }.AsQueryable());
 
             var unitOfWorkMock = new Mock<IUnitOfWork>();
             unitOfWorkMock.Setup(uow => uow.GetRepository<GamesEntity>(false)).Returns(gameRepositoryMock.Object);
