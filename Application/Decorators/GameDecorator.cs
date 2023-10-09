@@ -27,46 +27,46 @@ namespace Application.Decorators
 
         public async Task<List<GameDTO>> GamesByTagsAsync(string tag)
         {
-            var cachedData = await _cache.GetAsync(CachesNaming.GamesByTags);
+            //var cachedData = await _cache.GetAsync(CachesNaming.GamesByTags);
 
-            if(cachedData != null)
-            {
-                return CachedData.DeserializeCachedData<List<GameDTO>>(cachedData);
-            }
+            //if(cachedData != null)
+            //{
+            //    return CachedData.DeserializeCachedData<List<GameDTO>>(cachedData);
+            //}
 
             var games = await _gameService.GamesByTagsAsync(tag);
 
-            var serializedData = CachedData.SerializeData(games);
-            DistributedCacheEntryOptions options = new DistributedCacheEntryOptions
-            {
-                AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5),
-                SlidingExpiration = TimeSpan.FromMinutes(1),
-            };
+            //var serializedData = CachedData.SerializeData(games);
+            //DistributedCacheEntryOptions options = new DistributedCacheEntryOptions
+            //{
+            //    AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5),
+            //    SlidingExpiration = TimeSpan.FromMinutes(1),
+            //};
 
-            await _cache.SetAsync(CachesNaming.GamesByTags, serializedData, options);
+            //await _cache.SetAsync(CachesNaming.GamesByTags, serializedData, options);
 
             return games;
         }
 
         public async Task<List<GameDTO>> GetAllGamesAsync()
         {
-            var cachedData = await _cache.GetAsync(CachesNaming.GetAllGames);
+            //var cachedData = await _cache.GetAsync(CachesNaming.GetAllGames);
 
-            if (cachedData != null)
-            {
-                return CachedData.DeserializeCachedData<List<GameDTO>>(cachedData);
-            }
+            //if (cachedData != null)
+            //{
+            //    return CachedData.DeserializeCachedData<List<GameDTO>>(cachedData);
+            //}
 
             var games = await _gameService.GetAllGamesAsync();
 
-            var serializedData = CachedData.SerializeData(games);
-            DistributedCacheEntryOptions options = new DistributedCacheEntryOptions
-            {
-                AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5),
-                SlidingExpiration = TimeSpan.FromMinutes(1),
-            };
+            //var serializedData = CachedData.SerializeData(games);
+            //DistributedCacheEntryOptions options = new DistributedCacheEntryOptions
+            //{
+            //    AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5),
+            //    SlidingExpiration = TimeSpan.FromMinutes(1),
+            //};
 
-            await _cache.SetAsync(CachesNaming.GetAllGames, serializedData, options);
+            //await _cache.SetAsync(CachesNaming.GetAllGames, serializedData, options);
 
             return games;
         }
@@ -83,23 +83,23 @@ namespace Application.Decorators
 
         public async Task<GamesViewDTO> GetGameAsync(int id)
         {
-            var cachedData = await _cache.GetAsync(CachesNaming.Game);
+            //var cachedData = await _cache.GetAsync(CachesNaming.Game);
 
-            if (cachedData != null)
-            {
-                return CachedData.DeserializeCachedData<GamesViewDTO>(cachedData);
-            }
+            //if (cachedData != null)
+            //{
+            //    return CachedData.DeserializeCachedData<GamesViewDTO>(cachedData);
+            //}
 
             var game = await _gameService.GetGameAsync(id);
 
-            var serializedData = CachedData.SerializeData(game);
-            DistributedCacheEntryOptions options = new DistributedCacheEntryOptions
-            {
-                AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5),
-                SlidingExpiration = TimeSpan.FromMinutes(1),
-            };
+            //var serializedData = CachedData.SerializeData(game);
+            //DistributedCacheEntryOptions options = new DistributedCacheEntryOptions
+            //{
+            //    AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5),
+            //    SlidingExpiration = TimeSpan.FromMinutes(1),
+            //};
 
-            await _cache.SetAsync(CachesNaming.Game, serializedData, options);
+            //await _cache.SetAsync(CachesNaming.Game, serializedData, options);
 
             return game;
         }
@@ -109,25 +109,25 @@ namespace Application.Decorators
             return _gameService.GetPagingGame();
         }
 
-        public async Task<List<GameDTO>> SearchGameAsync(string name)
+        public async Task<SearchResult<GameDTO>> SearchGameAsync(string name, int pageNumber, int pageSize)
         {
-            var cachedData = await _cache.GetAsync(CachesNaming.SearchGame);
+            //var cachedData = await _cache.GetAsync(CachesNaming.SearchGame);
 
-            if (cachedData != null)
-            {
-                return CachedData.DeserializeCachedData<List<GameDTO>>(cachedData);
-            }
+            //if (cachedData != null)
+            //{
+            //    return CachedData.DeserializeCachedData<List<GameDTO>>(cachedData);
+            //}
 
-            var games = await _gameService.SearchGameAsync(name);
+            var games = await _gameService.SearchGameAsync(name, pageNumber, pageSize);
 
-            var serializedData = CachedData.SerializeData(games);
-            DistributedCacheEntryOptions options = new DistributedCacheEntryOptions
-            {
-                AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5),
-                SlidingExpiration = TimeSpan.FromMinutes(1),
-            };
+            //var serializedData = CachedData.SerializeData(games);
+            //DistributedCacheEntryOptions options = new DistributedCacheEntryOptions
+            //{
+            //    AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5),
+            //    SlidingExpiration = TimeSpan.FromMinutes(1),
+            //};
 
-            await _cache.SetAsync(CachesNaming.SearchGame, serializedData, options);
+            //await _cache.SetAsync(CachesNaming.SearchGame, serializedData, options);
 
             return games;
         }

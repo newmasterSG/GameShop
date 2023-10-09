@@ -29,7 +29,7 @@
                 </button>
                 <div class="collapse navbar-collapse container" id="navbarNav">
                     <div class="container">
-                        @using (Html.BeginForm("Search", "Game", FormMethod.Post ))
+                        @using (Html.BeginForm("Search", "Game", FormMethod.Get ))
                         {
                             <div class="input-group">
                                 <input class="cyber-search form-control mr-sm-2" type="search" placeholder="Search" name="GameName" aria-label="Search">

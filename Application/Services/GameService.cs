@@ -2,6 +2,7 @@
 using Application.InterfaceServices;
 using Domain.Entities;
 using Domain.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,32 +26,28 @@ namespace Application.Services
                 return null;
             }
 
-            var game = await _unitOfWork.GetRepository<GamesEntity>().GetByIdAsync(id);
+            var game = _unitOfWork.GetRepository<GamesEntity>()
+                .AsNoTracking()
+                .Include(item => item.Stores)
+                .ThenInclude(store => store.Store)
+                .Include(item => item.Developer)
+                .Include(item => item.ShortScreenshots)
+                .Include(item => item.Tags)
+                .FirstOrDefault(item => item.Id == id);
 
             GamesViewDTO gamesView = new GamesViewDTO();
 
             if (game != null)
             {
-                var screenShoots = await _unitOfWork.GetRepository<ShortScreenshotEntity>().ListAsync(x => x.Game.Id == game.Id);
-
-                var developers = await _unitOfWork.GetRepository<DevelopersEntity>()
-                    .ListAsync(x => x.GamesToDevelopers.Any(gtd => gtd.GameId == game.Id));
-
-                var tags = await _unitOfWork.GetRepository<TagEntity>()
-                    .ListAsync(x => x.ToTagsModels.Any(gtd => gtd.GamesId == game.Id));
-
-                var store = await _unitOfWork.GetRepository<StoreEntity>()
-                    .ListAsync(x => x.GamesToStores.Any(gtd => gtd.GameId == game.Id));
-
                 GamesViewDTO gamesViewDTO = new GamesViewDTO()
                 {
                     Name = game.Name,
                     Price = game.Price,
-                    Developers = developers.Select(x => x.Name).ToList(),
-                    ScrenShoots = screenShoots.Select(x => x.Image).ToList(),
-                    Tags = tags.Select(x => x.Name).ToList(),
+                    Developers = game.Developer?.Select(x => x.Name).ToList(),
+                    ScrenShoots = game.ShortScreenshots?.Select(x => x.Image).ToList(),
+                    Tags = game.Tags?.Select(x => x.Name).ToList(),
                     Image = game.BackgroundImage,
-                    Stores = store.Select(x => x.Store?.Name).ToList(),
+                    Stores = game.Stores?.Select(x => x.Store?.Name).ToList(),
                 };
 
                 gamesView = gamesViewDTO;
@@ -59,13 +56,26 @@ namespace Application.Services
             return gamesView;
         }
 
-        public async Task<List<GameDTO>> SearchGameAsync(string name)
+        public async Task<SearchResult<GameDTO>> SearchGameAsync(string name, int pageNumber, int pageSize)
         {
-            var dbGames = await _unitOfWork.GetRepository<GamesEntity>().ListAsync(g => g.Name.ToLower().Contains(name.ToLower()));
+            // Calculate the number of elements to skip based on the page number and page size
+            int skipElements = (pageNumber - 1) * pageSize;
+
+            var dbGames = _unitOfWork.GetRepository<GamesEntity>()
+                .Where(item => item.Name.ToUpper().Contains(name.ToUpper()));
+
+            int totalCount = dbGames.Count();
+
+            var pagingGames = dbGames
+                .Skip(skipElements)
+                .Take(pageSize)
+                .ToList();
+
             var games = new List<GameDTO>();
-            if(dbGames != null && dbGames.Count() > 0)
+
+            if(pagingGames.Count() > 0)
             {
-                foreach (var game in dbGames)
+                foreach (var game in pagingGames)
                 {
                     games.Add(new GameDTO
                     {
@@ -78,7 +88,17 @@ namespace Application.Services
                 }
             }
 
-            return games;
+            var searchResult = new SearchResult<GameDTO>
+            {
+                Data = games,
+                GameName = name,
+                PageNumber = pageNumber,
+                PageSize = pageSize,
+                TotalCount = totalCount,
+                TotalPages = (int)Math.Ceiling(totalCount / (double)pageSize)
+            };
+
+            return searchResult;
         }
 
         public async Task<List<GameDTO>> GamesByTagsAsync(string tag)

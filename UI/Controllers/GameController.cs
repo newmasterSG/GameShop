@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Localization;
 using Microsoft.EntityFrameworkCore;
+using NRedisStack.Search;
 using PagedList;
 using System.Drawing.Printing;
 using System.IdentityModel.Tokens.Jwt;
@@ -50,11 +51,6 @@ namespace UI.Controllers
             return View();
         }
 
-        public async Task<IActionResult> Index()
-        {
-            return View();
-        }
-
         [Authorize(Policy = "DateRegistrationPolicy")]
         public IActionResult Sales()
         {
@@ -67,38 +63,35 @@ namespace UI.Controllers
         {
             if (id == null)
             {
-                return NotFound(); // Возвращаем 404 Not Found, если id не передан
+                return NotFound();
             }
 
             var game = await _gameService.GetGameAsync(id);
 
             if (game == null)
             {
-                return NotFound(); // Возвращаем 404 Not Found, если игра не найдена
+                return NotFound();
             }
 
             return Json(game);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Search(SearchViewModel viewModel, int? page)
+        [HttpGet]
+        public async Task<IActionResult> Search(string gameName, int? page, int pageSize = 12)
         {
             int pageNumber = page ?? 1;
-            int pageSize = 12;
 
-            var games = await _gameService.SearchGameAsync(viewModel.GameName);
+            var games = await _gameService.SearchGameAsync(gameName, pageNumber, pageSize);
+            games.GameName = gameName;
 
-            if (games == null || games.Count == 0)
+            if (games == null || games.Data.Count == 0)
             {
-                ModelState.AddModelError("", "No such games");
-            }
-            else
-            {
-                ViewBag.GameName = viewModel.GameName;
-                viewModel.PagedSearchResults = new StaticPagedList<GameDTO>(games, pageNumber, pageSize, games.Count);
+                return View();
             }
 
-            return View(viewModel);
+            ViewBag.GameName = gameName;
+
+            return View(games);
         }
 
         [HttpGet]

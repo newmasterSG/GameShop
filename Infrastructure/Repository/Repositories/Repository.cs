@@ -125,5 +125,15 @@ namespace Infrastructure.Repository.Repositories
         {
             return _dbContext.Set<T>().Include(expression);
         }
+
+        public IQueryable<T> Where(Expression<Func<T, bool>> match)
+        {
+            return _dbContext.Set<T>().Where(match);
+        }
+
+        public IQueryable<T> AsNoTracking()
+        {
+            return _dbContext.Set<T>().AsNoTracking();
+        }
     }
 }
