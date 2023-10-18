@@ -11,14 +11,16 @@ namespace Domain.Interfaces
         void Insert(T entity);
         void Delete(T entity);
         void Update(T entity);
-        IEnumerable<T> Take(int skipElements, int takeElements);
+        IEnumerable<T> Take(int skipElements, int takeElements, (Expression<Func<T, object>> expression, bool ascending) sortOrder);
         Task<T> GetByIdAsync(int id);
         Task InsertAsync(T entity);
         Task DeleteAsync(T entity);
         Task UpdateAsync(T entity);
         Task<IEnumerable<T>> GetAllAsync();
         Task<IEnumerable<T>> ListAsync(Expression<Func<T, bool>> predicate);
-        Task<IEnumerable<T>> TakeAsync(int skipElements, int takeElements);
+        Task<IEnumerable<T>> TakeAsync(int skipElements, 
+            int takeElements, 
+            (Expression<Func<T, object>> expression, bool ascending) sortOrder);
 
         /// <summary>
         /// Order by
@@ -42,6 +44,8 @@ namespace Domain.Interfaces
         IQueryable<T> Where(Expression<Func<T, bool>> match);
 
         IQueryable<T> AsNoTracking();
+
+        int Count();
 
     }
 }

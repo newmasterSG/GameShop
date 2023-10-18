@@ -47,7 +47,10 @@ namespace Application.Services
                 if (game != null)
                 {
                     //Taking key that false isBuy field
-                    var keys = _context.GetRepository<GameKeyEntity>().List(g => g.GameId == game.Id).Where(k => k.IsBuy == false).Take(gameId.Value).ToList();
+                    var keys = _context.GetRepository<GameKeyEntity>()
+                        .List(g => g.GameId == game.Id).
+                        Where(k => k.IsBuy == false)
+                        .Take(gameId.Value).ToList();
                     if (keys != null)
                     {
                         foreach (var key in keys)

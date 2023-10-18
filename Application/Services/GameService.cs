@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -56,21 +57,56 @@ namespace Application.Services
             return gamesView;
         }
 
-        public async Task<SearchResult<GameDTO>> SearchGameAsync(string name, int pageNumber, int pageSize)
+        public async Task<SearchResult<GameDTO>> SearchGameAsync(string name, int pageNumber, int pageSize, string attribute = "", string order = "asc")
         {
             // Calculate the number of elements to skip based on the page number and page size
             int skipElements = (pageNumber - 1) * pageSize;
 
-            var dbGames = _unitOfWork.GetRepository<GamesEntity>()
-                .Where(item => item.Name.ToUpper().Contains(name.ToUpper()));
+            Expression<Func<GamesEntity, object>> orderByExpression = null;
 
-            int totalCount = dbGames.Count();
+            switch (attribute.ToLower())
+            {
+                case "developer":
+                    orderByExpression = game => game.Developer;
+                    break;
+                case "name":
+                    orderByExpression = game => game.Name;
+                    break;
+                case "genres":
+                    orderByExpression = game => game.Genres;
+                    break;
+                case "metacritic":
+                    orderByExpression = game => game.Metacritic;
+                    break;
+                default:
+                    orderByExpression = game => game.Price;
+                    break;
+            }
 
-            var pagingGames = dbGames
+            var ordering = order == "asc" ? true : false;
+            
+            var totalCount = _unitOfWork.GetRepository<GamesEntity>().Count();
+
+
+            var pagingGames =  _unitOfWork.GetRepository<GamesEntity>()
+                .AsNoTracking();
+            
+            if (ordering)
+            {
+                pagingGames = pagingGames
+                    .OrderBy(orderByExpression);
+            }
+            else
+            {
+                pagingGames = pagingGames.OrderByDescending(orderByExpression);
+            }
+
+            pagingGames
+                .Where(item => item.Name.ToUpper().Contains(name.ToUpper()))
                 .Skip(skipElements)
                 .Take(pageSize)
-                .ToList();
-
+                .AsEnumerable();
+            
             var games = new List<GameDTO>();
 
             if(pagingGames.Count() > 0)

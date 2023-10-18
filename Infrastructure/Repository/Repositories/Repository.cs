@@ -85,20 +85,42 @@ namespace Infrastructure.Repository.Repositories
             return await _dbContext.Set<T>().FindAsync(id);
         }
 
-        public IEnumerable<T> Take(int skipElements, int takeElements)
+        public IEnumerable<T> Take(int skipElements, int takeElements, (Expression<Func<T, object>> expression, bool ascending) sortOrder)
         {
-            return _dbContext.Set<T>()
-                .Skip(skipElements)
+            var query = _dbContext.Set<T>().AsNoTracking();
+            
+            if (sortOrder.ascending)
+            {
+                query = query.OrderBy(sortOrder.expression);
+            }
+            else
+            {
+                query = query.OrderByDescending(sortOrder.expression);
+            }
+
+            return query.Skip(skipElements)
                 .Take(takeElements)
-                .ToList();
+                .AsEnumerable();
         }
 
-        public async Task<IEnumerable<T>> TakeAsync(int skipElements, int takeElements)
+        public async Task<IEnumerable<T>> TakeAsync(int skipElements, 
+            int takeElements, 
+            (Expression<Func<T, object>> expression, bool ascending) sortOrder)
         {
-            return await _dbContext.Set<T>()
-                .Skip(skipElements)
+            var query = _dbContext.Set<T>().AsNoTracking();
+            
+            if (sortOrder.ascending)
+            {
+                query = query.OrderBy(sortOrder.expression);
+            }
+            else
+            {
+                query = query.OrderByDescending(sortOrder.expression);
+            }
+
+            return query.Skip(skipElements)
                 .Take(takeElements)
-                .ToListAsync();
+                .AsEnumerable();
         }
 
         public IOrderedQueryable<T> OrderBy<K>(Expression<Func<T, K>> predicate)
@@ -134,6 +156,11 @@ namespace Infrastructure.Repository.Repositories
         public IQueryable<T> AsNoTracking()
         {
             return _dbContext.Set<T>().AsNoTracking();
+        }
+
+        public int Count()
+        {
+            return _dbContext.Set<T>().AsNoTracking().Count();
         }
     }
 }

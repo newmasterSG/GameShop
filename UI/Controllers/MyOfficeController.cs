@@ -27,11 +27,6 @@ namespace UI.Controllers
             _signInManager = signInManager;
         }
 
-        public IActionResult Index()
-        {
-            return View();
-        }
-
         public IActionResult Card()
         {
             return View();

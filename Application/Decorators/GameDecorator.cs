@@ -109,7 +109,7 @@ namespace Application.Decorators
             return _gameService.GetPagingGame();
         }
 
-        public async Task<SearchResult<GameDTO>> SearchGameAsync(string name, int pageNumber, int pageSize)
+        public async Task<SearchResult<GameDTO>> SearchGameAsync(string name, int pageNumber, int pageSize, string attribute = "", string order = "asc")
         {
             //var cachedData = await _cache.GetAsync(CachesNaming.SearchGame);
 

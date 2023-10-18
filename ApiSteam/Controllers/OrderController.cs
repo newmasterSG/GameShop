@@ -24,7 +24,7 @@ namespace ApiSteam.Controllers
 
         [HttpPost]
         [Route("BuyGames")]
-        public async Task<IActionResult> BuyGames(OrderDTO orderDTO, string name, string price)
+        public async Task<ActionResult> BuyGames(OrderDTO orderDTO, string name, string price)
         {
             // Get the user, for example, through ASP.NET Identity
             var user = await _userManager.FindByNameAsync(name);
@@ -43,7 +43,7 @@ namespace ApiSteam.Controllers
                 }
             }
 
-            return RedirectToAction("Index", "Home");
+            return new OkResult();
         }
     }
 }

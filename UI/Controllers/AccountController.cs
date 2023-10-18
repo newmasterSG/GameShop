@@ -45,11 +45,6 @@ namespace UI.Controllers
             _sharedLocalizer = stringLocalizer;
         }
 
-        public ActionResult Index()
-        {
-            return View();
-        }
-
         [HttpGet]
         public IActionResult Register()
         {
@@ -172,7 +167,7 @@ namespace UI.Controllers
             await _emailSender.SendEmailAsync(user.Email, null, "Password recovery",
                 htmlTemplate, true);
 
-            return View("RedirectToPage");
+            return View();
         }
 
         [HttpGet]
